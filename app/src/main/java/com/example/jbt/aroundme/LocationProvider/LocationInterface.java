@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme;
+package com.example.jbt.aroundme.LocationProvider;
 
 
 import android.location.Location;

@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme;
+package com.example.jbt.aroundme.LocationProvider;
 
 
 import android.support.annotation.NonNull;
@@ -7,6 +7,7 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -66,19 +67,24 @@ public class GoogleFusedLocation implements LocationInterface {
                 .build();
     }
 
+    @Override
     public void start()
     {
         mGoogleApiClient.connect();
     }
 
+    @Override
     public void stop()
     {
         mGoogleApiClient.disconnect();
     }
 
+    @Override
     public Location GetCurrentLocation()
     {
-        return mConnected ? LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) : null;
+        return mConnected ?
+                LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
+                : null;
     }
 
     public void setOnLocationChangeListener(onLocationListener listener)

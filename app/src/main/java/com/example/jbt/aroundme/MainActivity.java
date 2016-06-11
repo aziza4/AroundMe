@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +18,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.jbt.aroundme.LocationProvider.AndroidLocation;
+import com.example.jbt.aroundme.LocationProvider.LocationInterface;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -29,18 +29,17 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "PlaceSelectionListener";
-    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
-            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+    private static final LatLngBounds BOUNDS_HOME_VIEW =
+            new LatLngBounds(
+                    new LatLng(32.081541, 34.804215),
+                    new LatLng(32.089150, 34.816542));
+
     public static final int REQUEST_SELECT_PLACE = 1000;
 
-    private TabsPagerAdapter mTabsPagerAdapter;
-    private ViewPager mViewPager;
-
-    private SearchFragment mSearchFragment;
+    private DrawerLayout mDrawer;
 
     private LocationInterface mLocationProvider;
 
@@ -54,39 +53,63 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // Tabs
-        mTabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.viewPagerContainer);
-        mViewPager.setAdapter(mTabsPagerAdapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_layout);
-        tabLayout.setupWithViewPager(mViewPager);
+        TabsPagerAdapter mTabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewPagerContainer);
+        if (mViewPager != null) {
+            mViewPager.setAdapter(mTabsPagerAdapter);
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_layout);
+            if (tabLayout != null)
+                tabLayout.setupWithViewPager(mViewPager);
+        }
 
         // User Location
-        mLocationProvider = new GoogleFusedLocation(this, false);
-        mLocationProvider.setOnLocationChangeListener(new LocationInterface.onLocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                mSearchFragment.setCurUserLocation(location);
-            }
-        });
+        mLocationProvider = new AndroidLocation(this);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        if (fab != null )
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.addDrawerListener(toggle);
         toggle.syncState();
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (mNavigationView != null)
+            mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-    }
+                @SuppressWarnings("StatementWithEmptyBody")
+                @Override
+                public boolean onNavigationItemSelected(MenuItem item) {
+                    // Handle navigation view item clicks here.
+                    int id = item.getItemId();
+
+                    if (id == R.id.nav_camera) {
+                        // Handle the camera action
+                    } else if (id == R.id.nav_gallery) {
+
+                    } else if (id == R.id.nav_slideshow) {
+
+                    } else if (id == R.id.nav_manage) {
+
+                    } else if (id == R.id.nav_share) {
+
+                    } else if (id == R.id.nav_send) {
+
+                    }
+
+                    mDrawer.closeDrawer(GravityCompat.START);
+                    return true;
+                }
+            });
+        }
 
     @Override
     protected void onStart() {
@@ -102,9 +125,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -112,7 +134,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -126,19 +147,20 @@ public class MainActivity extends AppCompatActivity
                 return true;
 
             case R.id.search_my_loc:
-                Toast.makeText(MainActivity.this, "Search my current location", Toast.LENGTH_SHORT).show();
                 Location location = mLocationProvider.GetCurrentLocation();
-                mSearchFragment.setCurUserLocation(location);
+                if (location != null) {
+                    String info = "Lat: " + location.getLatitude() + "\nLng: " + location.getLongitude();
+                    Toast.makeText(MainActivity.this, info, Toast.LENGTH_SHORT).show();
+                }
                 return true;
 
             case R.id.search_places:
-                Toast.makeText(MainActivity.this, "Search places", Toast.LENGTH_SHORT).show();
 
                 // Place Autocomplete widget
                 try {
                     Intent intent = new PlaceAutocomplete
                             .IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                            .setBoundsBias(BOUNDS_MOUNTAIN_VIEW)
+                            .setBoundsBias(BOUNDS_HOME_VIEW)
                             .build(MainActivity.this);
 
                     startActivityForResult(intent, REQUEST_SELECT_PLACE);
@@ -152,30 +174,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -184,7 +182,16 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
 
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                mSearchFragment.setPlace(place);
+                String info = getString(R.string.formatted_place_data,
+                        place.getName(),
+                        place.getAddress(),
+                        place.getPhoneNumber(),
+                        place.getWebsiteUri(),
+                        place.getRating(),
+                        place.getLatLng() != null ? place.getLatLng().latitude : "",
+                        place.getLatLng() != null ? place.getLatLng().longitude : "",
+                        place.getId());
+                Toast.makeText(this, info, Toast.LENGTH_LONG).show();
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
 
@@ -194,47 +201,6 @@ public class MainActivity extends AppCompatActivity
                         "Place selection failed: " + status.getStatusMessage(),
                         Toast.LENGTH_SHORT)
                         .show();
-            }
-        }
-    }
-
-    public class TabsPagerAdapter extends FragmentPagerAdapter {
-
-
-        public TabsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            switch (position) {
-                case 0:
-
-                    mSearchFragment = new SearchFragment();
-                    return mSearchFragment;
-                case 1:
-                    return new FavoriteFragment();
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-
-            switch (position) {
-                case 0:
-                    return getString(R.string.search_title);
-                case 1:
-                    return getString(R.string.favorite_title);
-                default:
-                    return null;
             }
         }
     }
