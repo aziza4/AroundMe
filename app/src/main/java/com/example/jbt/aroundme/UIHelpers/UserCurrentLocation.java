@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme;
+package com.example.jbt.aroundme.UIHelpers;
 
 
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.example.jbt.aroundme.LocationProvider.LocationInterface;
 
-class UserCurrentLocation {
+public class UserCurrentLocation {
 
     private final Context mContext;
     private final LocationInterface mLocationProvider;

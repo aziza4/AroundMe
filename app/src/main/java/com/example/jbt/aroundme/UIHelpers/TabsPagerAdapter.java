@@ -1,11 +1,15 @@
-package com.example.jbt.aroundme;
+package com.example.jbt.aroundme.UIHelpers;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-class TabsPagerAdapter extends FragmentPagerAdapter {
+import com.example.jbt.aroundme.ActivitiesAndFragments.FavoriteFragment;
+import com.example.jbt.aroundme.R;
+import com.example.jbt.aroundme.ActivitiesAndFragments.SearchFragment;
+
+public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     private final Context mContext;
 

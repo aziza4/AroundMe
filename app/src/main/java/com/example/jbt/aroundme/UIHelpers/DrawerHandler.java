@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme;
+package com.example.jbt.aroundme.UIHelpers;
 
 
 import android.support.design.widget.NavigationView;
@@ -6,9 +6,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 
+import com.example.jbt.aroundme.R;
 
 
-class DrawerHandler implements NavigationView.OnNavigationItemSelectedListener {
+public class DrawerHandler implements NavigationView.OnNavigationItemSelectedListener {
 
     private final DrawerLayout mDrawerLayout;
 

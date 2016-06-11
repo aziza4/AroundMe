@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme;
+package com.example.jbt.aroundme.ActivitiesAndFragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.example.jbt.aroundme.LocationProvider.*;
+import com.example.jbt.aroundme.R;
+import com.example.jbt.aroundme.UIHelpers.*;
+import com.example.jbt.aroundme.UIHelpers.UserCurrentLocation;
 
-import com.example.jbt.aroundme.LocationProvider.AndroidLocation;
-import com.example.jbt.aroundme.LocationProvider.LocationInterface;
 
 public class MainActivity extends AppCompatActivity {
 

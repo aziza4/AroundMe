@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme;
+package com.example.jbt.aroundme.ActivitiesAndFragments;
 
 
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.jbt.aroundme.R;
 
 
 public class SearchFragment extends Fragment {

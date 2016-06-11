@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme;
+package com.example.jbt.aroundme.UIHelpers;
 
 
 import android.app.Activity;
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
+import com.example.jbt.aroundme.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -13,7 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 
-class PlacesAutoComplete {
+public class PlacesAutoComplete {
 
     private final Activity mActivity;
 
