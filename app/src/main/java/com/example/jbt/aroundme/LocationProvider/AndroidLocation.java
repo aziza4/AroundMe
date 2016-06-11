@@ -47,7 +47,7 @@ public class AndroidLocation implements LocationInterface {
             );
 
         } catch (SecurityException e) {
-            Log.d(LOG_TAG, "Missing permission");
+            Log.e(LOG_TAG, "Missing permission");
         }
     }
 
@@ -57,7 +57,7 @@ public class AndroidLocation implements LocationInterface {
         try {
             mLocationManager.removeUpdates(mLocationListener); }
         catch (SecurityException ex) {
-            Log.d(LOG_TAG, "Failed to Stop Android location updates");
+            Log.e(LOG_TAG, "Failed to Stop Android location updates");
         }
     }
 

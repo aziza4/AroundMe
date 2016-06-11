@@ -15,5 +15,6 @@
         Name: %1$s\nAddress: %2$s\nPhone: %3$s\nWebsite: %4$s\nRating: %5$s\nLat: %6$s\nLng: %7$s\nId: %8$s\n
     </string>
     <string name="hello_favorite_frag">Hello from Favorite fragment</string>
+    <string name="hello_search_frag">Hello from Search fragment</string>
 
 </resources>

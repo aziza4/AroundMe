@@ -7,7 +7,6 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -54,14 +53,14 @@ public class GoogleFusedLocation implements LocationInterface {
                     @Override
                     public void onConnectionSuspended(int i) {
                         mConnected = false;
-                        Log.d(LOG_TAG, "GoogleApiClient connection has been suspended");
+                        Log.e(LOG_TAG, "GoogleApiClient connection has been suspended");
                     }
                 })
                 .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
                         mConnected = false;
-                        Log.d(LOG_TAG, "GoogleApiClient connection has benn failed");
+                        Log.e(LOG_TAG, "GoogleApiClient connection has benn failed");
                     }
                 })
                 .build();
