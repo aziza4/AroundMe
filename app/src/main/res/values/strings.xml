@@ -17,4 +17,46 @@
     <string name="hello_favorite_frag">Hello from Favorite fragment</string>
     <string name="hello_search_frag">Hello from Search fragment</string>
 
+
+    <!--+++++++++++++  Non-Translatable Strings ++++++++++++++++-->
+
+
+    <!--++++++++++++++++++  request strings ++++++++++++++++++++-->
+    <string name="https_scheme" translatable="false">https</string>
+    <string name="authority" translatable="false">maps.googleapis.com</string>
+    <string name="nearby_path" translatable="false">maps/api/place/nearbysearch/json</string>
+    <string name="nearby_language_key" translatable="false">language</string>
+    <string name="nearby_language_val" translatable="false">iw</string>
+    <string name="nearby_lat_lng_key" translatable="false">location</string>
+    <string name="nearby_radius_key" translatable="false">radius</string>
+    <string name="nearby_types_key" translatable="false">types</string>
+    <string name="nearby_rank_key" translatable="false">rank</string>
+    <string name="nearby_rank_val" translatable="false">prominence</string>
+    <string name="nearby_api_key_key" translatable="false">key</string>
+    <string name="nearby_api_key_val" translatable="false">AIzaSyBS45GLyDCuEaMBvpfWekbJ-6bSzdzaR_I</string>
+
+    <!--++++++++++++++++++  response strings ++++++++++++++++++++-->
+    <string name="nearby_status_key" translatable="false">status</string>
+    <string name="nearby_next_page_token_key" translatable="false">next_page_token</string>
+    <string name="nearby_html_attributions_key" translatable="false">html_attributions</string>
+    <string name="nearby_results_key" translatable="false">results</string>
+    <string name="nearby_results_geometry_key" translatable="false">geometry</string>
+    <string name="nearby_results_geometry_location_key" translatable="false">location</string>
+    <string name="nearby_results_geometry_location_lat_key" translatable="false">lat</string>
+    <string name="nearby_results_geometry_location_lng_key" translatable="false">lng</string>
+    <string name="nearby_results_icon_key" translatable="false">icon</string>
+    <string name="nearby_results_name_key" translatable="false">name</string>
+    <string name="nearby_results_place_id_key" translatable="false">place_id</string>
+    <string name="nearby_results_rating_key" translatable="false">rating</string>
+    <string name="nearby_results_reference_key" translatable="false">reference</string>
+    <string name="nearby_results_scope_key" translatable="false">scope</string>
+    <string name="nearby_results_types_key" translatable="false">types</string>
+    <string name="nearby_results_vicinity_key" translatable="false">vicinity</string>
+    <string name="nearby_results_photos_key" translatable="false">photos</string>
+    <string name="nearby_results_photos_height_key" translatable="false">height</string>
+    <string name="nearby_results_photos_width_key" translatable="false">width</string>
+    <string name="nearby_results_photos_photo_reference_key" translatable="false">photo_reference</string>
+    <string name="nearby_results_photos_html_attributions_key" translatable="false">html_attributions</string>
+
+
 </resources>
