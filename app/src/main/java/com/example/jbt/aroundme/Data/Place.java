@@ -5,6 +5,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Place {
 
+    private final static long NOT_IN_DB = -1L; // -1 signals this place is "not yet save in db"
+
     private long mId;
     private LatLng mLoc;
     private String mIcon;
@@ -16,6 +18,13 @@ public class Place {
     private String mScope;
     private String[] mTypesArr;
     private String mVicinity;
+
+    public Place(LatLng loc, String icon, String name,
+                 PlacePhoto[] photosArr, String placeId, double rating,
+                 String reference, String scope, String[] typesArr, String vicinity) {
+        this(NOT_IN_DB, loc, icon, name, photosArr, placeId,
+                rating, reference, scope, typesArr, vicinity);
+    }
 
     public Place(long id, LatLng loc, String icon, String name,
                  PlacePhoto[] photosArr, String placeId, double rating,

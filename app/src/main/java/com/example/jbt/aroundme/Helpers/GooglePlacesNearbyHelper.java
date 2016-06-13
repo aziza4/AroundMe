@@ -253,7 +253,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
                 }
 
                 Place place = new Place(
-                        0, loc, icon, name,
+                        loc, icon, name,
                         photos, placeId, rating,
                         reference, scope, types, vicinity
                 );
