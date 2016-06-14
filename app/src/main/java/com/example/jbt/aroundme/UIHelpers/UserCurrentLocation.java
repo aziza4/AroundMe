@@ -36,8 +36,10 @@ public class UserCurrentLocation {
 
         Location location = mLocationProvider.GetCurrentLocation();
 
-        if (location == null)
+        if (location == null) {
+            Toast.makeText(mContext, "Failed to get Location", Toast.LENGTH_SHORT).show();
             return;
+        }
 
         String info = "Lat: " + location.getLatitude() + "\nLng: " + location.getLongitude();
         Toast.makeText(mContext, info, Toast.LENGTH_SHORT).show();
