@@ -32,8 +32,9 @@
     <string name="nearby_types_key" translatable="false">types</string>
     <string name="nearby_rank_key" translatable="false">rank</string>
     <string name="nearby_rank_val" translatable="false">prominence</string>
+    <string name="nearby_page_token_key" translatable="false">pagetoken</string>
     <string name="nearby_api_key_key" translatable="false">key</string>
-    <string name="nearby_api_key_val" translatable="false">AIzaSyBS45GLyDCuEaMBvpfWekbJ-6bSzdzaR_I</string>
+    <string name="nearby_api_key_val" translatable="false">AIzaSyBo4DP-JnD8xAcoUcvYQAqjbHKDt3I7DQQ</string>
 
     <!--++++++++++++++++++  response strings ++++++++++++++++++++-->
     <string name="nearby_status_key" translatable="false">status</string>

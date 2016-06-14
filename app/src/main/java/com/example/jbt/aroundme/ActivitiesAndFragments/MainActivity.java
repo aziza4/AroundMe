@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import com.example.jbt.aroundme.LocationProvider.*;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.UIHelpers.*;
-import com.example.jbt.aroundme.UIHelpers.UserCurrentLocation;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

@@ -3,21 +3,22 @@ package com.example.jbt.aroundme.Data;
 
 import com.google.android.gms.maps.model.LatLng;
 
+
 public class Place {
 
     private final static long NOT_IN_DB = -1L; // -1 signals this place is "not yet save in db"
 
-    private long mId;
-    private LatLng mLoc;
-    private String mIcon;
-    private String mName;
-    private PlacePhoto[] mPhotosArr;
-    private String mPlaceId;
-    private double mRating;
-    private String mReference;
-    private String mScope;
-    private String[] mTypesArr;
-    private String mVicinity;
+    private final long mId;
+    private final LatLng mLoc;
+    private final String mIcon;
+    private final String mName;
+    private final PlacePhoto[] mPhotosArr;
+    private final String mPlaceId;
+    private final double mRating;
+    private final String mReference;
+    private final String mScope;
+    private final String[] mTypesArr;
+    private final String mVicinity;
 
     public Place(LatLng loc, String icon, String name,
                  PlacePhoto[] photosArr, String placeId, double rating,

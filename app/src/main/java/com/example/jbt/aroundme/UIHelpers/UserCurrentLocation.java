@@ -5,6 +5,8 @@ import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.widget.Toast;
+
+import com.example.jbt.aroundme.Data.NearbyResponse;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.LocationProvider.LocationInterface;
 import com.example.jbt.aroundme.Helpers.NetworkHelper;
@@ -44,25 +46,47 @@ public class UserCurrentLocation {
         String info = "Lat: " + location.getLatitude() + "\nLng: " + location.getLongitude();
         Toast.makeText(mContext, info, Toast.LENGTH_SHORT).show();
 
-        LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        String[] types = { "bank", "atm", "restaurant"};
-        GooglePlacesNearbyHelper nearbyHelper = new GooglePlacesNearbyHelper(mContext);
-        URL url = nearbyHelper.getNearbyLocUrl(latlng, 500, types);
+
         MyAsyncTask task = new MyAsyncTask();
-        task.execute(url);
+        task.execute(location);
     }
 
 
-    private class MyAsyncTask extends AsyncTask<URL, Void, ArrayList<Place>> {
+    private class MyAsyncTask extends AsyncTask<Location, Void, ArrayList<Place>> {
 
         @Override
-        protected ArrayList<Place> doInBackground(URL... params) {
+        protected ArrayList<Place> doInBackground(Location... params) {
 
-            NetworkHelper networkHelper = new NetworkHelper(params[0]);
-            String jsonString = networkHelper.GetJsonString();
+            ArrayList<Place> places = new ArrayList<>();
 
+            String pageToken = null;
+            Location location = params[0];
+            LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+            String[] types = { "bank", "atm", "restaurant"};
             GooglePlacesNearbyHelper nearbyHelper = new GooglePlacesNearbyHelper(mContext);
-            return nearbyHelper.GetPlaces(jsonString);
+
+
+            NearbyResponse nearbyResponse;
+
+            do {
+
+                URL url = nearbyHelper.getNearbyLocUrl(pageToken, latlng, 1000, types);
+                NetworkHelper networkHelper = new NetworkHelper(url);
+
+                String jsonString = networkHelper.GetJsonString();
+                nearbyResponse = nearbyHelper.GetPlaces(jsonString);
+
+                if (nearbyResponse == null)
+                    break;
+
+                if (nearbyResponse.getPlaces() != null)
+                    places.addAll(nearbyResponse.getPlaces());
+
+                pageToken = nearbyResponse.getNextPageToken();
+
+            } while (pageToken != null);
+
+            return places;
         }
 
         @Override

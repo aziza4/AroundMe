@@ -3,10 +3,10 @@ package com.example.jbt.aroundme.Data;
 
 public class PlacePhoto {
 
-    private int mHeight;
-    private int mWidth;
-    private String[] mHtmlAttributionArr;
-    private String mReference;
+    private final int mHeight;
+    private final int mWidth;
+    private final String[] mHtmlAttributionArr;
+    private final String mReference;
 
     public PlacePhoto(int height, int width, String[] htmlAttributionArr, String reference)
     {
