@@ -14,17 +14,26 @@ import com.example.jbt.aroundme.Data.Place;
 import com.google.android.gms.maps.model.LatLng;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class UserCurrentLocation {
 
     private final Context mContext;
     private final LocationInterface mLocationProvider;
+    private Location mLastLocation;
 
     public UserCurrentLocation(Context context, LocationInterface locationProvider)
     {
         mContext = context;
         mLocationProvider = locationProvider;
+
+        mLocationProvider.setOnLocationChangeListener(new LocationInterface.onLocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                mLastLocation = location;
+            }
+        });
     }
 
     public void start() {
@@ -36,19 +45,13 @@ public class UserCurrentLocation {
 
     public void getAndHandle() {
 
-        Location location = mLocationProvider.GetCurrentLocation();
-
-        if (location == null) {
+        if (mLastLocation == null) {
             Toast.makeText(mContext, "Failed to get Location", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String info = "Lat: " + location.getLatitude() + "\nLng: " + location.getLongitude();
-        Toast.makeText(mContext, info, Toast.LENGTH_SHORT).show();
-
-
         MyAsyncTask task = new MyAsyncTask();
-        task.execute(location);
+        task.execute(mLastLocation);
     }
 
 
@@ -76,10 +79,9 @@ public class UserCurrentLocation {
                 String jsonString = networkHelper.GetJsonString();
                 nearbyResponse = nearbyHelper.GetPlaces(jsonString);
 
-                if (nearbyResponse == null)
-                    break;
+                String status = nearbyResponse.getStatus();
 
-                if (nearbyResponse.getPlaces() != null)
+                if (status.equals(NearbyResponse.STATUS_OK))
                     places.addAll(nearbyResponse.getPlaces());
 
                 pageToken = nearbyResponse.getNextPageToken();
@@ -92,7 +94,14 @@ public class UserCurrentLocation {
         @Override
         protected void onPostExecute(ArrayList<Place> places) {
 
-            Toast.makeText(mContext, "" + places.size() + " places", Toast.LENGTH_SHORT).show();
+            String msg = "No Places found";
+
+            if (places.size() > 0)
+                msg = String.format(
+                        Locale.ENGLISH, "Loc: %.4f, %.4f\n\n%d places",
+                        mLastLocation.getLatitude(), mLastLocation.getLongitude(), places.size());
+
+            Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
         }
     }
 }

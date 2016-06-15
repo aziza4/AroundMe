@@ -39,11 +39,6 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     private final String mApiKeyKey;
     private final String mApiKeyVal;
 
-    private static final String STATUS_OK = "OK";
-//    private static final String STATUS_ZERO_RESULTS = "ZERO_RESULTS";
-//    private static final String STATUS_OVER_QUERY_LIMIT = "OVER_QUERY_LIMIT";
-//    private static final String STATUS_REQUEST_DENIED = "REQUEST_DENIED";
-//    private static final String STATUS_INVALID_REQUEST = "INVALID_REQUEST";
 
     // response strings
     private final String mStatusKey;
@@ -153,7 +148,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
                 .appendQueryParameter(mApiKeyKey, mApiKeyVal);
 
         if ( pageToken != null)
-              builder.appendQueryParameter(mPageTokenKey, pageToken);
+            builder.appendQueryParameter(mPageTokenKey, pageToken);
 
         return builder.build().toString();
     }
@@ -179,6 +174,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
 
     public NearbyResponse GetPlaces(String jsonString)
     {
+        String status = null;
         ArrayList<Place> places = new ArrayList<>();
         String nextPageToken = null;
         String[] htmlAttributions = new String[0];
@@ -188,86 +184,86 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
             JSONObject placeObj = new JSONObject(jsonString);
 
             // status
-            String mStatusVal = placeObj.getString(mStatusKey);
-            if (mStatusVal == null || !mStatusVal.equals(STATUS_OK))
-                return null;
+            status = placeObj.getString(mStatusKey);
 
-            // next page token
-            nextPageToken = placeObj.has(mNextPageTokenKey) ? placeObj.getString(mNextPageTokenKey) : null;
-
-            // html attributions
-            if (placeObj.has(mHtmlAttributionsKey))
+            if (status != null && status.equals(NearbyResponse.STATUS_OK))
             {
-                JSONArray htmlAttsArr = placeObj.getJSONArray(mHtmlAttributionsKey);
-                htmlAttributions = new String[htmlAttsArr.length()];
-                for (int i = 0; i < htmlAttsArr.length(); i++)
-                    htmlAttributions[i] = htmlAttsArr.getString(i);
-            }
+                // next page token
+                nextPageToken = placeObj.has(mNextPageTokenKey) ? placeObj.getString(mNextPageTokenKey) : null;
 
-            // results
-            JSONArray resArr = placeObj.getJSONArray(mResultsKey);
-            for (int i=0; i< resArr.length(); i++)
-            {
-                JSONObject resObj = resArr.getJSONObject(i);
-
-                JSONObject geometryObj = resObj.getJSONObject(mGeometryKey);
-                JSONObject locationObj = geometryObj.getJSONObject(mLocationKey);
-                double lat = locationObj.getDouble(mLatKey);
-                double lng = locationObj.getDouble(mLngKey);
-                LatLng loc = new LatLng(lat, lng);
-
-                String icon = resObj.has(mIconKey) ? resObj.getString(mIconKey) : "";
-                String name = resObj.has(mNameKey) ? resObj.getString(mNameKey) : "";
-                String placeId = resObj.has(mPlaceIdKey) ? resObj.getString(mPlaceIdKey) : "";
-                double rating = resObj.has(mRatingKey) ? resObj.getDouble(mRatingKey) : 0.0;
-                String reference = resObj.has(mReferenceKey) ? resObj.getString(mReferenceKey) : "";
-                String scope = resObj.has(mScopeKey) ? resObj.getString(mScopeKey) : "";
-                String vicinity = resObj.has(mVicinityKey) ? resObj.getString(mVicinityKey) : "";
-
-                String[] types = new String[0];
-                if ( placeObj.has(mResultsKey) ) {
-                    JSONArray typesArr = placeObj.getJSONArray(mResultsKey);
-                    types = new String[typesArr.length()];
-                    for (int j = 0; j < typesArr.length(); j++)
-                        types[j] = typesArr.getString(j);
+                // html attributions
+                if (placeObj.has(mHtmlAttributionsKey))
+                {
+                    JSONArray htmlAttsArr = placeObj.getJSONArray(mHtmlAttributionsKey);
+                    htmlAttributions = new String[htmlAttsArr.length()];
+                    for (int i = 0; i < htmlAttsArr.length(); i++)
+                        htmlAttributions[i] = htmlAttsArr.getString(i);
                 }
 
-                PlacePhoto[] photos = new PlacePhoto[0];
-                if ( placeObj.has(mPhotosKey) ) {
-                    JSONArray photosArr = placeObj.getJSONArray(mPhotosKey);
-                    photos = new PlacePhoto[photosArr.length()];
-                    for (int j = 0; j < photosArr.length(); j++) {
+                // results
+                JSONArray resArr = placeObj.getJSONArray(mResultsKey);
+                for (int i=0; i< resArr.length(); i++) {
+                    JSONObject resObj = resArr.getJSONObject(i);
 
-                        JSONObject photo = (JSONObject) photosArr.get(j);
-                        int height = photo.has(mPhotoHeightKey) ? photo.getInt(mPhotoHeightKey) : 0;
-                        int width = photo.has(mPhotoWidthKey) ? photo.getInt(mPhotoWidthKey) : 0;
-                        String pReference = photo.has(mPhotoReferenceKey) ? photo.getString(mPhotoReferenceKey) : "";
+                    JSONObject geometryObj = resObj.getJSONObject(mGeometryKey);
+                    JSONObject locationObj = geometryObj.getJSONObject(mLocationKey);
+                    double lat = locationObj.getDouble(mLatKey);
+                    double lng = locationObj.getDouble(mLngKey);
+                    LatLng loc = new LatLng(lat, lng);
 
-                        String[] attArr = new String[0];
-                        if ( photo.has(mPhotoHtmlAttributionsKey) ) {
-                            JSONArray htmlAttArr = photo.getJSONArray(mPhotoHtmlAttributionsKey);
-                            attArr = new String[htmlAttArr.length()];
-                            for (int k = 0; k < htmlAttArr.length(); k++)
-                                attArr[k] = htmlAttArr.getString(k);
-                        }
+                    String icon = resObj.has(mIconKey) ? resObj.getString(mIconKey) : "";
+                    String name = resObj.has(mNameKey) ? resObj.getString(mNameKey) : "";
+                    String placeId = resObj.has(mPlaceIdKey) ? resObj.getString(mPlaceIdKey) : "";
+                    double rating = resObj.has(mRatingKey) ? resObj.getDouble(mRatingKey) : 0.0;
+                    String reference = resObj.has(mReferenceKey) ? resObj.getString(mReferenceKey) : "";
+                    String scope = resObj.has(mScopeKey) ? resObj.getString(mScopeKey) : "";
+                    String vicinity = resObj.has(mVicinityKey) ? resObj.getString(mVicinityKey) : "";
 
-                        photos[j] = new PlacePhoto(height, width, attArr, pReference);
+                    String[] types = new String[0];
+                    if (placeObj.has(mResultsKey)) {
+                        JSONArray typesArr = placeObj.getJSONArray(mResultsKey);
+                        types = new String[typesArr.length()];
+                        for (int j = 0; j < typesArr.length(); j++)
+                            types[j] = typesArr.getString(j);
                     }
+
+                    PlacePhoto[] photos = new PlacePhoto[0];
+                    if (placeObj.has(mPhotosKey)) {
+                        JSONArray photosArr = placeObj.getJSONArray(mPhotosKey);
+                        photos = new PlacePhoto[photosArr.length()];
+                        for (int j = 0; j < photosArr.length(); j++) {
+
+                            JSONObject photo = (JSONObject) photosArr.get(j);
+                            int height = photo.has(mPhotoHeightKey) ? photo.getInt(mPhotoHeightKey) : 0;
+                            int width = photo.has(mPhotoWidthKey) ? photo.getInt(mPhotoWidthKey) : 0;
+                            String pReference = photo.has(mPhotoReferenceKey) ? photo.getString(mPhotoReferenceKey) : "";
+
+                            String[] attArr = new String[0];
+                            if (photo.has(mPhotoHtmlAttributionsKey)) {
+                                JSONArray htmlAttArr = photo.getJSONArray(mPhotoHtmlAttributionsKey);
+                                attArr = new String[htmlAttArr.length()];
+                                for (int k = 0; k < htmlAttArr.length(); k++)
+                                    attArr[k] = htmlAttArr.getString(k);
+                            }
+
+                            photos[j] = new PlacePhoto(height, width, attArr, pReference);
+                        }
+                    }
+
+                    Place place = new Place(
+                            loc, icon, name,
+                            photos, placeId, rating,
+                            reference, scope, types, vicinity
+                    );
+
+                    places.add(place);
                 }
-
-                Place place = new Place(
-                        loc, icon, name,
-                        photos, placeId, rating,
-                        reference, scope, types, vicinity
-                );
-
-                places.add(place);
             }
 
         } catch (JSONException e) {
             Log.e(MainActivity.LOG_TAG, "" + e.getMessage());
         }
 
-        return new NearbyResponse(places, nextPageToken, htmlAttributions);
+        return new NearbyResponse(status, places, nextPageToken, htmlAttributions);
     }
 }

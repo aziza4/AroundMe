@@ -26,7 +26,7 @@ public class AndroidLocation implements LocationInterface {
     public void start() {
 
         try {
-            // set up the listener
+
             mLocationListener = new LocationListener() {
                 @Override public void onLocationChanged(Location location) {
                     if (mListener != null)
@@ -38,7 +38,7 @@ public class AndroidLocation implements LocationInterface {
                 @Override public void onProviderDisabled(String s) {}
             };
 
-            // request updates
+
             mLocationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,   // provider
                     1000,                           // minTime (ms)
