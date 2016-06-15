@@ -1,9 +1,10 @@
 package com.example.jbt.aroundme.Data;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class NearbyResponse {
+public class NearbyResponse implements Serializable {
 
     public static final String STATUS_OK = "OK";
     public static final String STATUS_ZERO_RESULTS = "ZERO_RESULTS";

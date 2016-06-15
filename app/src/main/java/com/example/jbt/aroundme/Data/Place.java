@@ -2,9 +2,10 @@ package com.example.jbt.aroundme.Data;
 
 
 import com.google.android.gms.maps.model.LatLng;
+import java.io.Serializable;
 
 
-public class Place {
+public class Place implements Serializable {
 
     private final static long NOT_IN_DB = -1L; // -1 signals this place is "not yet save in db"
 

@@ -4,8 +4,10 @@ package com.example.jbt.aroundme.Helpers;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
+import com.example.jbt.aroundme.Data.NearbyRequest;
 import com.example.jbt.aroundme.Data.NearbyResponse;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Data.PlacePhoto;
@@ -29,13 +31,11 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     private final String mAuthority;
     private final String mPath;
     private final String mLangKey;
-    private final String mLangVal;
     private final String mLocKey;
     private final String mRadiusKey;
     private final String mTypesKey;
     private final String mRankKey;
     private final String mPageTokenKey;
-    private final String mRankVal;
     private final String mApiKeyKey;
     private final String mApiKeyVal;
 
@@ -80,12 +80,10 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
         mAuthority = context.getString(R.string.authority);
         mPath = context.getString(R.string.nearby_path);
         mLangKey = context.getString(R.string.nearby_language_key);
-        mLangVal = context.getString(R.string.nearby_language_val);
         mLocKey = context.getString(R.string.nearby_lat_lng_key);
         mRadiusKey = context.getString(R.string.nearby_radius_key);
         mTypesKey = context.getString(R.string.nearby_types_key);
         mRankKey = context.getString(R.string.nearby_rank_key);
-        mRankVal = context.getString(R.string.nearby_rank_val);
         mPageTokenKey = context.getString(R.string.nearby_page_token_key);
         mApiKeyKey = context.getString(R.string.nearby_api_key_key);
         mApiKeyVal = context.getString(R.string.nearby_api_key_val);
@@ -113,7 +111,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     }
 
 
-    private String getNearbyLocUrlString(String pageToken, LatLng loc, int radius, String[] types)
+    private String getNearbyLocUrlString(NearbyRequest request, String pageToken)
     {
         // https://
         // maps.googleapis.com/
@@ -125,26 +123,15 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
         // rank=prominence&
         // key=AIzaSyBS45GLyDCuEaMBvpfWekbJ-6bSzdzaR_I
 
-        if (loc == null || types == null || types.length <=0 )
-            return null;
-
-        String locVal = "" + loc.latitude + "," + loc.longitude;
-
-        String typesVal = "";
-        for (int i = 0; i < types.length-1; i++) {
-            typesVal += types[i] + "|";
-        }
-        typesVal += types[types.length-1];
-
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(mScheme)
                 .authority(mAuthority)
                 .path(mPath)
-                .appendQueryParameter(mLangKey, mLangVal)
-                .appendQueryParameter(mLocKey, locVal)
-                .appendQueryParameter(mRadiusKey, ""+ radius)
-                .appendQueryParameter(mTypesKey, typesVal)
-                .appendQueryParameter(mRankKey, mRankVal)
+                .appendQueryParameter(mLangKey, request.getLanguage())
+                .appendQueryParameter(mLocKey, request.getLatLngAsString())
+                .appendQueryParameter(mRadiusKey, request.getRadiusAsString())
+                .appendQueryParameter(mTypesKey, request.getTypesAsString())
+                .appendQueryParameter(mRankKey, request.getRank())
                 .appendQueryParameter(mApiKeyKey, mApiKeyVal);
 
         if ( pageToken != null)
@@ -154,13 +141,13 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     }
 
 
-    public URL getNearbyLocUrl(String pageToken, LatLng loc, int radius, String[] types)
+    public URL getNearbyLocUrl(NearbyRequest request, String pageToken)
     {
         URL url = null;
 
         try {
 
-            url =  new URL(getNearbyLocUrlString(pageToken, loc, radius, types));
+            url =  new URL(getNearbyLocUrlString(request, pageToken));
 
         } catch (MalformedURLException e) {
 
@@ -184,7 +171,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
             JSONObject placeObj = new JSONObject(jsonString);
 
             // status
-            status = placeObj.getString(mStatusKey);
+            status = placeObj.has(mStatusKey) ? placeObj.getString(mStatusKey) : null;
 
             if (status != null && status.equals(NearbyResponse.STATUS_OK))
             {
@@ -258,7 +245,10 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
 
                     places.add(place);
                 }
+            } else {
+                Log.e(MainActivity.LOG_TAG, "response status" + status);
             }
+
 
         } catch (JSONException e) {
             Log.e(MainActivity.LOG_TAG, "" + e.getMessage());

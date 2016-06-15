@@ -1,7 +1,9 @@
 package com.example.jbt.aroundme.Data;
 
 
-public class PlacePhoto {
+import java.io.Serializable;
+
+public class PlacePhoto implements Serializable {
 
     private final int mHeight;
     private final int mWidth;
