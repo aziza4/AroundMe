@@ -8,11 +8,11 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class NearbyRequest implements Parcelable {
 
-    private LatLng mLatLng;
-    private int mRadius;
-    private String[] mTypes;
-    private String mLanguage;
-    private String mRank;
+    private final LatLng mLatLng;
+    private final int mRadius;
+    private final String[] mTypes;
+    private final String mLanguage;
+    private final String mRank;
 
     public NearbyRequest(LatLng latLng, int radius, String[] types, String language, String rank) {
         this.mLatLng = latLng;

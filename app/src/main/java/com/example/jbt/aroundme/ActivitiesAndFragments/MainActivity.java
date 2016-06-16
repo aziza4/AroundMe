@@ -2,13 +2,11 @@ package com.example.jbt.aroundme.ActivitiesAndFragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.multidex.MultiDex;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.example.jbt.aroundme.LocationProvider.*;
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.Services.NearbyService;
 import com.example.jbt.aroundme.UIHelpers.*;
 
 
@@ -49,18 +46,18 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Tabs
-        TabsPagerAdapter mTabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewPagerContainer);
-        if (mViewPager != null) {
-            mViewPager.setAdapter(mTabsPagerAdapter);
+        TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPagerContainer);
+        if (viewPager != null) {
+            viewPager.setAdapter(tabsPagerAdapter);
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_layout);
             if (tabLayout != null)
-                tabLayout.setupWithViewPager(mViewPager);
+                tabLayout.setupWithViewPager(viewPager);
         }
 
         // User Location
-        LocationInterface mLocationProvider = new AndroidLocation(this);
-        mUserCurrentLocation = new UserCurrentLocation(this, mLocationProvider);
+        LocationInterface locationProvider = new AndroidLocation(this);
+        mUserCurrentLocation = new UserCurrentLocation(this, locationProvider);
 
         // Places AutoComplete Widget
         mPlacesAutoComplete = new PlacesAutoComplete(this);
@@ -77,28 +74,23 @@ public class MainActivity extends AppCompatActivity {
             });
 
         // Drawer
-        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        if (mDrawerLayout != null && mNavigationView != null) {
+        if (drawerLayout != null && navigationView != null) {
 
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this,
-                    mDrawerLayout,
+                    drawerLayout,
                     toolbar,
                     R.string.navigation_drawer_open,
                     R.string.navigation_drawer_close);
 
-            mDrawerLayout.addDrawerListener(toggle);
+            drawerLayout.addDrawerListener(toggle);
             toggle.syncState();
-            mDrawerHandler = new DrawerHandler(mDrawerLayout);
-            mNavigationView.setNavigationItemSelectedListener(mDrawerHandler);
+            mDrawerHandler = new DrawerHandler(drawerLayout);
+            navigationView.setNavigationItemSelectedListener(mDrawerHandler);
         }
-
-        // register receiver
-        NearbyNotificationReceiver receiver = new NearbyNotificationReceiver(this);
-        IntentFilter filter = new IntentFilter(NearbyService.ACTION_NEARBY_NOTIFY);
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
     }
 
 

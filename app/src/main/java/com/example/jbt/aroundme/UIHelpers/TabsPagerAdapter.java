@@ -11,6 +11,7 @@ import com.example.jbt.aroundme.ActivitiesAndFragments.SearchFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
+    private static final int NUM_ITEMS = 2;
     private final Context mContext;
 
     public TabsPagerAdapter(Context context, FragmentManager fm) {
@@ -31,7 +32,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return NUM_ITEMS;
     }
 
     @Override

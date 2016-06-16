@@ -33,7 +33,7 @@ public class PlacePhoto implements Parcelable{
     }
 
 
-    protected PlacePhoto(Parcel in) {
+    PlacePhoto(Parcel in) {
         mHeight = in.readInt();
         mWidth = in.readInt();
         mHtmlAttributionArr = in.createStringArray();

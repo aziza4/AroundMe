@@ -32,9 +32,9 @@ public class Place implements Parcelable{
     }
 
 
-    public Place(long id, LatLng loc, String icon, String name,
-                 PlacePhoto photo, String placeId, double rating,
-                 String reference, String scope, String[] typesArr, String vicinity)
+    private Place(long id, LatLng loc, String icon, String name,
+                  PlacePhoto photo, String placeId, double rating,
+                  String reference, String scope, String[] typesArr, String vicinity)
     {
         this.mId = id;
         this.mLoc = loc;
@@ -60,7 +60,7 @@ public class Place implements Parcelable{
                 types.split("|"), vicinity);
     }
 
-    protected Place(Parcel in) {
+    private Place(Parcel in) {
         mId = in.readLong();
         mLoc = in.readParcelable(LatLng.class.getClassLoader());
         mIcon = in.readString();

@@ -93,9 +93,9 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
         mApiKeyKey = context.getString(R.string.nearby_api_key_key);
         mApiKeyVal = context.getString(R.string.nearby_api_key_val);
 
-        mPhotoPath = context.getString(R.string.photo_path);;
-        mPhotoMaxWidth = context.getString(R.string.photo_max_width);;
-        mPhotoReference = context.getString(R.string.photo_photo_reference);;
+        mPhotoPath = context.getString(R.string.photo_path);
+        mPhotoMaxWidth = context.getString(R.string.photo_max_width);
+        mPhotoReference = context.getString(R.string.photo_photo_reference);
 
         mStatusKey = context.getString(R.string.nearby_status_key);
         mNextPageTokenKey = context.getString(R.string.nearby_next_page_token_key);

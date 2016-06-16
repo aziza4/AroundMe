@@ -12,10 +12,12 @@ public class NearbyResponse implements Serializable {
     public static final String STATUS_REQUEST_DENIED = "REQUEST_DENIED";
     public static final String STATUS_INVALID_REQUEST = "INVALID_REQUEST";
 
-    private String mStatus;
-    private ArrayList<Place> mPlaces;
-    private String mNextPageToken;
-    private String[] mHtmlAttributions;
+    private final String mStatus;
+    private final ArrayList<Place> mPlaces;
+    private final String mNextPageToken;
+
+
+    private final String[] mHtmlAttributions;
 
     public NearbyResponse(String status, ArrayList<Place> places, String nextPageToken, String[] htmlAttributions) {
 
@@ -32,4 +34,6 @@ public class NearbyResponse implements Serializable {
     public String getNextPageToken() {
         return mNextPageToken;
     }
+
+    public String[] getHtmlAttributions() { return mHtmlAttributions; }
 }

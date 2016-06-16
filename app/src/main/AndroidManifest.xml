@@ -32,7 +32,7 @@
             android:exported="false" />
         <service
             android:name=".Services.NearbyService"
-            android:exported="false"></service>
+            android:exported="false"/>
     </application>
 
 </manifest>

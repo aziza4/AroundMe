@@ -55,7 +55,7 @@ public class UserCurrentLocation {
     private NearbyRequest getNearbyRequest()
     {
         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        int radius = 1000;
+        int radius = 500;
         String[] types = { "bank", "atm", "restaurant"};
         String language = mContext.getString(R.string.nearby_language_val);
         String rank = mContext.getString(R.string.nearby_rank_val);

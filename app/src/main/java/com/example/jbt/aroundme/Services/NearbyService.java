@@ -26,7 +26,7 @@ public class NearbyService extends IntentService {
 
     private GooglePlacesNearbyHelper mNearbyHelper;
     private AroundMeDBHelper mDbHelper = new AroundMeDBHelper(this);
-    private ArrayList<Place> mPlaces = new ArrayList<>();
+    private final ArrayList<Place> mPlaces = new ArrayList<>();
 
 
     public NearbyService() {
@@ -54,7 +54,7 @@ public class NearbyService extends IntentService {
     }
 
 
-    private ArrayList<Place> downloadNearbyPlacesWithPhotos(NearbyRequest request)
+    private void downloadNearbyPlacesWithPhotos(NearbyRequest request)
     {
         String pageToken = null;
         NearbyResponse response;
@@ -72,7 +72,7 @@ public class NearbyService extends IntentService {
 
             // debug
             if (status.equals(NearbyResponse.STATUS_INVALID_REQUEST)) {
-                String myUrl = url.toString();
+                @SuppressWarnings("UnusedAssignment") String myUrl = url.toString(); // Todo: investigate how come
             }
 
             if (status.equals(NearbyResponse.STATUS_OK))
@@ -83,8 +83,6 @@ public class NearbyService extends IntentService {
             pageToken = response.getNextPageToken();
 
         } while (pageToken != null);
-
-        return mPlaces;
     }
 
 
