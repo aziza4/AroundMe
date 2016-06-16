@@ -1,6 +1,7 @@
 package com.example.jbt.aroundme.Services;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
@@ -9,6 +10,7 @@ import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
 import com.example.jbt.aroundme.Data.NearbyRequest;
 import com.example.jbt.aroundme.Data.NearbyResponse;
 import com.example.jbt.aroundme.Data.Place;
+import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.Helpers.NetworkHelper;
 
@@ -37,8 +39,6 @@ public class NearbyService extends IntentService {
                 NearbyRequest request = intent.getParcelableExtra(EXTRA_NEARBY_REQUEST);
                 handleNearbyPlaces(request);
                 break;
-
-            default: return;
         }
     }
 
@@ -51,6 +51,9 @@ public class NearbyService extends IntentService {
 
 
     private void saveToDB(ArrayList<Place> places) {
+
+        AroundMeDBHelper dbHelper = new AroundMeDBHelper(this);
+        dbHelper.bulkInsertSearchResults(places);
     }
 
 
@@ -71,10 +74,16 @@ public class NearbyService extends IntentService {
 
             String status = response.getStatus();
 
+
+            // debug
+            if (status.equals(NearbyResponse.STATUS_INVALID_REQUEST)) {
+                String myUrl = url.toString();
+            }
+
             if (status.equals(NearbyResponse.STATUS_OK))
                 places.addAll(response.getPlaces());
             else
-                Log.e(MainActivity.LOG_TAG, "response status" + status);
+                Log.e(MainActivity.LOG_TAG, "response status = " + status);
 
             pageToken = response.getNextPageToken();
 

@@ -22,7 +22,7 @@ public class NearbyRequest implements Parcelable {
         this.mRank = rank;
     }
 
-    protected NearbyRequest(Parcel in) {
+    private NearbyRequest(Parcel in) {
         mLatLng = in.readParcelable(LatLng.class.getClassLoader());
         mRadius = in.readInt();
         mTypes = in.createStringArray();
@@ -42,24 +42,14 @@ public class NearbyRequest implements Parcelable {
         }
     };
 
-    public LatLng getLatLng() {
-        return mLatLng;
-    }
 
     public String getLatLngAsString() {
         return "" + mLatLng.latitude + "," + mLatLng.longitude;
     }
 
-    public int getRadius() {
-        return mRadius;
-    }
 
     public String getRadiusAsString() {
         return "" + mRadius;
-    }
-
-    public String[] getTypes() {
-        return mTypes;
     }
 
     public String getTypesAsString() {

@@ -23,7 +23,7 @@ import com.example.jbt.aroundme.UIHelpers.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String LOG_TAG = "AroundMe:";
+    public static final String LOG_TAG = "AroundMe";
     private UserCurrentLocation mUserCurrentLocation;
     private PlacesAutoComplete mPlacesAutoComplete;
     private DrawerHandler mDrawerHandler;

@@ -32,8 +32,4 @@ public class NearbyResponse implements Serializable {
     public String getNextPageToken() {
         return mNextPageToken;
     }
-
-    public String[] getHtmlAttributions() {
-        return mHtmlAttributions;
-    }
 }

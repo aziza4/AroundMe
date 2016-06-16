@@ -4,7 +4,6 @@ package com.example.jbt.aroundme.Helpers;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
 import com.example.jbt.aroundme.Data.NearbyRequest;
@@ -159,6 +158,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
 
 
 
+    @SuppressWarnings("ConstantConditions")
     public NearbyResponse GetPlaces(String jsonString)
     {
         String status = null;
@@ -214,32 +214,31 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
                             types[j] = typesArr.getString(j);
                     }
 
-                    PlacePhoto[] photos = new PlacePhoto[0];
+                    PlacePhoto photo = null;
                     if (placeObj.has(mPhotosKey)) {
                         JSONArray photosArr = placeObj.getJSONArray(mPhotosKey);
-                        photos = new PlacePhoto[photosArr.length()];
-                        for (int j = 0; j < photosArr.length(); j++) {
 
-                            JSONObject photo = (JSONObject) photosArr.get(j);
-                            int height = photo.has(mPhotoHeightKey) ? photo.getInt(mPhotoHeightKey) : 0;
-                            int width = photo.has(mPhotoWidthKey) ? photo.getInt(mPhotoWidthKey) : 0;
-                            String pReference = photo.has(mPhotoReferenceKey) ? photo.getString(mPhotoReferenceKey) : "";
+                        JSONObject photoObj = (JSONObject) photosArr.get(0); // api states only at most one photo available
+                        if (photoObj != null) {
+                            int height = photoObj.has(mPhotoHeightKey) ? photoObj.getInt(mPhotoHeightKey) : 0;
+                            int width = photoObj.has(mPhotoWidthKey) ? photoObj.getInt(mPhotoWidthKey) : 0;
+                            String pReference = photoObj.has(mPhotoReferenceKey) ? photoObj.getString(mPhotoReferenceKey) : "";
 
                             String[] attArr = new String[0];
-                            if (photo.has(mPhotoHtmlAttributionsKey)) {
-                                JSONArray htmlAttArr = photo.getJSONArray(mPhotoHtmlAttributionsKey);
+                            if (photoObj.has(mPhotoHtmlAttributionsKey)) {
+                                JSONArray htmlAttArr = photoObj.getJSONArray(mPhotoHtmlAttributionsKey);
                                 attArr = new String[htmlAttArr.length()];
                                 for (int k = 0; k < htmlAttArr.length(); k++)
                                     attArr[k] = htmlAttArr.getString(k);
                             }
 
-                            photos[j] = new PlacePhoto(height, width, attArr, pReference);
+                            photo = new PlacePhoto(height, width, attArr, pReference);
                         }
                     }
 
                     Place place = new Place(
                             loc, icon, name,
-                            photos, placeId, rating,
+                            photo, placeId, rating,
                             reference, scope, types, vicinity
                     );
 
