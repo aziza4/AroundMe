@@ -28,7 +28,8 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     // request strings
     private final String mScheme;
     private final String mAuthority;
-    private final String mPath;
+
+    private final String mNearByPath;
     private final String mLangKey;
     private final String mLocKey;
     private final String mRadiusKey;
@@ -37,6 +38,10 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     private final String mPageTokenKey;
     private final String mApiKeyKey;
     private final String mApiKeyVal;
+
+    private final String mPhotoPath;
+    private final String mPhotoMaxWidth;
+    private final String mPhotoReference;
 
 
     // response strings
@@ -77,7 +82,8 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
 
         mScheme = context.getString(R.string.https_scheme);
         mAuthority = context.getString(R.string.authority);
-        mPath = context.getString(R.string.nearby_path);
+
+        mNearByPath = context.getString(R.string.nearby_path);
         mLangKey = context.getString(R.string.nearby_language_key);
         mLocKey = context.getString(R.string.nearby_lat_lng_key);
         mRadiusKey = context.getString(R.string.nearby_radius_key);
@@ -86,6 +92,10 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
         mPageTokenKey = context.getString(R.string.nearby_page_token_key);
         mApiKeyKey = context.getString(R.string.nearby_api_key_key);
         mApiKeyVal = context.getString(R.string.nearby_api_key_val);
+
+        mPhotoPath = context.getString(R.string.photo_path);;
+        mPhotoMaxWidth = context.getString(R.string.photo_max_width);;
+        mPhotoReference = context.getString(R.string.photo_photo_reference);;
 
         mStatusKey = context.getString(R.string.nearby_status_key);
         mNextPageTokenKey = context.getString(R.string.nearby_next_page_token_key);
@@ -125,7 +135,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(mScheme)
                 .authority(mAuthority)
-                .path(mPath)
+                .path(mNearByPath)
                 .appendQueryParameter(mLangKey, request.getLanguage())
                 .appendQueryParameter(mLocKey, request.getLatLngAsString())
                 .appendQueryParameter(mRadiusKey, request.getRadiusAsString())
@@ -156,6 +166,41 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
         return url;
     }
 
+
+    private String getPhotoUrlString(Place place) {
+        // https://
+        // maps.googleapis.com/
+        // maps/api/place/photo?
+        // maxwidth=400&
+        // photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&
+        // key=YOUR_API_KEY
+
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(mScheme)
+                .authority(mAuthority)
+                .path(mPhotoPath)
+                .appendQueryParameter(mPhotoMaxWidth, PlacePhoto.PHOTO_MAX_WIDTH)
+                .appendQueryParameter(mPhotoReference, place.getPhotoRef())
+                .appendQueryParameter(mApiKeyKey, mApiKeyVal);
+
+        return builder.build().toString();
+    }
+
+    public URL getPhotoUrl(Place place)
+    {
+        URL url = null;
+
+        try {
+
+            url =  new URL(getPhotoUrlString(place));
+
+        } catch (MalformedURLException e) {
+
+            Log.e(MainActivity.LOG_TAG, "" + e.getMessage());
+        }
+
+        return url;
+    }
 
 
     @SuppressWarnings("ConstantConditions")
@@ -207,17 +252,16 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
                     String vicinity = resObj.has(mVicinityKey) ? resObj.getString(mVicinityKey) : "";
 
                     String[] types = new String[0];
-                    if (placeObj.has(mResultsKey)) {
-                        JSONArray typesArr = placeObj.getJSONArray(mResultsKey);
+                    if (resObj.has(mTypesKey)) {
+                        JSONArray typesArr = resObj.getJSONArray(mTypesKey);
                         types = new String[typesArr.length()];
                         for (int j = 0; j < typesArr.length(); j++)
                             types[j] = typesArr.getString(j);
                     }
 
                     PlacePhoto photo = null;
-                    if (placeObj.has(mPhotosKey)) {
-                        JSONArray photosArr = placeObj.getJSONArray(mPhotosKey);
-
+                    if (resObj.has(mPhotosKey)) {
+                        JSONArray photosArr = resObj.getJSONArray(mPhotosKey);
                         JSONObject photoObj = (JSONObject) photosArr.get(0); // api states only at most one photo available
                         if (photoObj != null) {
                             int height = photoObj.has(mPhotoHeightKey) ? photoObj.getInt(mPhotoHeightKey) : 0;
@@ -232,7 +276,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
                                     attArr[k] = htmlAttArr.getString(k);
                             }
 
-                            photo = new PlacePhoto(height, width, attArr, pReference);
+                            photo = new PlacePhoto(height, width, attArr, pReference, null);
                         }
                     }
 

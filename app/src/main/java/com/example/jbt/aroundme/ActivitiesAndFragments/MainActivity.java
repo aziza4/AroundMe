@@ -2,11 +2,13 @@ package com.example.jbt.aroundme.ActivitiesAndFragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.multidex.MultiDex;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.example.jbt.aroundme.LocationProvider.*;
 import com.example.jbt.aroundme.R;
+import com.example.jbt.aroundme.Services.NearbyService;
 import com.example.jbt.aroundme.UIHelpers.*;
 
 
@@ -91,6 +94,11 @@ public class MainActivity extends AppCompatActivity {
             mDrawerHandler = new DrawerHandler(mDrawerLayout);
             mNavigationView.setNavigationItemSelectedListener(mDrawerHandler);
         }
+
+        // register receiver
+        NearbyNotificationReceiver receiver = new NearbyNotificationReceiver(this);
+        IntentFilter filter = new IntentFilter(NearbyService.ACTION_NEARBY_NOTIFY);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
     }
 
 

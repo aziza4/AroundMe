@@ -1,35 +1,44 @@
 package com.example.jbt.aroundme.Data;
 
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class PlacePhoto implements Parcelable {
+import com.example.jbt.aroundme.Helpers.ImageHelper;
+
+public class PlacePhoto implements Parcelable{
+
+    public static final String PHOTO_MAX_WIDTH = "400";
 
     private final int mHeight;
     private final int mWidth;
     private final String[] mHtmlAttributionArr;
     private final String mReference;
+    private Bitmap mBitmap;
 
-    public PlacePhoto(String reference)
+    public PlacePhoto(String reference, Bitmap bitmap)
     {
-        this(0, 0, null, reference);
+        this(0, 0, null, reference, bitmap);
     }
 
 
-    public PlacePhoto(int height, int width, String[] htmlAttributionArr, String reference)
+    public PlacePhoto(int height, int width, String[] htmlAttributionArr, String reference, Bitmap bitmap)
     {
         this.mHeight = height;
         this.mWidth = width;
         this.mHtmlAttributionArr = htmlAttributionArr;
         this.mReference = reference;
+        this.mBitmap = bitmap;
     }
+
 
     protected PlacePhoto(Parcel in) {
         mHeight = in.readInt();
         mWidth = in.readInt();
         mHtmlAttributionArr = in.createStringArray();
         mReference = in.readString();
+        mBitmap = in.readParcelable(Bitmap.class.getClassLoader());
     }
 
     public static final Creator<PlacePhoto> CREATOR = new Creator<PlacePhoto>() {
@@ -60,6 +69,21 @@ public class PlacePhoto implements Parcelable {
         return mReference;
     }
 
+    public Bitmap getBitmap() {
+        return mBitmap;
+    }
+
+    public byte[] getBitmapAsByteArray()
+    {
+        return mBitmap == null ? null : ImageHelper.convertBitmapToByteArray(mBitmap);
+
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        mBitmap = bitmap;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -71,5 +95,6 @@ public class PlacePhoto implements Parcelable {
         parcel.writeInt(mWidth);
         parcel.writeStringArray(mHtmlAttributionArr);
         parcel.writeString(mReference);
+        parcel.writeParcelable(mBitmap, i);
     }
 }

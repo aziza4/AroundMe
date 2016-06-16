@@ -24,6 +24,7 @@
     <!--++++++++++++++++++  request strings ++++++++++++++++++++-->
     <string name="https_scheme" translatable="false">https</string>
     <string name="authority" translatable="false">maps.googleapis.com</string>
+
     <string name="nearby_path" translatable="false">maps/api/place/nearbysearch/json</string>
     <string name="nearby_language_key" translatable="false">language</string>
     <string name="nearby_language_val" translatable="false">iw</string>
@@ -35,6 +36,10 @@
     <string name="nearby_page_token_key" translatable="false">pagetoken</string>
     <string name="nearby_api_key_key" translatable="false">key</string>
     <string name="nearby_api_key_val" translatable="false">AIzaSyBo4DP-JnD8xAcoUcvYQAqjbHKDt3I7DQQ</string>
+
+    <string name="photo_path" translatable="false">maps/api/place/photo</string>
+    <string name="photo_max_width" translatable="false">maxwidth</string>
+    <string name="photo_photo_reference" translatable="false">photoreference</string>
 
     <!--++++++++++++++++++  response strings ++++++++++++++++++++-->
     <string name="nearby_status_key" translatable="false">status</string>

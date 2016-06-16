@@ -40,7 +40,7 @@ public class NetworkHelper {
     }
 
 
-    public String GetJsonString()
+    public String getJsonString()
     {
         String jsonString = "";
         HttpsURLConnection con = null;
@@ -73,7 +73,7 @@ public class NetworkHelper {
     }
 
 
-    public Bitmap GetImage()
+    public Bitmap getImage()
     {
         InputStream stream;
 
