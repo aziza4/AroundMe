@@ -6,26 +6,29 @@ import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class NearbyRequest implements Parcelable {
+public class NearbyRequest implements  Parcelable{
 
     private final LatLng mLatLng;
     private final int mRadius;
     private final String[] mTypes;
+    private final String mKeyword;
     private final String mLanguage;
     private final String mRank;
 
-    public NearbyRequest(LatLng latLng, int radius, String[] types, String language, String rank) {
+    public NearbyRequest(LatLng latLng, int radius, String[] types, String keyword, String language, String rank) {
         this.mLatLng = latLng;
         this.mRadius = radius;
         this.mTypes = types;
+        this.mKeyword = keyword;
         this.mLanguage = language;
         this.mRank = rank;
     }
 
-    private NearbyRequest(Parcel in) {
+    protected NearbyRequest(Parcel in) {
         mLatLng = in.readParcelable(LatLng.class.getClassLoader());
         mRadius = in.readInt();
         mTypes = in.createStringArray();
+        mKeyword = in.readString();
         mLanguage = in.readString();
         mRank = in.readString();
     }
@@ -42,11 +45,9 @@ public class NearbyRequest implements Parcelable {
         }
     };
 
-
     public String getLatLngAsString() {
         return "" + mLatLng.latitude + "," + mLatLng.longitude;
     }
-
 
     public String getRadiusAsString() {
         return "" + mRadius;
@@ -68,9 +69,12 @@ public class NearbyRequest implements Parcelable {
         return mLanguage;
     }
 
+    public String getKeyword() { return mKeyword; }
+
     public String getRank() {
         return mRank;
     }
+
 
     @Override
     public int describeContents() {
@@ -82,6 +86,7 @@ public class NearbyRequest implements Parcelable {
         parcel.writeParcelable(mLatLng, i);
         parcel.writeInt(mRadius);
         parcel.writeStringArray(mTypes);
+        parcel.writeString(mKeyword);
         parcel.writeString(mLanguage);
         parcel.writeString(mRank);
     }

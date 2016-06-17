@@ -41,13 +41,13 @@ public class NearbyService extends IntentService {
         if (intent == null)
             return;
 
-        if (intent.getAction() == ACTION_NEARBY_PLACES) {
+        if (intent.getAction().equals(ACTION_NEARBY_PLACES)) {
 
             NearbyRequest request = intent.getParcelableExtra(EXTRA_NEARBY_REQUEST);
 
             mDbHelper.deleteAllPlaces();
 
-            if ( downloadNearbyPlacesWithPhotos(request));
+            if ( downloadNearbyPlacesWithPhotos(request))
                 downloadPlacesPhotos(mPlaces);
         }
     }

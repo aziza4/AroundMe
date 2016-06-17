@@ -34,6 +34,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     private final String mLocKey;
     private final String mRadiusKey;
     private final String mTypesKey;
+    private final String mKeywordKey;
     private final String mRankKey;
     private final String mPageTokenKey;
     private final String mApiKeyKey;
@@ -88,6 +89,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
         mLocKey = context.getString(R.string.nearby_lat_lng_key);
         mRadiusKey = context.getString(R.string.nearby_radius_key);
         mTypesKey = context.getString(R.string.nearby_types_key);
+        mKeywordKey = context.getString(R.string.nearby_keyword_key);
         mRankKey = context.getString(R.string.nearby_rank_key);
         mPageTokenKey = context.getString(R.string.nearby_page_token_key);
         mApiKeyKey = context.getString(R.string.nearby_api_key_key);
@@ -128,6 +130,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
         // language=iw&
         // location=32.0850818,34.8128246&
         // radius=1000&
+        // keyword=cafe&
         // types=atm|bank&
         // rank=prominence&
         // key=AIzaSyBS45GLyDCuEaMBvpfWekbJ-6bSzdzaR_I
@@ -139,6 +142,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
                 .appendQueryParameter(mLangKey, request.getLanguage())
                 .appendQueryParameter(mLocKey, request.getLatLngAsString())
                 .appendQueryParameter(mRadiusKey, request.getRadiusAsString())
+                .appendQueryParameter(mKeywordKey, request.getKeyword())
                 .appendQueryParameter(mTypesKey, request.getTypesAsString())
                 .appendQueryParameter(mRankKey, request.getRank())
                 .appendQueryParameter(mApiKeyKey, mApiKeyVal);
@@ -168,12 +172,14 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
 
 
     public Uri getPhotoUri(Place place) {
+
         // https://
         // maps.googleapis.com/
         // maps/api/place/photo?
         // maxwidth=400&
         // photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&
         // key=YOUR_API_KEY
+
         try {
             Uri.Builder builder = new Uri.Builder();
             builder.scheme(mScheme)

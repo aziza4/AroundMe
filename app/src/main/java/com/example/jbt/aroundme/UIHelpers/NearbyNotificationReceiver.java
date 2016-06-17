@@ -32,6 +32,7 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
 
         Toast.makeText(mActivity, placesSaved + " places received", Toast.LENGTH_SHORT).show();
 
+        // todo: not working. not refreshing the list. fix!
         SearchFragment searchFragment = (SearchFragment) mTabsPagerAdapter.getRegisteredFragment(0);
         searchFragment.refresh();
     }

@@ -2,6 +2,9 @@ package com.example.jbt.aroundme.Helpers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 
 import java.io.ByteArrayOutputStream;
 
@@ -25,5 +28,13 @@ public class ImageHelper {
             return null;
 
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+    }
+
+    public static void setDrawableEnableDisableColor( Drawable icon, boolean enable)
+    {
+        if (enable)
+            icon.setColorFilter(null);
+        else
+            icon.setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
     }
 }

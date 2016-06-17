@@ -12,53 +12,90 @@ import com.example.jbt.aroundme.Services.NearbyService;
 import com.google.android.gms.maps.model.LatLng;
 
 
-
 public class UserCurrentLocation {
 
     private final Context mContext;
     private final LocationInterface mLocationProvider;
+    private final OnLocationReadyListener mListener;
     private Location mLastLocation;
+    private boolean mLocationReadyCalled;
+    private String mPendingRequest;
 
-    public UserCurrentLocation(Context context, LocationInterface locationProvider)
+    public UserCurrentLocation(Context context,
+                               LocationInterface locationProvider,
+                               OnLocationReadyListener listener)
     {
         mContext = context;
+        mListener = listener;
+        mLocationReadyCalled = false;
+        mPendingRequest = null;
+
         mLocationProvider = locationProvider;
 
         mLocationProvider.setOnLocationChangeListener(new LocationInterface.onLocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+
                 mLastLocation = location;
+
+                if (!mLocationReadyCalled) {
+                    mLocationReadyCalled = true;
+                    mListener.onLocationReady();
+                }
+
+                if (mPendingRequest != null) {
+                    getAndHandle(mPendingRequest);
+                    mListener.onPendingRequestHandled();
+                }
             }
         });
     }
 
+
     public void start() {
         mLocationProvider.start();
     }
+
+
     public void stop() {
         mLocationProvider.stop();
     }
 
-    public void getAndHandle() {
 
-        if (mLastLocation == null) {
-            Toast.makeText(mContext, "Failed to get Location", Toast.LENGTH_SHORT).show();
+    public boolean ready()
+    {
+        return mLastLocation != null;
+    }
+
+
+    public void getAndHandle(String keyword) {
+
+        if ( !ready() ) {
+            mPendingRequest = keyword;
+            Toast.makeText(mContext, "Pending request for \"" + keyword + "\"", Toast.LENGTH_SHORT).show();
             return;
         }
 
         Intent intent = new Intent(NearbyService.ACTION_NEARBY_PLACES, null, mContext, NearbyService.class);
-        intent.putExtra(NearbyService.EXTRA_NEARBY_REQUEST, getNearbyRequest());
+        intent.putExtra(NearbyService.EXTRA_NEARBY_REQUEST, getNearbyRequest(keyword));
         mContext.startService(intent);
+
+        mPendingRequest = null;
     }
 
 
-    private NearbyRequest getNearbyRequest()
+    private NearbyRequest getNearbyRequest(String keyword)
     {
         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         int radius = 500;
         String[] types = { "bank", "atm", "restaurant"};
         String language = mContext.getString(R.string.nearby_language_val);
         String rank = mContext.getString(R.string.nearby_rank_val);
-        return new NearbyRequest(latLng, radius, types, language, rank);
+        return new NearbyRequest(latLng, radius, types, keyword, language, rank);
+    }
+
+    public interface OnLocationReadyListener {
+        void onLocationReady();
+        void onPendingRequestHandled();
     }
 }

@@ -33,6 +33,7 @@
     <string name="nearby_lat_lng_key" translatable="false">location</string>
     <string name="nearby_radius_key" translatable="false">radius</string>
     <string name="nearby_types_key" translatable="false">types</string>
+    <string name="nearby_keyword_key" translatable="false">keyword</string>
     <string name="nearby_rank_key" translatable="false">rank</string>
     <string name="nearby_rank_val" translatable="false">prominence</string>
     <string name="nearby_page_token_key" translatable="false">pagetoken</string>

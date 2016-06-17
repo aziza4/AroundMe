@@ -17,9 +17,6 @@ import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.R;
 import com.squareup.picasso.Picasso;
-
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -126,22 +123,21 @@ public class PlaceRecyclerAdapter extends RecyclerView.Adapter<PlaceRecyclerAdap
 
             vicinityTV.setText(place.getVicinity());
             Bitmap imageNA = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.image_na);
-//            Bitmap image = place.getPhoto().getBitmap() != null ? place.getPhoto().getBitmap() : imageNA;
-//            placeIV.setImageBitmap(image);
 
-            Uri uri = mNearbyHelper.getPhotoUri(place);
-
-            if ( uri == null) {
-
-                placeIV.setImageBitmap(imageNA);
-
+            Bitmap bitmap = place.getPhoto().getBitmap();
+            if ( bitmap != null) {
+                placeIV.setImageBitmap(bitmap);
             } else {
-
-                Picasso.with(mContext)
-                        .load(uri)
-//                        .placeholder(R.drawable.image_na)
-                        .error(R.drawable.image_na) // Todo: change to error image
-                        .into(placeIV);
+                Uri uri = mNearbyHelper.getPhotoUri(place);
+                if (uri == null) {
+                    placeIV.setImageBitmap(imageNA);
+                } else {
+                    Picasso.with(mContext)
+                            .load(uri)
+                            .placeholder(R.drawable.placeholder)
+                            .error(R.drawable.image_na) // Todo: change to error image
+                            .into(placeIV);
+                }
             }
 
             nameTV.setText(place.getName());
