@@ -167,23 +167,27 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     }
 
 
-    private String getPhotoUrlString(Place place) {
+    public Uri getPhotoUri(Place place) {
         // https://
         // maps.googleapis.com/
         // maps/api/place/photo?
         // maxwidth=400&
         // photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&
         // key=YOUR_API_KEY
+        try {
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme(mScheme)
+                    .authority(mAuthority)
+                    .path(mPhotoPath)
+                    .appendQueryParameter(mPhotoMaxWidth, PlacePhoto.PHOTO_MAX_WIDTH)
+                    .appendQueryParameter(mPhotoReference, place.getPhotoRef())
+                    .appendQueryParameter(mApiKeyKey, mApiKeyVal);
 
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme(mScheme)
-                .authority(mAuthority)
-                .path(mPhotoPath)
-                .appendQueryParameter(mPhotoMaxWidth, PlacePhoto.PHOTO_MAX_WIDTH)
-                .appendQueryParameter(mPhotoReference, place.getPhotoRef())
-                .appendQueryParameter(mApiKeyKey, mApiKeyVal);
-
-        return builder.build().toString();
+            return builder.build();
+        } catch (Exception e){
+            Log.e(MainActivity.LOG_TAG, "" + e.getMessage());
+            return null;
+        }
     }
 
     public URL getPhotoUrl(Place place)
@@ -192,7 +196,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
 
         try {
 
-            url =  new URL(getPhotoUrlString(place));
+            url =  new URL(getPhotoUri(place).toString());
 
         } catch (MalformedURLException e) {
 

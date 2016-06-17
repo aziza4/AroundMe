@@ -13,7 +13,25 @@ import com.example.jbt.aroundme.R;
 public class FavoriteFragment extends Fragment {
 
 
-    public FavoriteFragment() {}
+    private String mTitle;
+    private int mPage;
+
+
+    public static FavoriteFragment newInstance(int page, String title) {
+        FavoriteFragment fragmentFirst = new FavoriteFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putString("someTitle", title);
+        fragmentFirst.setArguments(args);
+        return fragmentFirst;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPage = getArguments().getInt("someInt", 0);
+        mTitle = getArguments().getString("someTitle");
+    }
 
 
     @Override
@@ -21,5 +39,4 @@ public class FavoriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_favorite, container, false);
     }
-
 }

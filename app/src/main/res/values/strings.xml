@@ -65,6 +65,8 @@
     <string name="nearby_results_photos_width_key" translatable="false">width</string>
     <string name="nearby_results_photos_photo_reference_key" translatable="false">photo_reference</string>
     <string name="nearby_results_photos_html_attributions_key" translatable="false">html_attributions</string>
+    <string name="searchable">Search</string>
+    <string name="menu_search_by_keyword">Search</string>
 
 
 </resources>

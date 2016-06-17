@@ -29,10 +29,7 @@ public class NearbyService extends IntentService {
     private final ArrayList<Place> mPlaces = new ArrayList<>();
 
 
-    public NearbyService() {
-
-        super("NearbyService");
-    }
+    public NearbyService() { super("NearbyService"); }
 
 
     @Override
@@ -44,21 +41,22 @@ public class NearbyService extends IntentService {
         if (intent == null)
             return;
 
-        switch (intent.getAction()) {
+        if (intent.getAction() == ACTION_NEARBY_PLACES) {
 
-            case ACTION_NEARBY_PLACES:
-                NearbyRequest request = intent.getParcelableExtra(EXTRA_NEARBY_REQUEST);
-                downloadNearbyPlacesWithPhotos(request);
-                break;
+            NearbyRequest request = intent.getParcelableExtra(EXTRA_NEARBY_REQUEST);
+
+            mDbHelper.deleteAllPlaces();
+
+            if ( downloadNearbyPlacesWithPhotos(request));
+                downloadPlacesPhotos(mPlaces);
         }
     }
 
 
-    private void downloadNearbyPlacesWithPhotos(NearbyRequest request)
+    private boolean downloadNearbyPlacesWithPhotos(NearbyRequest request)
     {
         String pageToken = null;
         NearbyResponse response;
-        mDbHelper.deleteAllPlaces();
 
         do {
 
@@ -83,6 +81,8 @@ public class NearbyService extends IntentService {
             pageToken = response.getNextPageToken();
 
         } while (pageToken != null);
+
+        return mPlaces.size() > 0;
     }
 
 
@@ -107,7 +107,7 @@ public class NearbyService extends IntentService {
     {
         mPlaces.addAll(places);
 
-        downloadPlacesPhotos(places);
+        //downloadPlacesPhotos(places);
 
         mDbHelper.bulkInsertSearchResults(places);
 

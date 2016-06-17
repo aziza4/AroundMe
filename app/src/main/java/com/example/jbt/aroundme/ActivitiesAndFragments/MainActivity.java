@@ -1,13 +1,17 @@
 package com.example.jbt.aroundme.ActivitiesAndFragments;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.multidex.MultiDex;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -16,8 +20,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import com.example.jbt.aroundme.LocationProvider.*;
 import com.example.jbt.aroundme.R;
+import com.example.jbt.aroundme.Services.NearbyService;
 import com.example.jbt.aroundme.UIHelpers.*;
 
 
@@ -48,12 +54,9 @@ public class MainActivity extends AppCompatActivity {
         // Tabs
         TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPagerContainer);
-        if (viewPager != null) {
-            viewPager.setAdapter(tabsPagerAdapter);
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_layout);
-            if (tabLayout != null)
-                tabLayout.setupWithViewPager(viewPager);
-        }
+        viewPager.setAdapter(tabsPagerAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
         // User Location
         LocationInterface locationProvider = new AndroidLocation(this);
@@ -91,6 +94,19 @@ public class MainActivity extends AppCompatActivity {
             mDrawerHandler = new DrawerHandler(drawerLayout);
             navigationView.setNavigationItemSelectedListener(mDrawerHandler);
         }
+
+        // register receiver
+        NearbyNotificationReceiver receiver = new NearbyNotificationReceiver(this, tabsPagerAdapter);
+        IntentFilter filter = new IntentFilter(NearbyService.ACTION_NEARBY_NOTIFY);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+
+        // search
+        Intent searchIntent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(searchIntent.getAction())) {
+            
+            String query = searchIntent.getStringExtra(SearchManager.QUERY);
+            Toast.makeText(MainActivity.this, query, Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -121,6 +137,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+
+        SearchView searchView = (SearchView)menu.findItem(R.id.menu_search_by_keyword).getActionView();
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
         return true;
     }
 
@@ -130,14 +151,14 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
-            case R.id.action_settings:
+            case R.id.menu_action_settings:
                 return true;
 
-            case R.id.search_my_loc:
+            case R.id.menu_search_my_loc:
                 mUserCurrentLocation.getAndHandle();
                 return true;
 
-            case R.id.search_places:
+            case R.id.menu_search_places:
                 mPlacesAutoComplete.start();
                 return true;
         }

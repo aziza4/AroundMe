@@ -9,13 +9,13 @@ import com.example.jbt.aroundme.ActivitiesAndFragments.FavoriteFragment;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.ActivitiesAndFragments.SearchFragment;
 
-public class TabsPagerAdapter extends FragmentPagerAdapter {
+public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter {
 
     private static final int NUM_ITEMS = 2;
     private final Context mContext;
 
-    public TabsPagerAdapter(Context context, FragmentManager fm) {
-        super(fm);
+    public TabsPagerAdapter(Context context, FragmentManager fragmentManager) {
+        super(fragmentManager);
         mContext = context;
     }
 
@@ -23,11 +23,10 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
 
         switch (position) {
-            case 0: return new SearchFragment();
-            case 1: return new FavoriteFragment();
+            case 0: return SearchFragment.newInstance(0,  mContext.getString(R.string.search_title));
+            case 1: return FavoriteFragment.newInstance(1, mContext.getString(R.string.favorite_title));
+            default: return null;
         }
-
-        return null;
     }
 
     @Override
@@ -41,8 +40,8 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0: return mContext.getString(R.string.search_title);
             case 1: return mContext.getString(R.string.favorite_title);
+            default: return null;
         }
-        return null;
     }
 }
 

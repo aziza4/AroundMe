@@ -23,12 +23,30 @@ import com.example.jbt.aroundme.UIHelpers.PlaceRecyclerAdapter;
 
 public class SearchFragment extends Fragment {
 
-
     private static final int LOADER_ID = 1;
     private PlaceRecyclerAdapter mAdapter;
     private AroundMeDBHelper mDbHelper;
+    private NearbyAsyncLoaderCallbacks mLoaderCallbacks;
 
-    public SearchFragment() {}
+    private String mTitle;
+    private int mPage;
+
+
+    public static SearchFragment newInstance(int page, String title) {
+        SearchFragment fragmentFirst = new SearchFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putString("someTitle", title);
+        fragmentFirst.setArguments(args);
+        return fragmentFirst;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPage = getArguments().getInt("someInt", 0);
+        mTitle = getArguments().getString("someTitle");
+    }
 
 
     @Override
@@ -44,33 +62,17 @@ public class SearchFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        NearbyAsyncLoaderCallbacks loaderCallbacks = new NearbyAsyncLoaderCallbacks(getActivity(), mAdapter, mDbHelper);
+        mLoaderCallbacks = new NearbyAsyncLoaderCallbacks(getActivity(), mAdapter, mDbHelper);
         getActivity().getSupportLoaderManager()
-                .initLoader(LOADER_ID, null, loaderCallbacks)
+                .initLoader(LOADER_ID, null, mLoaderCallbacks)
                 .forceLoad(); // see: http://stackoverflow.com/questions/10524667/android-asynctaskloader-doesnt-start-loadinbackground
 
-        // register receiver
-        NotificationReceiver receiver = new NotificationReceiver();
-        IntentFilter filter = new IntentFilter(NearbyService.ACTION_NEARBY_NOTIFY);
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);
 
         return v;
     }
 
-
-    public class NotificationReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            int placesSaved = intent.getIntExtra(NearbyService.EXTRA_NEARBY_PLACES_SAVED, -1);
-
-            if (placesSaved < 0)
-                return;
-
-            Toast.makeText(getActivity(), placesSaved + " places received", Toast.LENGTH_SHORT).show();
-            NearbyAsyncLoaderCallbacks loaderCallbacks = new NearbyAsyncLoaderCallbacks(getActivity(), mAdapter, mDbHelper);
-            getActivity().getSupportLoaderManager().restartLoader(LOADER_ID, null, loaderCallbacks);
-        }
+    public void refresh()
+    {
+        getActivity().getSupportLoaderManager().restartLoader(LOADER_ID, null, mLoaderCallbacks);
     }
 }

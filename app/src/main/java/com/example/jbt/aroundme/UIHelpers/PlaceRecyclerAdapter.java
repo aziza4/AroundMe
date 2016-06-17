@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,12 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.example.jbt.aroundme.Data.Place;
+import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.R;
+import com.squareup.picasso.Picasso;
+
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -21,11 +27,13 @@ import java.util.ArrayList;
 public class PlaceRecyclerAdapter extends RecyclerView.Adapter<PlaceRecyclerAdapter.PlaceViewHolder> {
 
     private final Context mContext;
+    private GooglePlacesNearbyHelper mNearbyHelper;
     private ArrayList<Place> mPlaces;
 
 
     public PlaceRecyclerAdapter(Context context) {
         mContext = context;
+        mNearbyHelper = new GooglePlacesNearbyHelper(mContext);
         mPlaces = null;
     }
 
@@ -118,8 +126,24 @@ public class PlaceRecyclerAdapter extends RecyclerView.Adapter<PlaceRecyclerAdap
 
             vicinityTV.setText(place.getVicinity());
             Bitmap imageNA = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.image_na);
-            Bitmap image = place.getPhoto().getBitmap() != null ? place.getPhoto().getBitmap() : imageNA;
-            placeIV.setImageBitmap(image);
+//            Bitmap image = place.getPhoto().getBitmap() != null ? place.getPhoto().getBitmap() : imageNA;
+//            placeIV.setImageBitmap(image);
+
+            Uri uri = mNearbyHelper.getPhotoUri(place);
+
+            if ( uri == null) {
+
+                placeIV.setImageBitmap(imageNA);
+
+            } else {
+
+                Picasso.with(mContext)
+                        .load(uri)
+//                        .placeholder(R.drawable.image_na)
+                        .error(R.drawable.image_na) // Todo: change to error image
+                        .into(placeIV);
+            }
+
             nameTV.setText(place.getName());
             vicinityTV.setText(place.getVicinity());
             ratingRatingBar.setRating((float)place.getRating());
