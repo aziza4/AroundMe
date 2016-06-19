@@ -26,7 +26,7 @@ public class NearbyService extends IntentService {
 
     private GooglePlacesNearbyHelper mNearbyHelper;
     private AroundMeDBHelper mDbHelper = new AroundMeDBHelper(this);
-    private final ArrayList<Place> mPlaces = new ArrayList<>();
+    private ArrayList<Place> mPlaces = new ArrayList<>();
 
 
     public NearbyService() { super("NearbyService"); }
@@ -48,7 +48,7 @@ public class NearbyService extends IntentService {
             mDbHelper.deleteAllPlaces();
 
             if ( downloadNearbyPlacesWithPhotos(request))
-                downloadPlacesPhotos(mPlaces);
+                downloadPlacesPhotos();
         }
     }
 
@@ -86,19 +86,31 @@ public class NearbyService extends IntentService {
     }
 
 
-    private void downloadPlacesPhotos(ArrayList<Place> places)
+    private void downloadPlacesPhotos()
     {
-        for (int i=0; i < places.size(); i++ ) {
 
-            final Place place = places.get(i);
+        mPlaces = mDbHelper.getPlacesArrayList();
+
+        for (int i=0; i < mPlaces.size(); i++ ) {
+
+            final Place place = mPlaces.get(i);
+
+            if (place.getPhotoRef() == null)
+                continue;
 
             URL url = mNearbyHelper.getPhotoUrl(place);
 
-            if (place != null) {
-                NetworkHelper networkHelper = new NetworkHelper(url);
-                Bitmap photo = networkHelper.getImage();
-                place.setPhoto(photo);
-            }
+            if (url == null)
+                continue;
+
+            NetworkHelper networkHelper = new NetworkHelper(url);
+            Bitmap photo = networkHelper.getImage();
+
+            if (photo == null)
+                continue;
+
+            place.setPhoto(photo);
+            mDbHelper.updatePlace(place);
         }
     }
 
@@ -106,9 +118,6 @@ public class NearbyService extends IntentService {
     private void handleNewPlaces(ArrayList<Place> places)
     {
         mPlaces.addAll(places);
-
-        //downloadPlacesPhotos(places);
-
         mDbHelper.bulkInsertSearchResults(places);
 
         Intent intent = new Intent(ACTION_NEARBY_NOTIFY);

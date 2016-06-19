@@ -128,14 +128,14 @@ public class PlaceRecyclerAdapter extends RecyclerView.Adapter<PlaceRecyclerAdap
             if ( bitmap != null) {
                 placeIV.setImageBitmap(bitmap);
             } else {
-                Uri uri = mNearbyHelper.getPhotoUri(place);
-                if (uri == null) {
+                if (place.getPhotoRef() == null) {
                     placeIV.setImageBitmap(imageNA);
                 } else {
+                    Uri uri = mNearbyHelper.getPhotoUri(place);
                     Picasso.with(mContext)
                             .load(uri)
                             .placeholder(R.drawable.placeholder)
-                            .error(R.drawable.image_na) // Todo: change to error image
+                            //.error(R.drawable.image_na) // Todo: change to error image
                             .into(placeIV);
                 }
             }

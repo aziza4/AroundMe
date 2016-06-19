@@ -78,7 +78,7 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
                 values[i].put(SEARCH_COL_LOC_LNG, places.get(i).getLoc().longitude);
                 values[i].put(SEARCH_COL_ICON, places.get(i).getIcon());
                 values[i].put(SEARCH_COL_PHOTO_REF, places.get(i).getPhotoRef());
-                values[i].put(SEARCH_COL_PHOTO,  places.get(i).getPhoto() == null ? null : places.get(i).getPhoto().getBitmapAsByteArray());
+                values[i].put(SEARCH_COL_PHOTO, places.get(i).getPhotoByteArray());
                 values[i].put(SEARCH_COL_PLACE_ID, places.get(i).getPlaceId());
                 values[i].put(SEARCH_COL_RATING, places.get(i).getRating());
                 values[i].put(SEARCH_COL_REFERENCE, places.get(i).getReference());
@@ -98,10 +98,26 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
+    public boolean updatePlace(Place place) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(SEARCH_COL_PHOTO, place.getPhotoByteArray());
+
+        long rowsAffected = db.update(SEARCH_TABLE_NAME, values, SEARCH_COL_ID + " = " + place.getId(), null);
+
+        db.close();
+
+        return rowsAffected > 0;
+    }
+
+
     public boolean deletePlace(long id) {
 
         SQLiteDatabase db = getWritableDatabase();
-        long rowsDeleted = db.delete(SEARCH_TABLE_NAME, SEARCH_COL_ID + " =" +  id , null);
+        long rowsDeleted = db.delete(SEARCH_TABLE_NAME, SEARCH_COL_ID + "=?" +  id , null);
         db.close();
 
         return rowsDeleted > 0;

@@ -111,6 +111,13 @@ public class Place implements Parcelable{
         return mPhoto == null ? null : mPhoto.getReference();
     }
 
+
+    public byte[] getPhotoByteArray()
+    {
+        return mPhoto == null ? null : mPhoto.getBitmapAsByteArray();
+    }
+
+
     public void setPhoto(Bitmap bitmap)
     {
         if ( mPhoto != null)
