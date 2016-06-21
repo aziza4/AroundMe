@@ -20,6 +20,11 @@
 
     <string name="search_place_photo">Place Photo</string>
 
+    <string name="searchable">Search</string>
+    <string name="menu_search_by_keyword">Search</string>
+
+
+
     <!--+++++++++++++  Non-Translatable Strings ++++++++++++++++-->
 
 
@@ -44,6 +49,9 @@
     <string name="photo_max_width" translatable="false">maxwidth</string>
     <string name="photo_photo_reference" translatable="false">photoreference</string>
 
+    <string name="details_path" translatable="false">maps/api/place/details/json</string>
+    <string name="details_place_id" translatable="false">placeid</string>
+
     <!--++++++++++++++++++  response strings ++++++++++++++++++++-->
     <string name="nearby_status_key" translatable="false">status</string>
     <string name="nearby_next_page_token_key" translatable="false">next_page_token</string>
@@ -66,8 +74,11 @@
     <string name="nearby_results_photos_width_key" translatable="false">width</string>
     <string name="nearby_results_photos_photo_reference_key" translatable="false">photo_reference</string>
     <string name="nearby_results_photos_html_attributions_key" translatable="false">html_attributions</string>
-    <string name="searchable">Search</string>
-    <string name="menu_search_by_keyword">Search</string>
 
+    <string name="details_result_key" translatable="false">result</string>
+    <string name="details_result_formatted_address_key" translatable="false">formatted_address</string>
+    <string name="details_result_formatted_phone_number_key" translatable="false">formatted_phone_number</string>
+    <string name="details_result_international_phone_number_key" translatable="false">international_phone_number</string>
+    <string name="details_result_url_key" translatable="false">url</string>
 
 </resources>

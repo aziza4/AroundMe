@@ -27,13 +27,16 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
 
         int placesSaved = intent.getIntExtra(NearbyService.EXTRA_NEARBY_PLACES_SAVED, -1);
 
-        if (placesSaved < 0)
-            return;
+        if (placesSaved > 0 ) {
+            SearchFragment searchFragment = (SearchFragment) mTabsPagerAdapter.getRegisteredFragment(0);
+            searchFragment.refresh();
+        }
 
-        Toast.makeText(mActivity, placesSaved + " places received", Toast.LENGTH_SHORT).show();
+        int detailsSaved = intent.getIntExtra(NearbyService.EXTRA_DETAILS_PLACE_SAVED, -1);
 
-        // todo: not working. not refreshing the list. fix!
-        SearchFragment searchFragment = (SearchFragment) mTabsPagerAdapter.getRegisteredFragment(0);
-        searchFragment.refresh();
+        if (detailsSaved > 0 ) {
+            SearchFragment searchFragment = (SearchFragment) mTabsPagerAdapter.getRegisteredFragment(0);
+            searchFragment.refresh();
+        }
     }
 }

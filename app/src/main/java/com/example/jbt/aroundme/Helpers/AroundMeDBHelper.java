@@ -29,7 +29,10 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     private static final String SEARCH_COL_SCOPE = "scope";
     private static final String SEARCH_COL_TYPES = "types";
     private static final String SEARCH_COL_VICINITY = "vicinity";
-
+    private static final String DETAILS_COL_ADDRESS = "address";
+    private static final String DETAILS_COL_PHONE = "phone";
+    private static final String DETAILS_COL_INTL_PHONE = "intl_phone";
+    private static final String DETAILS_COL_URL = "url";
 
     private final Context mContext;
 
@@ -45,13 +48,15 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
         String createSearchTable = String.format(
                 "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, " +   // table-name, id, name
                         "%s REAL, %s REAL, %s TEXT, " +                                         // lat, lng, icon
-                        "%s TEXT, %s BLOB, %s TEXT, %s REAL, " +                                  // photo-ref, photo, place-id, rating
-                        "%s TEXT, %s TEXT, %s TEXT, %s TEXT" +                                  // ref, scope, types, vicinity
+                        "%s TEXT, %s BLOB, %s TEXT, %s REAL, " +                                // photo-ref, photo, place-id, rating
+                        "%s TEXT, %s TEXT, %s TEXT, %s TEXT, " +                                // ref, scope, types, vicinity
+                        "%s TEXT, %s TEXT, %s TEXT, %s TEXT " +                                 // address, phone, intl-phone, url
                         ");",
                 SEARCH_TABLE_NAME, SEARCH_COL_ID, SEARCH_COL_NAME,
                 SEARCH_COL_LOC_LAT, SEARCH_COL_LOC_LNG, SEARCH_COL_ICON,
                 SEARCH_COL_PHOTO_REF, SEARCH_COL_PHOTO, SEARCH_COL_PLACE_ID, SEARCH_COL_RATING,
-                SEARCH_COL_REFERENCE, SEARCH_COL_SCOPE, SEARCH_COL_TYPES, SEARCH_COL_VICINITY );
+                SEARCH_COL_REFERENCE, SEARCH_COL_SCOPE, SEARCH_COL_TYPES, SEARCH_COL_VICINITY,
+                DETAILS_COL_ADDRESS, DETAILS_COL_PHONE, DETAILS_COL_INTL_PHONE, DETAILS_COL_URL);
 
         db.execSQL(createSearchTable);
     }
@@ -61,32 +66,43 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
 
-    public void bulkInsertSearchResults(ArrayList<Place> places) {
 
-        ContentValues[] values = new ContentValues[places.size()];
+    private ContentValues GetValues(Place place)
+    {
+        ContentValues values = new ContentValues();
+
+        values.put(SEARCH_COL_NAME, place.getName());
+        values.put(SEARCH_COL_LOC_LAT, place.getLoc().latitude);
+        values.put(SEARCH_COL_LOC_LNG, place.getLoc().longitude);
+        values.put(SEARCH_COL_ICON, place.getIcon());
+        values.put(SEARCH_COL_PHOTO_REF, place.getPhotoRef());
+        values.put(SEARCH_COL_PHOTO, place.getPhotoByteArray());
+        values.put(SEARCH_COL_PLACE_ID, place.getPlaceId());
+        values.put(SEARCH_COL_RATING, place.getRating());
+        values.put(SEARCH_COL_REFERENCE, place.getReference());
+        values.put(SEARCH_COL_SCOPE, place.getScope());
+        values.put(SEARCH_COL_TYPES, place.getTypesAsString());
+        values.put(SEARCH_COL_VICINITY, place.getVicinity());
+        values.put(DETAILS_COL_ADDRESS, place.getAddress());
+        values.put(DETAILS_COL_PHONE, place.getPhone());
+        values.put(DETAILS_COL_INTL_PHONE, place.getIntlPhone());
+        values.put(DETAILS_COL_URL, place.getUrl());
+
+        return values;
+    }
+
+
+    public void bulkInsertSearchResults(ArrayList<Place> places) {
 
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
 
         try
         {
-            for (int i=0; i< places.size(); i++)
+            for (int i=0; i < places.size(); i++)
             {
-                values[i] = new ContentValues();
-                values[i].put(SEARCH_COL_NAME, places.get(i).getName());
-                values[i].put(SEARCH_COL_LOC_LAT, places.get(i).getLoc().latitude);
-                values[i].put(SEARCH_COL_LOC_LNG, places.get(i).getLoc().longitude);
-                values[i].put(SEARCH_COL_ICON, places.get(i).getIcon());
-                values[i].put(SEARCH_COL_PHOTO_REF, places.get(i).getPhotoRef());
-                values[i].put(SEARCH_COL_PHOTO, places.get(i).getPhotoByteArray());
-                values[i].put(SEARCH_COL_PLACE_ID, places.get(i).getPlaceId());
-                values[i].put(SEARCH_COL_RATING, places.get(i).getRating());
-                values[i].put(SEARCH_COL_REFERENCE, places.get(i).getReference());
-                values[i].put(SEARCH_COL_SCOPE, places.get(i).getScope());
-                values[i].put(SEARCH_COL_TYPES, places.get(i).getTypesAsString());
-                values[i].put(SEARCH_COL_VICINITY, places.get(i).getVicinity());
-
-                db.insert(SEARCH_TABLE_NAME, null, values[i]);
+                ContentValues values = GetValues(places.get(i));
+                db.insert(SEARCH_TABLE_NAME, null, values);
             }
 
             db.setTransactionSuccessful();
@@ -103,9 +119,7 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(SEARCH_COL_PHOTO, place.getPhotoByteArray());
-
+        ContentValues values = GetValues(place);
         long rowsAffected = db.update(SEARCH_TABLE_NAME, values, SEARCH_COL_ID + " = " + place.getId(), null);
 
         db.close();
@@ -163,6 +177,10 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
         final int id_scope = c.getColumnIndex(SEARCH_COL_SCOPE);
         final int id_types = c.getColumnIndex(SEARCH_COL_TYPES);
         final int id_vicinity = c.getColumnIndex(SEARCH_COL_VICINITY);
+        final int id_address = c.getColumnIndex(DETAILS_COL_ADDRESS);
+        final int id_phone = c.getColumnIndex(DETAILS_COL_PHONE);
+        final int id_intl_phone = c.getColumnIndex(DETAILS_COL_INTL_PHONE);
+        final int id_url = c.getColumnIndex(DETAILS_COL_URL);
 
         while(c.moveToNext()) {
 
@@ -179,11 +197,16 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
             String scope = c.getString(id_scope);
             String types = c.getString(id_types);
             String vicinity = c.getString(id_vicinity);
+            String address = c.getString(id_address);
+            String phone = c.getString(id_phone);
+            String intlPhone = c.getString(id_intl_phone);
+            String url = c.getString(id_url);
 
             Place place = new Place(
                     _id, lat, lng, icon, name,
                     photoRef, bitmap, placeId, rating,
-                    reference, scope, types, vicinity);
+                    reference, scope, types, vicinity,
+                    address, phone, intlPhone, url);
 
             places.add(place);
         }

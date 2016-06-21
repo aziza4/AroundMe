@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
+import com.example.jbt.aroundme.Data.DetailsRequest;
+import com.example.jbt.aroundme.Data.DetailsResponse;
 import com.example.jbt.aroundme.Data.NearbyRequest;
 import com.example.jbt.aroundme.Data.NearbyResponse;
 import com.example.jbt.aroundme.Data.Place;
@@ -21,8 +23,15 @@ public class NearbyService extends IntentService {
     public static final String ACTION_NEARBY_PLACES = "com.example.jbt.aroundme.Services.action.ACTION_NEARBY_GET";
     public static final String EXTRA_NEARBY_REQUEST = "com.example.jbt.aroundme.Services.extra.nearbyplaces.request";
 
+    public static final String ACTION_PLACE_DETAILS = "com.example.jbt.aroundme.Services.action.ACTION_PLACE_DETAILS";
+    public static final String EXTRA_PLACE_DETAILS = "com.example.jbt.aroundme.Services.extra.placedetails.request";
+
     public static final String ACTION_NEARBY_NOTIFY = "com.example.jbt.aroundme.Services.action.ACTION_NEARBY_NOTIFY";
     public static final String EXTRA_NEARBY_PLACES_SAVED = "com.example.jbt.aroundme.Services.extra.nearbyplaces.places.saved";
+
+    public static final String ACTION_DETAILS_NOTIFY = "com.example.jbt.aroundme.Services.action.ACTION_DETAILS_NOTIFY";
+    public static final String EXTRA_DETAILS_PLACE_SAVED = "com.example.jbt.aroundme.Services.extra.placedetails.saved";
+
 
     private GooglePlacesNearbyHelper mNearbyHelper;
     private AroundMeDBHelper mDbHelper = new AroundMeDBHelper(this);
@@ -41,15 +50,35 @@ public class NearbyService extends IntentService {
         if (intent == null)
             return;
 
-        if (intent.getAction().equals(ACTION_NEARBY_PLACES)) {
+        String action = intent.getAction();
 
-            NearbyRequest request = intent.getParcelableExtra(EXTRA_NEARBY_REQUEST);
+        switch (action)
+        {
+            case ACTION_NEARBY_PLACES:
+                NearbyRequest nearbyRequset = intent.getParcelableExtra(EXTRA_NEARBY_REQUEST);
+                mDbHelper.deleteAllPlaces();
+                if ( downloadNearbyPlacesWithPhotos(nearbyRequset))
+                    downloadPlacesPhotos();
+                break;
 
-            mDbHelper.deleteAllPlaces();
-
-            if ( downloadNearbyPlacesWithPhotos(request))
-                downloadPlacesPhotos();
+            case ACTION_PLACE_DETAILS:
+                DetailsRequest detailsRequest = intent.getParcelableExtra(EXTRA_PLACE_DETAILS);
+                downloadPlaceDetails(detailsRequest);
+                break;
         }
+    }
+
+
+    private void downloadPlaceDetails(DetailsRequest request)
+    {
+        URL url = mNearbyHelper.getDetailsUrl(request.getPlace());
+        NetworkHelper networkHelper = new NetworkHelper(url);
+        String jsonString = networkHelper.getJsonString();
+        DetailsResponse res = mNearbyHelper.GetPlaceDetails(request, jsonString);
+        mDbHelper.updatePlace(res.getPlace());
+        Intent intent = new Intent(ACTION_DETAILS_NOTIFY);
+        intent.putExtra(EXTRA_DETAILS_PLACE_SAVED, 1);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
 

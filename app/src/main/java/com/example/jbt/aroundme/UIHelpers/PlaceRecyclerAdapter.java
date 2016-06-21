@@ -3,6 +3,7 @@ package com.example.jbt.aroundme.UIHelpers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -13,9 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.example.jbt.aroundme.Data.DetailsRequest;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.R;
+import com.example.jbt.aroundme.Services.NearbyService;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
@@ -100,20 +104,34 @@ public class PlaceRecyclerAdapter extends RecyclerView.Adapter<PlaceRecyclerAdap
 
     class PlaceViewHolder extends RecyclerView.ViewHolder {
 
-        public final ImageView placeIV;
-        public final TextView nameTV;
-        public final TextView vicinityTV;
-        public final RatingBar ratingRatingBar;
+        public final ImageView mPlaceIV;
+        public final TextView mNameTV;
+        public final TextView mVicinityTV;
+        public final RatingBar mRatingRatingBar;
+        public final TextView mPhoneTV;
+        public final ImageView mIconIV;
 
         private Place mPlace;
 
         public PlaceViewHolder(View view) {
             super(view);
 
-            placeIV = (ImageView) view.findViewById(R.id.placeImageView);
-            nameTV = (TextView)view.findViewById(R.id.nameTextView);
-            vicinityTV = (TextView)view.findViewById(R.id.vicinityTextView);
-            ratingRatingBar = (RatingBar) view.findViewById(R.id.placeRatingBar);
+            mPlaceIV = (ImageView) view.findViewById(R.id.placeImageView);
+            mNameTV = (TextView)view.findViewById(R.id.nameTextView);
+            mVicinityTV = (TextView)view.findViewById(R.id.vicinityTextView);
+            mRatingRatingBar = (RatingBar) view.findViewById(R.id.placeRatingBar);
+            mPhoneTV = (TextView)view.findViewById(R.id.phoneTextView);
+            mIconIV = (ImageView) view.findViewById(R.id.iconImageView);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(NearbyService.ACTION_PLACE_DETAILS, null, mContext, NearbyService.class);
+                    intent.putExtra(NearbyService.EXTRA_PLACE_DETAILS, new DetailsRequest(mPlace));
+                    mContext.startService(intent);
+                }
+            });
         }
 
 
@@ -121,28 +139,32 @@ public class PlaceRecyclerAdapter extends RecyclerView.Adapter<PlaceRecyclerAdap
         {
             mPlace = place;
 
-            vicinityTV.setText(place.getVicinity());
-            Bitmap imageNA = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.image_na);
+            mVicinityTV.setText(place.getVicinity());
+            //Bitmap imagePlaceHolder = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.placeholder);
 
             Bitmap bitmap = place.getPhoto().getBitmap();
             if ( bitmap != null) {
-                placeIV.setImageBitmap(bitmap);
+                mPlaceIV.setImageBitmap(bitmap);
             } else {
                 if (place.getPhotoRef() == null) {
-                    placeIV.setImageBitmap(imageNA);
+                    mPlaceIV.setImageBitmap(null);
                 } else {
                     Uri uri = mNearbyHelper.getPhotoUri(place);
                     Picasso.with(mContext)
                             .load(uri)
                             .placeholder(R.drawable.placeholder)
-                            //.error(R.drawable.image_na) // Todo: change to error image
-                            .into(placeIV);
+                            .into(mPlaceIV);
                 }
             }
 
-            nameTV.setText(place.getName());
-            vicinityTV.setText(place.getVicinity());
-            ratingRatingBar.setRating((float)place.getRating());
+            mNameTV.setText(place.getName());
+            mVicinityTV.setText(place.getVicinity());
+            mRatingRatingBar.setRating((float)place.getRating());
+            mPhoneTV.setText(place.getPhone());
+
+            String url = place.getIcon();
+            if (url != null)
+                Picasso.with(mContext).load(Uri.parse(url)).into(mIconIV);
         }
     }
 }

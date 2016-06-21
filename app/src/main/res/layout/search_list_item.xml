@@ -18,7 +18,8 @@
             android:width="0dp"
             android:layout_marginEnd="@dimen/elements_horizontal_margin"
             android:src="@android:drawable/ic_menu_report_image"
-            android:layout_marginRight="@dimen/elements_horizontal_margin" />
+            android:layout_marginRight="@dimen/elements_horizontal_margin"
+            android:scaleType="fitXY" />
 
         <LinearLayout
 
@@ -71,6 +72,42 @@
                 android:textSize="@dimen/small_text"
                 android:text="Small Text"
                 android:id="@+id/vicinityTextView"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/elements_vertical_margin">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:scrollbars="none"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/small_text"
+                    android:text="Small Text"
+                    android:id="@+id/phoneTextView"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:id="@+id/iconImageView"
+                    android:contentDescription="@string/search_place_photo"
+                    android:width="0dp"
+                    android:layout_marginEnd="@dimen/elements_horizontal_margin"
+                    android:src="@android:drawable/ic_menu_report_image"
+                    android:layout_marginRight="@dimen/elements_horizontal_margin"
+                    />
+
+            </LinearLayout>
+
+
+
 
         </LinearLayout>
 

@@ -106,8 +106,10 @@ public class MainActivity extends AppCompatActivity {
 
         // register receiver
         NearbyNotificationReceiver receiver = new NearbyNotificationReceiver(this, tabsPagerAdapter);
-        IntentFilter filter = new IntentFilter(NearbyService.ACTION_NEARBY_NOTIFY);
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+        IntentFilter nearby = new IntentFilter(NearbyService.ACTION_NEARBY_NOTIFY);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, nearby);
+        IntentFilter details = new IntentFilter(NearbyService.ACTION_DETAILS_NOTIFY);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, details);
 
         // search
         Intent searchIntent = getIntent();

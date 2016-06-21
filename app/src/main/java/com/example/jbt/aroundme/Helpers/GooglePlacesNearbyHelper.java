@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
+import com.example.jbt.aroundme.Data.DetailsRequest;
+import com.example.jbt.aroundme.Data.DetailsResponse;
 import com.example.jbt.aroundme.Data.NearbyRequest;
 import com.example.jbt.aroundme.Data.NearbyResponse;
 import com.example.jbt.aroundme.Data.Place;
@@ -44,6 +46,9 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     private final String mPhotoMaxWidth;
     private final String mPhotoReference;
 
+    private final String mDetailsPath;
+    private final String mDetailsPlaceId;
+
 
     // response strings
     private final String mStatusKey;
@@ -66,6 +71,12 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     private final String mPhotoWidthKey;
     private final String mPhotoReferenceKey;
     private final String mPhotoHtmlAttributionsKey;
+
+    private final String mResultKey;
+    private final String mAddressKey;
+    private final String mPhoneKey;
+    private final String mIntlPhoneKey;
+    private final String mUrlKey;
 
 
     // https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=32.0850818,34.8128246&radius=1000&type=restaurant&rank=prominence&key=AIzaSyBS45GLyDCuEaMBvpfWekbJ-6bSzdzaR_I
@@ -114,11 +125,21 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
         mReferenceKey = context.getString(R.string.nearby_results_reference_key);
         mScopeKey = context.getString(R.string.nearby_results_scope_key);
         mVicinityKey = context.getString(R.string.nearby_results_vicinity_key);
+
         mPhotosKey = context.getString(R.string.nearby_results_photos_key);
         mPhotoHeightKey = context.getString(R.string.nearby_results_photos_height_key);
         mPhotoWidthKey = context.getString(R.string.nearby_results_photos_width_key);
         mPhotoReferenceKey = context.getString(R.string.nearby_results_photos_photo_reference_key);
         mPhotoHtmlAttributionsKey = context.getString(R.string.nearby_results_photos_html_attributions_key);
+
+        mDetailsPath = context.getString(R.string.details_path);
+        mDetailsPlaceId = context.getString(R.string.details_place_id);
+
+        mResultKey = context.getString(R.string.details_result_key);
+        mAddressKey = context.getString(R.string.details_result_formatted_address_key);
+        mPhoneKey = context.getString(R.string.details_result_formatted_phone_number_key);
+        mIntlPhoneKey = context.getString(R.string.details_result_international_phone_number_key);
+        mUrlKey = context.getString(R.string.details_result_url_key);
     }
 
 
@@ -194,8 +215,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
                     .appendQueryParameter(mPhotoReference, photoRef)
                     .appendQueryParameter(mApiKeyKey, mApiKeyVal);
 
-            Uri uri =  builder.build();
-            return uri;
+            return builder.build();
 
         } catch (Exception e) {
 
@@ -218,6 +238,85 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
         }
 
         return url;
+    }
+
+
+    public Uri getDetailsUri(Place place) {
+
+        // https://
+        // maps.googleapis.com/
+        // maps/api/place/details/json?
+        // placeid=ChIJrTLr-GyuEmsRBfy61i59si0&
+        // key=YOUR_API_KEY
+
+        try {
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme(mScheme)
+                    .authority(mAuthority)
+                    .path(mDetailsPath)
+                    .appendQueryParameter(mDetailsPlaceId, place.getPlaceId())
+                    .appendQueryParameter(mApiKeyKey, mApiKeyVal);
+
+            return builder.build();
+
+        } catch (Exception e) {
+
+            Log.e(MainActivity.LOG_TAG, "" + e.getMessage());
+            return null;
+        }
+    }
+
+    public URL getDetailsUrl(Place place)
+    {
+        URL url = null;
+
+        try {
+
+            url =  new URL(getDetailsUri(place).toString());
+
+        } catch (MalformedURLException e) {
+
+            Log.e(MainActivity.LOG_TAG, "" + e.getMessage());
+        }
+
+        return url;
+    }
+
+
+    public DetailsResponse GetPlaceDetails(DetailsRequest request, String jsonString) {
+
+        String status = null;
+        Place place = request.getPlace();
+
+        try {
+
+            JSONObject placeObj = new JSONObject(jsonString);
+
+            status = placeObj.has(mStatusKey) ? placeObj.getString(mStatusKey) : null;
+
+            if (status != null && status.equals(NearbyResponse.STATUS_OK)) {
+
+                JSONObject resultObj = placeObj.has(mResultKey) ?  placeObj.getJSONObject(mResultKey) : null;
+
+                if (resultObj != null) {
+
+                    String address = resultObj.has(mAddressKey) ? resultObj.getString(mAddressKey) : null;
+                    String phone = resultObj.has(mPhoneKey) ? resultObj.getString(mPhoneKey) : null;
+                    String intlPhone = resultObj.has(mIntlPhoneKey) ? resultObj.getString(mIntlPhoneKey) : null;
+                    String url = resultObj.has(mUrlKey) ? resultObj.getString(mUrlKey) : null;
+
+                    place.setAdditionalDetails(address, phone, intlPhone, url);
+                }
+
+            } else {
+                Log.e(MainActivity.LOG_TAG, "response status" + status);
+            }
+
+        } catch (JSONException e) {
+            Log.e(MainActivity.LOG_TAG, "" + e.getMessage());
+        }
+
+        return new DetailsResponse(status, place);
     }
 
 
