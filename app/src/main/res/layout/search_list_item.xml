@@ -13,7 +13,7 @@
         <ImageView
             android:layout_width="72dp"
             android:layout_height="72dp"
-            android:id="@+id/placeImageView"
+            android:id="@+id/searchPlaceImageView"
             android:contentDescription="@string/search_place_photo"
             android:width="0dp"
             android:layout_marginEnd="@dimen/elements_horizontal_margin"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_gravity="top"
-                android:id="@+id/middleLinearLayout"
+                android:id="@+id/searchMiddleLinearLayout"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -44,11 +44,11 @@
                     android:text="Large Text"
                     android:singleLine="true"
                     android:ellipsize="end"
-                    android:id="@+id/nameTextView"
+                    android:id="@+id/searchNameTextView"
                     android:textColor="@android:color/black" />
 
                 <RatingBar
-                    android:id="@+id/placeRatingBar"
+                    android:id="@+id/searchPlaceRatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/elements_horizontal_margin"
@@ -71,7 +71,7 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/small_text"
                 android:text="Small Text"
-                android:id="@+id/vicinityTextView"/>
+                android:id="@+id/searchVicinityTextView"/>
 
 
             <LinearLayout
@@ -91,12 +91,12 @@
                     android:ellipsize="end"
                     android:textSize="@dimen/small_text"
                     android:text="Small Text"
-                    android:id="@+id/phoneTextView"/>
+                    android:id="@+id/searchPhoneTextView"/>
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:id="@+id/iconImageView"
+                    android:id="@+id/searchIconImageView"
                     android:contentDescription="@string/search_place_photo"
                     android:width="0dp"
                     android:layout_marginEnd="@dimen/elements_horizontal_margin"

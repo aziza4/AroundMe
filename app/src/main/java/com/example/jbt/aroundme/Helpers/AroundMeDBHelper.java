@@ -16,6 +16,8 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     private static final String SEARCH_TABLE_NAME = "search";
+    private static final String FAVORITES_TABLE_NAME = "favorites";
+
     private static final String SEARCH_COL_ID = "_id";
     private static final String SEARCH_COL_NAME = "name";
     private static final String SEARCH_COL_LOC_LAT = "lat";
@@ -45,25 +47,46 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String createSearchTable = String.format(
+        onCreate(db, SEARCH_TABLE_NAME);
+        onCreate(db, FAVORITES_TABLE_NAME);
+    }
+
+    private void onCreate(SQLiteDatabase db, String tableName) {
+
+        String searchTable = String.format(
                 "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, " +   // table-name, id, name
                         "%s REAL, %s REAL, %s TEXT, " +                                         // lat, lng, icon
                         "%s TEXT, %s BLOB, %s TEXT, %s REAL, " +                                // photo-ref, photo, place-id, rating
                         "%s TEXT, %s TEXT, %s TEXT, %s TEXT, " +                                // ref, scope, types, vicinity
                         "%s TEXT, %s TEXT, %s TEXT, %s TEXT " +                                 // address, phone, intl-phone, url
                         ");",
-                SEARCH_TABLE_NAME, SEARCH_COL_ID, SEARCH_COL_NAME,
+                tableName, SEARCH_COL_ID, SEARCH_COL_NAME,
                 SEARCH_COL_LOC_LAT, SEARCH_COL_LOC_LNG, SEARCH_COL_ICON,
                 SEARCH_COL_PHOTO_REF, SEARCH_COL_PHOTO, SEARCH_COL_PLACE_ID, SEARCH_COL_RATING,
                 SEARCH_COL_REFERENCE, SEARCH_COL_SCOPE, SEARCH_COL_TYPES, SEARCH_COL_VICINITY,
                 DETAILS_COL_ADDRESS, DETAILS_COL_PHONE, DETAILS_COL_INTL_PHONE, DETAILS_COL_URL);
 
-        db.execSQL(createSearchTable);
+        db.execSQL(searchTable);
     }
 
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+
+
+    public void searchBulkInsert(ArrayList<Place> places) { bulkInsert(places, SEARCH_TABLE_NAME); }
+    public void searchInsertPlace(Place place) { insertPlace(place, SEARCH_TABLE_NAME); }
+    public boolean searchUpdatePlace(Place place) { return updatePlace(place, SEARCH_TABLE_NAME); }
+    public boolean searchDeletePlace(long id) { return deletePlace(id, SEARCH_TABLE_NAME); }
+    public boolean searchDeleteAllPlaces() { return deleteAllPlaces(SEARCH_TABLE_NAME); }
+    public ArrayList<Place> searchGetArrayList() { return getArrayList(SEARCH_TABLE_NAME); }
+
+    public void favoritesBulkInsert(ArrayList<Place> places) { bulkInsert(places, FAVORITES_TABLE_NAME); }
+    public void favoritesInsertPlace(Place place) { insertPlace(place, FAVORITES_TABLE_NAME); }
+    public boolean favoritesUpdatePlace(Place place) { return updatePlace(place, FAVORITES_TABLE_NAME); }
+    public boolean favoritesDeletePlace(long id) { return deletePlace(id, FAVORITES_TABLE_NAME); }
+    public boolean favoritesDeleteAllPlaces() { return deleteAllPlaces(FAVORITES_TABLE_NAME); }
+    public ArrayList<Place> favoritesGetArrayList() { return getArrayList(FAVORITES_TABLE_NAME); }
 
 
 
@@ -92,7 +115,8 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void bulkInsertSearchResults(ArrayList<Place> places) {
+
+    private void bulkInsert(ArrayList<Place> places, String tableName) {
 
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
@@ -102,7 +126,7 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
             for (int i=0; i < places.size(); i++)
             {
                 ContentValues values = GetValues(places.get(i));
-                db.insert(SEARCH_TABLE_NAME, null, values);
+                db.insert(tableName, null, values);
             }
 
             db.setTransactionSuccessful();
@@ -115,12 +139,32 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean updatePlace(Place place) {
+    public void insertPlace(Place place, String tableName) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+
+        try
+        {
+            ContentValues values = GetValues(place);
+            db.insert(tableName, null, values);
+
+            db.setTransactionSuccessful();
+
+        } finally {
+            db.endTransaction();
+        }
+
+        db.close();
+    }
+
+
+    private boolean updatePlace(Place place, String tableName) {
 
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = GetValues(place);
-        long rowsAffected = db.update(SEARCH_TABLE_NAME, values, SEARCH_COL_ID + " = " + place.getId(), null);
+        long rowsAffected = db.update(tableName, values, SEARCH_COL_ID + " = " + place.getId(), null);
 
         db.close();
 
@@ -128,41 +172,43 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean deletePlace(long id) {
+
+    private boolean deletePlace(long id, String tableName) {
 
         SQLiteDatabase db = getWritableDatabase();
-        long rowsDeleted = db.delete(SEARCH_TABLE_NAME, SEARCH_COL_ID + "=?" +  id , null);
+        long rowsDeleted = db.delete(tableName, SEARCH_COL_ID + "=?" +  id , null);
         db.close();
 
         return rowsDeleted > 0;
     }
 
 
-    public boolean deleteAllPlaces() {
+    private boolean deleteAllPlaces(String tableName) {
 
         SQLiteDatabase db = getWritableDatabase();
-        long rowsDeleted = db.delete(SEARCH_TABLE_NAME, null , null);
+        long rowsDeleted = db.delete(tableName, null , null);
         db.close();
 
         return rowsDeleted > 0;
     }
 
-    private Cursor getPlacesCursor()
+
+    private Cursor getPlacesCursor(String tableName)
     {
         SQLiteDatabase db = getReadableDatabase();
 
-        String sqlQuery = "SELECT * FROM " + SEARCH_TABLE_NAME +
+        String sqlQuery = "SELECT * FROM " + tableName +
                 " ORDER BY " + SEARCH_COL_ID + ";";
 
         return db.rawQuery(sqlQuery, null);
     }
 
 
-    public ArrayList<Place> getPlacesArrayList()
+    private ArrayList<Place> getArrayList(String tableName)
     {
         ArrayList<Place> places = new ArrayList<>();
 
-        Cursor c = getPlacesCursor();
+        Cursor c = getPlacesCursor(tableName);
 
         final int id_index = c.getColumnIndex(SEARCH_COL_ID);
         final int id_name = c.getColumnIndex(SEARCH_COL_NAME);

@@ -1,29 +1,26 @@
 package com.example.jbt.aroundme.UIHelpers;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
-
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
-
 import java.util.ArrayList;
 
 
-public class NearbyAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks<ArrayList<Place>>
+public class FavoritesAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks<ArrayList<Place>>
 {
 
     private final Context mContext;
-    private final PlaceRecyclerAdapter mAdapter;
+    private final FavoritesRecyclerAdapter mFavoritesAdapter;
     private final AroundMeDBHelper mDbHelper;
 
 
-    public NearbyAsyncLoaderCallbacks(Context context, PlaceRecyclerAdapter adapter, AroundMeDBHelper dbHelper)
+    public FavoritesAsyncLoaderCallbacks(Context context, FavoritesRecyclerAdapter adapter, AroundMeDBHelper dbHelper)
     {
         mContext = context;
-        mAdapter = adapter;
+        mFavoritesAdapter = adapter;
         mDbHelper = dbHelper;
     }
 
@@ -33,18 +30,18 @@ public class NearbyAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
         return new AsyncTaskLoader<ArrayList<Place>>(mContext) {
             @Override
             public ArrayList<Place> loadInBackground() {
-                return mDbHelper.getPlacesArrayList();
+                return mDbHelper.favoritesGetArrayList();
             }
         };
     }
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
-        mAdapter.setData(data);
+        mFavoritesAdapter.setData(data);
     }
 
     @Override
     public void onLoaderReset(android.support.v4.content.Loader<ArrayList<Place>> loader) {
-        mAdapter.clearData();
+        mFavoritesAdapter.clearData();
     }
 }

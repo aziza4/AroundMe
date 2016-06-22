@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import com.example.jbt.aroundme.Data.DetailsRequest;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
@@ -25,21 +23,21 @@ import java.util.ArrayList;
 
 
 
-public class PlaceRecyclerAdapter extends RecyclerView.Adapter<PlaceRecyclerAdapter.PlaceViewHolder> {
+public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAdapter.PlaceViewHolder> {
 
     private final Context mContext;
     private GooglePlacesNearbyHelper mNearbyHelper;
     private ArrayList<Place> mPlaces;
 
 
-    public PlaceRecyclerAdapter(Context context) {
+    public SearchRecyclerAdapter(Context context) {
         mContext = context;
         mNearbyHelper = new GooglePlacesNearbyHelper(mContext);
         mPlaces = null;
     }
 
 
-    public void setData(ArrayList<Place> places) // called whenever refresh is needed
+    public void setData(ArrayList<Place> places)
     {
         if (places != null) {
             mPlaces = places;
@@ -116,12 +114,12 @@ public class PlaceRecyclerAdapter extends RecyclerView.Adapter<PlaceRecyclerAdap
         public PlaceViewHolder(View view) {
             super(view);
 
-            mPlaceIV = (ImageView) view.findViewById(R.id.placeImageView);
-            mNameTV = (TextView)view.findViewById(R.id.nameTextView);
-            mVicinityTV = (TextView)view.findViewById(R.id.vicinityTextView);
-            mRatingRatingBar = (RatingBar) view.findViewById(R.id.placeRatingBar);
-            mPhoneTV = (TextView)view.findViewById(R.id.phoneTextView);
-            mIconIV = (ImageView) view.findViewById(R.id.iconImageView);
+            mPlaceIV = (ImageView) view.findViewById(R.id.searchPlaceImageView);
+            mNameTV = (TextView)view.findViewById(R.id.searchNameTextView);
+            mVicinityTV = (TextView)view.findViewById(R.id.searchVicinityTextView);
+            mRatingRatingBar = (RatingBar) view.findViewById(R.id.searchPlaceRatingBar);
+            mPhoneTV = (TextView)view.findViewById(R.id.searchPhoneTextView);
+            mIconIV = (ImageView) view.findViewById(R.id.searchIconImageView);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

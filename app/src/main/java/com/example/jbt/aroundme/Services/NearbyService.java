@@ -56,7 +56,8 @@ public class NearbyService extends IntentService {
         {
             case ACTION_NEARBY_PLACES:
                 NearbyRequest nearbyRequset = intent.getParcelableExtra(EXTRA_NEARBY_REQUEST);
-                mDbHelper.deleteAllPlaces();
+                mDbHelper.searchDeleteAllPlaces();
+                mDbHelper.favoritesDeleteAllPlaces(); // Todo: remove later, only for debug
                 if ( downloadNearbyPlacesWithPhotos(nearbyRequset))
                     downloadPlacesPhotos();
                 break;
@@ -75,7 +76,9 @@ public class NearbyService extends IntentService {
         NetworkHelper networkHelper = new NetworkHelper(url);
         String jsonString = networkHelper.getJsonString();
         DetailsResponse res = mNearbyHelper.GetPlaceDetails(request, jsonString);
-        mDbHelper.updatePlace(res.getPlace());
+        Place place = res.getPlace();
+        mDbHelper.searchUpdatePlace(place);
+        mDbHelper.favoritesInsertPlace(place);
         Intent intent = new Intent(ACTION_DETAILS_NOTIFY);
         intent.putExtra(EXTRA_DETAILS_PLACE_SAVED, 1);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
@@ -118,7 +121,7 @@ public class NearbyService extends IntentService {
     private void downloadPlacesPhotos()
     {
 
-        mPlaces = mDbHelper.getPlacesArrayList();
+        mPlaces = mDbHelper.searchGetArrayList();
 
         for (int i=0; i < mPlaces.size(); i++ ) {
 
@@ -139,7 +142,7 @@ public class NearbyService extends IntentService {
                 continue;
 
             place.setPhoto(photo);
-            mDbHelper.updatePlace(place);
+            mDbHelper.searchUpdatePlace(place);
         }
     }
 
@@ -147,7 +150,7 @@ public class NearbyService extends IntentService {
     private void handleNewPlaces(ArrayList<Place> places)
     {
         mPlaces.addAll(places);
-        mDbHelper.bulkInsertSearchResults(places);
+        mDbHelper.searchBulkInsert(places);
 
         Intent intent = new Intent(ACTION_NEARBY_NOTIFY);
         intent.putExtra(EXTRA_NEARBY_PLACES_SAVED, mPlaces.size());
