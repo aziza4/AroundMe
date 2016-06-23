@@ -1,13 +1,16 @@
 package com.example.jbt.aroundme.ActivitiesAndFragments;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
 import com.example.jbt.aroundme.R;
@@ -64,7 +67,13 @@ public class SearchFragment extends Fragment {
 
     public void refresh()
     {
-        getActivity().getSupportLoaderManager()
+        AppCompatActivity activity = (AppCompatActivity)getActivity();
+        if (activity == null) {
+            Toast.makeText(getContext(), "SearchFragment not attached to Activity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        activity.getSupportLoaderManager()
                 .restartLoader(LOADER_ID, null, mSearchLoaderCallbacks)
                 .forceLoad();
     }

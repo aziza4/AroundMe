@@ -163,12 +163,18 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
                 .appendQueryParameter(mLangKey, request.getLanguage())
                 .appendQueryParameter(mLocKey, request.getLatLngAsString())
                 .appendQueryParameter(mRadiusKey, request.getRadiusAsString())
-                .appendQueryParameter(mKeywordKey, request.getKeyword())
-                .appendQueryParameter(mTypesKey, request.getTypesAsString())
                 .appendQueryParameter(mRankKey, request.getRank())
                 .appendQueryParameter(mApiKeyKey, mApiKeyVal);
 
-        if ( pageToken != null)
+        String types = request.getTypesAsString();
+        if ( types != null && !types.isEmpty())
+            builder.appendQueryParameter(mKeywordKey, types);
+
+        String keyword = request.getKeyword();
+        if ( keyword != null && !keyword.isEmpty())
+            builder.appendQueryParameter(mKeywordKey, keyword);
+
+        if ( pageToken != null && !pageToken.isEmpty())
             builder.appendQueryParameter(mPageTokenKey, pageToken);
 
         return builder.build().toString();
@@ -406,7 +412,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
                     places.add(place);
                 }
             } else {
-                Log.e(MainActivity.LOG_TAG, "response status" + status);
+                Log.e(MainActivity.LOG_TAG, "response status " + status);
             }
 
 

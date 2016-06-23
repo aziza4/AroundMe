@@ -62,6 +62,7 @@ public class NetworkHelper {
 
         } catch (Exception e) {
             Log.e(MainActivity.LOG_TAG, "" + e.getMessage());
+            return null;
 
         } finally {
 

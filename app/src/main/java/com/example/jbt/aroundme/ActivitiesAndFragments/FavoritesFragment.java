@@ -2,11 +2,14 @@ package com.example.jbt.aroundme.ActivitiesAndFragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.UIHelpers.FavoritesAsyncLoaderCallbacks;
@@ -15,7 +18,7 @@ import com.example.jbt.aroundme.UIHelpers.FavoritesRecyclerAdapter;
 
 public class FavoritesFragment extends Fragment {
 
-    private static final int LOADER_ID = 1;
+    private static final int LOADER_ID = 2;
     private FavoritesAsyncLoaderCallbacks mFavoritesLoaderCallbacks;
 
     private String mTitle;
@@ -62,7 +65,13 @@ public class FavoritesFragment extends Fragment {
 
     public void refresh()
     {
-        getActivity().getSupportLoaderManager()
+        AppCompatActivity activity = (AppCompatActivity)getActivity();
+        if (activity == null) {
+            Toast.makeText(getContext(), "FavoriteFragment not attached to Activity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        activity.getSupportLoaderManager()
                 .restartLoader(LOADER_ID, null, mFavoritesLoaderCallbacks)
                 .forceLoad();
     }

@@ -106,8 +106,6 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         public final TextView mNameTV;
         public final TextView mVicinityTV;
         public final RatingBar mRatingRatingBar;
-        public final TextView mPhoneTV;
-        public final ImageView mIconIV;
 
         private Place mPlace;
 
@@ -118,16 +116,15 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             mNameTV = (TextView)view.findViewById(R.id.searchNameTextView);
             mVicinityTV = (TextView)view.findViewById(R.id.searchVicinityTextView);
             mRatingRatingBar = (RatingBar) view.findViewById(R.id.searchPlaceRatingBar);
-            mPhoneTV = (TextView)view.findViewById(R.id.searchPhoneTextView);
-            mIconIV = (ImageView) view.findViewById(R.id.searchIconImageView);
 
-            view.setOnClickListener(new View.OnClickListener() {
+            view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View view) {
-
-                    Intent intent = new Intent(NearbyService.ACTION_PLACE_DETAILS, null, mContext, NearbyService.class);
-                    intent.putExtra(NearbyService.EXTRA_PLACE_DETAILS, new DetailsRequest(mPlace));
+                public boolean onLongClick(View view) {
+                    Intent intent = new Intent(NearbyService.ACTION_PLACE_FAVORITES, null, mContext, NearbyService.class);
+                    intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, new DetailsRequest(mPlace));
+                    intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_SAVE, true);
                     mContext.startService(intent);
+                    return true;
                 }
             });
         }
@@ -137,7 +134,6 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         {
             mPlace = place;
 
-            mVicinityTV.setText(place.getVicinity());
             //Bitmap imagePlaceHolder = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.placeholder);
 
             Bitmap bitmap = place.getPhoto().getBitmap();
@@ -158,11 +154,6 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             mNameTV.setText(place.getName());
             mVicinityTV.setText(place.getVicinity());
             mRatingRatingBar.setRating((float)place.getRating());
-            mPhoneTV.setText(place.getPhone());
-
-            String url = place.getIcon();
-            if (url != null)
-                Picasso.with(mContext).load(Uri.parse(url)).into(mIconIV);
         }
     }
 }

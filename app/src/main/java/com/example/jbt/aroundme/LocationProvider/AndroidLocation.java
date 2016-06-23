@@ -58,7 +58,7 @@ public class AndroidLocation implements LocationInterface {
             };
 
             requestLocationFromProvider(LocationManager.GPS_PROVIDER);
-            requestLocationFromNetworkOnTimeout();
+//            requestLocationFromNetworkOnTimeout();
 
         } catch (SecurityException e) {
             Log.e(MainActivity.LOG_TAG, "Missing permission");

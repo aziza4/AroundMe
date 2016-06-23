@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
 import com.example.jbt.aroundme.Data.DetailsRequest;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
@@ -121,13 +122,14 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             mPhoneTV = (TextView)view.findViewById(R.id.favoritesPhoneTextView);
             mIconIV = (ImageView) view.findViewById(R.id.favoritesIconImageView);
 
-            view.setOnClickListener(new View.OnClickListener() {
+            view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View view) {
-
-                    Intent intent = new Intent(NearbyService.ACTION_PLACE_DETAILS, null, mContext, NearbyService.class);
-                    intent.putExtra(NearbyService.EXTRA_PLACE_DETAILS, new DetailsRequest(mPlace));
+                public boolean onLongClick(View view) {
+                    Intent intent = new Intent(NearbyService.ACTION_PLACE_FAVORITES, null, mContext, NearbyService.class);
+                    intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, new DetailsRequest(mPlace));
+                    intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_REMOVE, true);
                     mContext.startService(intent);
+                    return true;
                 }
             });
         }
@@ -137,7 +139,6 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
         {
             mPlace = place;
 
-            mVicinityTV.setText(place.getVicinity());
             //Bitmap imagePlaceHolder = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.placeholder);
 
             Bitmap bitmap = place.getPhoto().getBitmap();

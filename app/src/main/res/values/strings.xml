@@ -22,6 +22,7 @@
 
     <string name="searchable">Search</string>
     <string name="menu_search_by_keyword">Search</string>
+    <string name="msg_zero_results">Zero results found</string>
 
 
 

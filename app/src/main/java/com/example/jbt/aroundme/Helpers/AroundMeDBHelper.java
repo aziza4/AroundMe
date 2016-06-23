@@ -4,9 +4,13 @@ package com.example.jbt.aroundme.Helpers;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.util.Log;
+
+import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
 import com.example.jbt.aroundme.Data.Place;
 import java.util.ArrayList;
 
@@ -176,7 +180,8 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     private boolean deletePlace(long id, String tableName) {
 
         SQLiteDatabase db = getWritableDatabase();
-        long rowsDeleted = db.delete(tableName, SEARCH_COL_ID + "=?" +  id , null);
+
+        long rowsDeleted = db.delete(tableName, SEARCH_COL_ID + "=" +  id , null);
         db.close();
 
         return rowsDeleted > 0;

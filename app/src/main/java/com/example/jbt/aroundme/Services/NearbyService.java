@@ -4,8 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
-import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
+
 import com.example.jbt.aroundme.Data.DetailsRequest;
 import com.example.jbt.aroundme.Data.DetailsResponse;
 import com.example.jbt.aroundme.Data.NearbyRequest;
@@ -23,14 +22,17 @@ public class NearbyService extends IntentService {
     public static final String ACTION_NEARBY_PLACES = "com.example.jbt.aroundme.Services.action.ACTION_NEARBY_GET";
     public static final String EXTRA_NEARBY_REQUEST = "com.example.jbt.aroundme.Services.extra.nearbyplaces.request";
 
-    public static final String ACTION_PLACE_DETAILS = "com.example.jbt.aroundme.Services.action.ACTION_PLACE_DETAILS";
-    public static final String EXTRA_PLACE_DETAILS = "com.example.jbt.aroundme.Services.extra.placedetails.request";
+    public static final String ACTION_PLACE_FAVORITES = "com.example.jbt.aroundme.Services.action.ACTION_PLACE_FAVORITES";
+    public static final String EXTRA_PLACE_FAVORITES_DATA = "com.example.jbt.aroundme.Services.extra.placedetails.request";
+    public static final String EXTRA_PLACE_FAVORITES_ACTION_SAVE = "com.example.jbt.aroundme.Services.extra.placedetails.action.save";
+    public static final String EXTRA_PLACE_FAVORITES_ACTION_REMOVE = "com.example.jbt.aroundme.Services.extra.placedetails.action.remove";
 
     public static final String ACTION_NEARBY_NOTIFY = "com.example.jbt.aroundme.Services.action.ACTION_NEARBY_NOTIFY";
     public static final String EXTRA_NEARBY_PLACES_SAVED = "com.example.jbt.aroundme.Services.extra.nearbyplaces.places.saved";
 
-    public static final String ACTION_DETAILS_NOTIFY = "com.example.jbt.aroundme.Services.action.ACTION_DETAILS_NOTIFY";
-    public static final String EXTRA_DETAILS_PLACE_SAVED = "com.example.jbt.aroundme.Services.extra.placedetails.saved";
+    public static final String ACTION_FAVORITES_NOTIFY = "com.example.jbt.aroundme.Services.action.ACTION_FAVORITES_NOTIFY";
+    public static final String EXTRA_FAVORITES_PLACE_SAVED = "com.example.jbt.aroundme.Services.extra.placedetails.saved";
+    public static final String EXTRA_FAVORITES_PLACE_REMOVED = "com.example.jbt.aroundme.Services.extra.placedetails.removed";
 
 
     private GooglePlacesNearbyHelper mNearbyHelper;
@@ -59,30 +61,52 @@ public class NearbyService extends IntentService {
                 mDbHelper.searchDeleteAllPlaces();
                 mDbHelper.favoritesDeleteAllPlaces(); // Todo: remove later, only for debug
                 if ( downloadNearbyPlacesWithPhotos(nearbyRequset))
-                    downloadPlacesPhotos();
+                    downloadPlacesPhotoAndSaveToDB();
                 break;
 
-            case ACTION_PLACE_DETAILS:
-                DetailsRequest detailsRequest = intent.getParcelableExtra(EXTRA_PLACE_DETAILS);
-                downloadPlaceDetails(detailsRequest);
+            case ACTION_PLACE_FAVORITES:
+                DetailsRequest detailsRequest = intent.getParcelableExtra(EXTRA_PLACE_FAVORITES_DATA);
+
+                if (intent.getBooleanExtra(EXTRA_PLACE_FAVORITES_ACTION_SAVE, false))
+                    downloadPlaceDetailsAndAddToFavorites(detailsRequest);
+
+                if (intent.getBooleanExtra(EXTRA_PLACE_FAVORITES_ACTION_REMOVE, false))
+                    deleteFromFavorites(detailsRequest);
                 break;
         }
     }
 
+    private void deleteFromFavorites(DetailsRequest request)
+    {
+        Place place = request.getPlace();
+        mDbHelper.favoritesDeletePlace(place.getId());
 
-    private void downloadPlaceDetails(DetailsRequest request)
+        notifyFavorites(EXTRA_FAVORITES_PLACE_REMOVED);
+    }
+
+    private void downloadPlaceDetailsAndAddToFavorites(DetailsRequest request)
     {
         URL url = mNearbyHelper.getDetailsUrl(request.getPlace());
         NetworkHelper networkHelper = new NetworkHelper(url);
         String jsonString = networkHelper.getJsonString();
         DetailsResponse res = mNearbyHelper.GetPlaceDetails(request, jsonString);
         Place place = res.getPlace();
+
         mDbHelper.searchUpdatePlace(place);
         mDbHelper.favoritesInsertPlace(place);
-        Intent intent = new Intent(ACTION_DETAILS_NOTIFY);
-        intent.putExtra(EXTRA_DETAILS_PLACE_SAVED, 1);
+        downloadPlacePhoto(place);
+        mDbHelper.searchUpdatePlace(place);
+
+        notifyFavorites(EXTRA_FAVORITES_PLACE_SAVED);
+    }
+
+    private void notifyFavorites(String extra)
+    {
+        Intent intent = new Intent(ACTION_FAVORITES_NOTIFY);
+        intent.putExtra(EXTRA_FAVORITES_PLACE_SAVED, 1);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
 
 
     private boolean downloadNearbyPlacesWithPhotos(NearbyRequest request)
@@ -92,23 +116,24 @@ public class NearbyService extends IntentService {
 
         do {
 
+            String status;
+
             URL url = mNearbyHelper.getNearbyLocUrl(request, pageToken);
             NetworkHelper networkHelper = new NetworkHelper(url);
 
             String jsonString = networkHelper.getJsonString();
             response = mNearbyHelper.GetPlaces(jsonString);
 
-            String status = response.getStatus();
+            status = response.getStatus();
 
             // debug
             if (status.equals(NearbyResponse.STATUS_INVALID_REQUEST)) {
-                @SuppressWarnings("UnusedAssignment") String myUrl = url.toString(); // Todo: investigate how come
+                @SuppressWarnings("UnusedAssignment")
+                String myUrl = url.toString(); // Todo: investigate how come
             }
 
-            if (status.equals(NearbyResponse.STATUS_OK))
+            if (status.equals(NearbyResponse.STATUS_OK) || status.equals(NearbyResponse.STATUS_ZERO_RESULTS))
                 handleNewPlaces(response.getPlaces());
-            else
-                Log.e(MainActivity.LOG_TAG, "response status = " + status);
 
             pageToken = response.getNextPageToken();
 
@@ -118,39 +143,44 @@ public class NearbyService extends IntentService {
     }
 
 
-    private void downloadPlacesPhotos()
+    private void downloadPlacesPhotoAndSaveToDB()
     {
-
         mPlaces = mDbHelper.searchGetArrayList();
 
         for (int i=0; i < mPlaces.size(); i++ ) {
-
-            final Place place = mPlaces.get(i);
-
-            if (place.getPhotoRef() == null)
-                continue;
-
-            URL url = mNearbyHelper.getPhotoUrl(place);
-
-            if (url == null)
-                continue;
-
-            NetworkHelper networkHelper = new NetworkHelper(url);
-            Bitmap photo = networkHelper.getImage();
-
-            if (photo == null)
-                continue;
-
-            place.setPhoto(photo);
+            Place place = mPlaces.get(i);
+            downloadPlacePhoto(place);
             mDbHelper.searchUpdatePlace(place);
         }
+    }
+
+    private void downloadPlacePhoto(Place place)
+    {
+
+        if (place.getPhotoRef() == null)
+            return;
+
+        URL url = mNearbyHelper.getPhotoUrl(place);
+
+        if (url == null)
+            return;
+
+        NetworkHelper networkHelper = new NetworkHelper(url);
+        Bitmap photo = networkHelper.getImage();
+
+        if (photo == null)
+            return;
+
+        place.setPhoto(photo);
     }
 
 
     private void handleNewPlaces(ArrayList<Place> places)
     {
-        mPlaces.addAll(places);
-        mDbHelper.searchBulkInsert(places);
+        if (places.size() > 0) {
+            mPlaces.addAll(places);
+            mDbHelper.searchBulkInsert(places);
+        }
 
         Intent intent = new Intent(ACTION_NEARBY_NOTIFY);
         intent.putExtra(EXTRA_NEARBY_PLACES_SAVED, mPlaces.size());
