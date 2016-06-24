@@ -40,6 +40,8 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
                 if (placesSaved < 0 )
                     break;
 
+                mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
+
                 if (placesSaved == 0)
                     Toast.makeText(mActivity, mActivity.getString(R.string.msg_zero_results),
                             Toast.LENGTH_SHORT).show();
@@ -47,11 +49,7 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
                 SearchFragment searchFragment = (SearchFragment) mTabsPagerAdapter
                         .getRegisteredFragment(TabsPagerAdapter.SEARCH_TAB);
 
-                if (!searchFragment.refresh())
-                    Toast.makeText(mActivity, "SearchFragment not attached to Activity",
-                            Toast.LENGTH_SHORT).show();
-
-                mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
+                searchFragment.refresh(mActivity);
                 break;
 
             case NearbyService.ACTION_FAVORITES_NOTIFY:
@@ -62,14 +60,12 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
                 if (detailsSaved < 0 && detailsremoved < 0 && detailsremovedAll < 0)
                     break;
 
+                mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
+
                 FavoritesFragment favoritesFragment = (FavoritesFragment) mTabsPagerAdapter
                         .getRegisteredFragment(TabsPagerAdapter.FAVORITES_TAB);
 
-                if ( ! favoritesFragment.refresh())
-                    Toast.makeText(mActivity, "FavoriteFragment not attached to Activity",
-                            Toast.LENGTH_SHORT).show();
-
-                mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
+                favoritesFragment.refresh(mActivity);
                 break;
         }
     }

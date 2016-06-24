@@ -73,7 +73,6 @@ public class UserCurrentLocation {
 
         if ( !ready() ) {
             mPendingRequest = keyword;
-            Toast.makeText(mContext, "Pending request for \"" + keyword + "\"", Toast.LENGTH_SHORT).show();
             return;
         }
 

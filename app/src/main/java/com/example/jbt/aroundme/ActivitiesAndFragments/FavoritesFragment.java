@@ -1,14 +1,16 @@
 package com.example.jbt.aroundme.ActivitiesAndFragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
 import com.example.jbt.aroundme.R;
@@ -18,7 +20,7 @@ import com.example.jbt.aroundme.UIHelpers.FavoritesRecyclerAdapter;
 
 public class FavoritesFragment extends Fragment {
 
-    private static final int LOADER_ID = 2;
+    public static final int FAVORITES_LOADER_ID = 2;
     private FavoritesAsyncLoaderCallbacks mFavoritesLoaderCallbacks;
 
     private String mTitle;
@@ -33,6 +35,7 @@ public class FavoritesFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,25 +58,16 @@ public class FavoritesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mFavoritesLoaderCallbacks = new FavoritesAsyncLoaderCallbacks(getActivity(), favoritesAdapter, dbHelper);
-        getActivity().getSupportLoaderManager()
-                .initLoader(LOADER_ID, null, mFavoritesLoaderCallbacks)
-                .forceLoad(); // see: http://stackoverflow.com/questions/10524667/android-asynctaskloader-doesnt-start-loadinbackground
-
+        getActivity().getSupportLoaderManager().initLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks);
 
         return v;
     }
 
-    public boolean refresh()
+    public void refresh(AppCompatActivity activity)
     {
-        AppCompatActivity activity = (AppCompatActivity)getActivity();
-        if (activity == null)
-            return false;
-
         activity.getSupportLoaderManager()
-                .restartLoader(LOADER_ID, null, mFavoritesLoaderCallbacks)
+                .restartLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks)
                 .forceLoad();
-
-        return true;
     }
 }
 

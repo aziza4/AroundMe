@@ -1,16 +1,16 @@
 package com.example.jbt.aroundme.ActivitiesAndFragments;
 
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
 import com.example.jbt.aroundme.R;
@@ -20,7 +20,7 @@ import com.example.jbt.aroundme.UIHelpers.SearchRecyclerAdapter;
 
 public class SearchFragment extends Fragment {
 
-    private static final int LOADER_ID = 1;
+    public static final int SEARCH_LOADER_ID = 1;
     private SearchAsyncLoaderCallbacks mSearchLoaderCallbacks;
 
     private String mTitle;
@@ -35,6 +35,7 @@ public class SearchFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,24 +58,15 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mSearchLoaderCallbacks = new SearchAsyncLoaderCallbacks(getActivity(), searchAdapter, dbHelper);
-        getActivity().getSupportLoaderManager()
-                .initLoader(LOADER_ID, null, mSearchLoaderCallbacks)
-                .forceLoad(); // see: http://stackoverflow.com/questions/10524667/android-asynctaskloader-doesnt-start-loadinbackground
-
+        getActivity().getSupportLoaderManager().initLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks);
 
         return v;
     }
 
-    public boolean refresh()
+    public void refresh(AppCompatActivity activity)
     {
-        AppCompatActivity activity = (AppCompatActivity)getActivity();
-        if (activity == null)
-            return false;
-
         activity.getSupportLoaderManager()
-                .restartLoader(LOADER_ID, null, mSearchLoaderCallbacks)
+                .restartLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)
                 .forceLoad();
-
-        return true;
     }
 }
