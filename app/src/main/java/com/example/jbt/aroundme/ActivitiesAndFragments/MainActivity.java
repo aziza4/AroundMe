@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         // User Location
-        LocationInterface locationProvider = new AndroidLocation(this);
+        LocationInterface locationProvider = new FastLocationProvider(this);
         mUserCurrentLocation = new UserCurrentLocation(this, locationProvider,
                 new UserCurrentLocation.OnLocationReadyListener() {
             @Override public void onLocationReady() { invalidateOptionsMenu(); }

@@ -35,6 +35,6 @@ public class ImageHelper {
         if (enable)
             icon.setColorFilter(null);
         else
-            icon.setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
+            icon.setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
     }
 }

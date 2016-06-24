@@ -4,6 +4,8 @@ package com.example.jbt.aroundme.UIHelpers;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.widget.Toast;
+
 import com.example.jbt.aroundme.Data.NearbyRequest;
 import com.example.jbt.aroundme.Helpers.SharedPrefHelper;
 import com.example.jbt.aroundme.LocationProvider.LocationInterface;
@@ -29,7 +31,6 @@ public class UserCurrentLocation {
         mListener = listener;
         mLocationReadyCalled = false;
         mPendingRequest = null;
-
         mLocationProvider = locationProvider;
 
         mLocationProvider.setOnLocationChangeListener(new LocationInterface.onLocationListener() {
@@ -47,6 +48,16 @@ public class UserCurrentLocation {
                     getAndHandle(mPendingRequest);
                     mListener.onPendingRequestHandled();
                 }
+            }
+
+            @Override
+            public void onNoGPSAndNetworkArePermitted() {
+                Toast.makeText(mContext, "GPS and Network are not permitted", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNoGPSAndNetworkSignalsAvailable() {
+                Toast.makeText(mContext, "GPS and Network are off\nPlease turn on at least one", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -88,8 +99,8 @@ public class UserCurrentLocation {
         SharedPrefHelper sharedPref = new SharedPrefHelper(mContext);
 
         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        int radius = 100;
-        String[] types = { "" /*"bank", "atm", "restaurant"*/};
+        int radius = 500;
+        String[] types = { "restaurant" };
         String language = sharedPref.isEnglish() ?
                 mContext.getString(R.string.nearby_language_val_en) :
                 mContext.getString(R.string.nearby_language_val_iw) ;

@@ -43,9 +43,9 @@ public class Utility {
         LatLng latLng =  place.getLoc();
         double lat = latLng.latitude;
         double lng = latLng.longitude;
-        //String address = place.getAddress() != null ? place.getAddress() : "";
+        String address = place.getAddress() != null ? place.getAddress() : "";
         String name = place.getName();
-        Uri uri = Uri.parse("geo:" + lat + "," + lng + "?" + "z=17" + "&q=" + Uri.encode(name));
+        Uri uri = Uri.parse("geo:" + lat + "," + lng + "?" + "z=17" + "&q=" + Uri.encode(name) + "+" + Uri.encode(address));
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(uri);
         provider.setShareIntent(intent);

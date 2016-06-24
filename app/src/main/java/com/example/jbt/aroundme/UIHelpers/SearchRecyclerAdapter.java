@@ -137,7 +137,8 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 mPlaceIV.setImageBitmap(bitmap);
             } else {
                 if (place.getPhotoRef() == null) {
-                    mPlaceIV.setVisibility(View.GONE);
+                    mPlaceIV.setImageBitmap(null);
+                    //mPlaceIV.setVisibility(View.GONE);
                 } else {
                     Uri uri = mNearbyHelper.getPhotoUri(place);
                     Picasso.with(mContext)
