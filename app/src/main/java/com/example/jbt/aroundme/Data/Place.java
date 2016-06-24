@@ -75,7 +75,7 @@ public class Place implements Parcelable {
     }
 
 
-    protected Place(Parcel in) {
+    Place(Parcel in) {
         mId = in.readLong();
         mLoc = in.readParcelable(LatLng.class.getClassLoader());
         mIcon = in.readString();

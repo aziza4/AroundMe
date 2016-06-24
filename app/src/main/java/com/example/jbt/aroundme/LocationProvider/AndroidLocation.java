@@ -22,11 +22,11 @@ public class AndroidLocation implements LocationInterface {
     private static final int MIN_DISTANCE = 0;
     private static final int GPS_TIMEOUT_MILLISECONDS = 5000;
 
-    private Activity mActivity;
+    private final Activity mActivity;
     private final LocationManager mLocationManager;
     private LocationListener mLocationListener;
     private onLocationListener mListener;
-    private Timer mTimer;
+    private final Timer mTimer;
     private boolean mGotLocation= false;
 
     public AndroidLocation(Activity activity)

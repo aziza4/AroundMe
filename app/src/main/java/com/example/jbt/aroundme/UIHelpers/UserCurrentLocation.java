@@ -4,7 +4,6 @@ package com.example.jbt.aroundme.UIHelpers;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.widget.Toast;
 import com.example.jbt.aroundme.Data.NearbyRequest;
 import com.example.jbt.aroundme.Helpers.SharedPrefHelper;
 import com.example.jbt.aroundme.LocationProvider.LocationInterface;

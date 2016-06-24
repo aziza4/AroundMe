@@ -14,27 +14,23 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.example.jbt.aroundme.ActivitiesAndFragments.SettingsActivity;
-import com.example.jbt.aroundme.Data.DetailsRequest;
-import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
 import com.example.jbt.aroundme.Helpers.ImageHelper;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.Services.NearbyService;
 
 public class MainMenuHelper {
 
-    AppCompatActivity mActivity;
-    private UserCurrentLocation mUserCurrentLocation;
-    private PlacesAutoComplete mPlacesAutoComplete;
-    private Resources mResources;
-    private AroundMeDBHelper mDBHelper;
+    private final AppCompatActivity mActivity;
+    private final UserCurrentLocation mUserCurrentLocation;
+    private final PlacesAutoComplete mPlacesAutoComplete;
+    private final Resources mResources;
+
 
     public MainMenuHelper(AppCompatActivity activity, UserCurrentLocation userCurrentLocation, PlacesAutoComplete placesAutoComplete) {
 
         mActivity = activity;
         mUserCurrentLocation = userCurrentLocation;
         mPlacesAutoComplete = placesAutoComplete;
-
-        mDBHelper = new AroundMeDBHelper(activity);
         mResources = mActivity.getResources();
     }
 
@@ -52,7 +48,7 @@ public class MainMenuHelper {
         byKeyword.setEnabled(enabled);
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = mActivity.getMenuInflater();
         inflater.inflate(R.menu.main, menu);
@@ -64,7 +60,6 @@ public class MainMenuHelper {
         SearchManager searchManager = (SearchManager) mActivity.getSystemService(Activity.SEARCH_SERVICE);
         ComponentName componentName = mActivity.getComponentName();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName));
-        return true;
     }
 
 

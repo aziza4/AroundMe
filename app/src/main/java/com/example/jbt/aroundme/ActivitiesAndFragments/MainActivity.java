@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Tabs
-        TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPagerContainer);
+        TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager(), viewPager);
         viewPager.setAdapter(tabsPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_layout);
         tabLayout.setupWithViewPager(viewPager);
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         // register receiver
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        NearbyNotificationReceiver receiver = new NearbyNotificationReceiver(this, viewPager, tabsPagerAdapter);
+        NearbyNotificationReceiver receiver = new NearbyNotificationReceiver(this, tabsPagerAdapter);
         IntentFilter nearby = new IntentFilter(NearbyService.ACTION_NEARBY_NOTIFY);
         IntentFilter details = new IntentFilter(NearbyService.ACTION_FAVORITES_NOTIFY);
         localBroadcastManager.registerReceiver(receiver, nearby);

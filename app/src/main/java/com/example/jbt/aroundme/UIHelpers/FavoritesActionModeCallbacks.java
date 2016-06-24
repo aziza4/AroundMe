@@ -6,17 +6,17 @@ import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
 import com.example.jbt.aroundme.Data.DetailsRequest;
 import com.example.jbt.aroundme.Data.Place;
+import com.example.jbt.aroundme.Helpers.Utility;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.Services.NearbyService;
 
 
-public class FavoritesActionModeCallbacks implements ActionMode.Callback {
+class FavoritesActionModeCallbacks implements ActionMode.Callback {
 
-    private AppCompatActivity mActivity;
-    private Place mPlace;
+    private final AppCompatActivity mActivity;
+    private final Place mPlace;
 
     public FavoritesActionModeCallbacks(AppCompatActivity activity, Place place)
     {
@@ -26,8 +26,13 @@ public class FavoritesActionModeCallbacks implements ActionMode.Callback {
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
         MenuInflater inflater = mode.getMenuInflater();
         inflater.inflate(R.menu.favorites_actionmode, menu);
+
+        // http://stackoverflow.com/questions/23513647/share-item-in-actionbar-using-contextual-actionbar
+        Utility.setShareActionProviderForLocation(menu, mPlace);
+
         return true;
     }
 

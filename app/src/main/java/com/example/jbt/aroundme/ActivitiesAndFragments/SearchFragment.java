@@ -1,13 +1,12 @@
 package com.example.jbt.aroundme.ActivitiesAndFragments;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +19,15 @@ import com.example.jbt.aroundme.UIHelpers.SearchRecyclerAdapter;
 
 public class SearchFragment extends Fragment {
 
-    public static final int SEARCH_LOADER_ID = 1;
+    private static final int SEARCH_LOADER_ID = 1;
+
+    private static ViewPager mViewPager;
     private SearchAsyncLoaderCallbacks mSearchLoaderCallbacks;
 
-    private String mTitle;
-    private int mPage;
 
+    public static SearchFragment newInstance(int page, String title, ViewPager viewPager) {
+        mViewPager = viewPager;
 
-    public static SearchFragment newInstance(int page, String title) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
@@ -40,8 +40,8 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt("someInt", 0);
-        mTitle = getArguments().getString("someTitle");
+        int mPage = getArguments().getInt("someInt", 0);
+        String mTitle = getArguments().getString("someTitle");
     }
 
 
@@ -51,14 +51,16 @@ public class SearchFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
-        AroundMeDBHelper dbHelper = new AroundMeDBHelper(getActivity());
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.searchListView);
         SearchRecyclerAdapter searchAdapter = new SearchRecyclerAdapter(getActivity());
         recyclerView.setAdapter(searchAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mSearchLoaderCallbacks = new SearchAsyncLoaderCallbacks(getActivity(), searchAdapter, dbHelper);
-        getActivity().getSupportLoaderManager().initLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks);
+        mSearchLoaderCallbacks = new SearchAsyncLoaderCallbacks(getActivity(), searchAdapter, mViewPager);
+
+        getActivity().getSupportLoaderManager()
+                .initLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)
+                .forceLoad(); // see: http://stackoverflow.com/questions/10524667/android-asynctaskloader-doesnt-start-loadinbackground
 
         return v;
     }

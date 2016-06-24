@@ -3,7 +3,6 @@ package com.example.jbt.aroundme.UIHelpers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -14,11 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import com.example.jbt.aroundme.Data.DetailsRequest;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.Services.NearbyService;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
@@ -27,7 +24,7 @@ import java.util.ArrayList;
 public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAdapter.PlaceViewHolder> {
 
     private final Context mContext;
-    private GooglePlacesNearbyHelper mNearbyHelper;
+    private final GooglePlacesNearbyHelper mNearbyHelper;
     private ArrayList<Place> mPlaces;
 
 
@@ -140,7 +137,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 mPlaceIV.setImageBitmap(bitmap);
             } else {
                 if (place.getPhotoRef() == null) {
-                    mPlaceIV.setImageBitmap(null);
+                    mPlaceIV.setVisibility(View.GONE);
                 } else {
                     Uri uri = mNearbyHelper.getPhotoUri(place);
                     Picasso.with(mContext)
@@ -152,7 +149,12 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
 
             mNameTV.setText(place.getName());
             mVicinityTV.setText(place.getVicinity());
-            mRatingRatingBar.setRating((float)place.getRating());
+
+            float rating = (float)place.getRating();
+            if (rating > 0f)
+                mRatingRatingBar.setRating((float)place.getRating());
+            else
+                mRatingRatingBar.setVisibility(View.INVISIBLE);
         }
     }
 }

@@ -7,7 +7,7 @@ import android.os.Parcelable;
 public class DetailsRequest implements Parcelable {
 
 
-    private Place mPlace;
+    private final Place mPlace;
 
     public DetailsRequest(Place place)
     {
@@ -18,7 +18,7 @@ public class DetailsRequest implements Parcelable {
         return mPlace;
     }
 
-    protected DetailsRequest(Parcel in) {
+    private DetailsRequest(Parcel in) {
         mPlace = in.readParcelable(Place.class.getClassLoader());
     }
 

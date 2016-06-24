@@ -1,13 +1,11 @@
 package com.example.jbt.aroundme.ActivitiesAndFragments;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +18,14 @@ import com.example.jbt.aroundme.UIHelpers.FavoritesRecyclerAdapter;
 
 public class FavoritesFragment extends Fragment {
 
-    public static final int FAVORITES_LOADER_ID = 2;
+    private static final int FAVORITES_LOADER_ID = 2;
     private FavoritesAsyncLoaderCallbacks mFavoritesLoaderCallbacks;
-
-    private String mTitle;
-    private int mPage;
+    private static ViewPager mViewPager;
 
 
-    public static FavoritesFragment newInstance(int page, String title) {
+    public static FavoritesFragment newInstance(int page, String title, ViewPager viewPager) {
+        mViewPager = viewPager;
+
         FavoritesFragment fragment = new FavoritesFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
@@ -40,8 +38,8 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt("someInt", 0);
-        mTitle = getArguments().getString("someTitle");
+        int mPage = getArguments().getInt("someInt", 0);
+        String mTitle = getArguments().getString("someTitle");
     }
 
 
@@ -51,14 +49,17 @@ public class FavoritesFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_favorite, container, false);
 
-        AroundMeDBHelper dbHelper = new AroundMeDBHelper(getActivity());
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.favoritesListView);
         FavoritesRecyclerAdapter favoritesAdapter = new FavoritesRecyclerAdapter(getActivity());
         recyclerView.setAdapter(favoritesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mFavoritesLoaderCallbacks = new FavoritesAsyncLoaderCallbacks(getActivity(), favoritesAdapter, dbHelper);
-        getActivity().getSupportLoaderManager().initLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks);
+        mFavoritesLoaderCallbacks = new FavoritesAsyncLoaderCallbacks(getActivity(), favoritesAdapter, mViewPager);
+
+        getActivity().getSupportLoaderManager()
+                .initLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks)
+                .forceLoad(); // see: http://stackoverflow.com/questions/10524667/android-asynctaskloader-doesnt-start-loadinbackground
+
 
         return v;
     }

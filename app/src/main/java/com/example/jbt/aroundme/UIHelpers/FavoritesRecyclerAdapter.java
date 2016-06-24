@@ -2,28 +2,19 @@ package com.example.jbt.aroundme.UIHelpers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.jbt.aroundme.Data.DetailsRequest;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.Services.NearbyService;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
@@ -33,7 +24,7 @@ import java.util.ArrayList;
 public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecyclerAdapter.PlaceViewHolder> {
 
     private final Context mContext;
-    private GooglePlacesNearbyHelper mNearbyHelper;
+    private final GooglePlacesNearbyHelper mNearbyHelper;
     private ArrayList<Place> mPlaces;
 
 

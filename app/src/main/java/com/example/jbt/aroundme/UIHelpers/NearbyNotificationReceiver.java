@@ -3,10 +3,8 @@ package com.example.jbt.aroundme.UIHelpers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-
 import com.example.jbt.aroundme.ActivitiesAndFragments.FavoritesFragment;
 import com.example.jbt.aroundme.ActivitiesAndFragments.SearchFragment;
 import com.example.jbt.aroundme.R;
@@ -15,14 +13,12 @@ import com.example.jbt.aroundme.Services.NearbyService;
 
 public class NearbyNotificationReceiver extends BroadcastReceiver {
 
-    private AppCompatActivity mActivity;
-    private ViewPager mViewPager;
-    private TabsPagerAdapter mTabsPagerAdapter;
+    private final AppCompatActivity mActivity;
+    private final TabsPagerAdapter mTabsPagerAdapter;
 
-    public NearbyNotificationReceiver(AppCompatActivity activity, ViewPager viewPager, TabsPagerAdapter tabsPagerAdapter)
+    public NearbyNotificationReceiver(AppCompatActivity activity, TabsPagerAdapter tabsPagerAdapter)
     {
         mActivity = activity;
-        mViewPager = viewPager;
         mTabsPagerAdapter = tabsPagerAdapter;
     }
 
@@ -39,8 +35,6 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
 
                 if (placesSaved < 0 )
                     break;
-
-                mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
 
                 if (placesSaved == 0)
                     Toast.makeText(mActivity, mActivity.getString(R.string.msg_zero_results),
@@ -59,8 +53,6 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
 
                 if (detailsSaved < 0 && detailsremoved < 0 && detailsremovedAll < 0)
                     break;
-
-                mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
 
                 FavoritesFragment favoritesFragment = (FavoritesFragment) mTabsPagerAdapter
                         .getRegisteredFragment(TabsPagerAdapter.FAVORITES_TAB);

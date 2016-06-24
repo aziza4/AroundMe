@@ -247,7 +247,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     }
 
 
-    public Uri getDetailsUri(Place place) {
+    private Uri getDetailsUri(Place place) {
 
         // https://
         // maps.googleapis.com/
@@ -278,7 +278,10 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
 
         try {
 
-            url =  new URL(getDetailsUri(place).toString());
+            Uri uri = getDetailsUri(place);
+
+            if (uri != null)
+                url = new URL(uri.toString());
 
         } catch (MalformedURLException e) {
 

@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.content.LocalBroadcastManager;
-
 import com.example.jbt.aroundme.Data.DetailsRequest;
 import com.example.jbt.aroundme.Data.DetailsResponse;
 import com.example.jbt.aroundme.Data.NearbyRequest;
@@ -84,14 +83,13 @@ public class NearbyService extends IntentService {
             case ACTION_PLACE_FAVORITES_REMOVE_ALL:
                     deleteAllFromFavorites();
                 break;
-
         }
     }
 
     private void deleteAllFromFavorites()
     {
         mDbHelper.favoritesDeleteAllPlaces();
-        notifyFavorites(EXTRA_FAVORITES_PLACE_REMOVED);
+        notifyFavorites(EXTRA_FAVORITES_PLACE_REMOVED_ALL);
     }
 
     private void deleteFromFavorites(DetailsRequest request)
@@ -121,7 +119,7 @@ public class NearbyService extends IntentService {
     private void notifyFavorites(String extra)
     {
         Intent intent = new Intent(ACTION_FAVORITES_NOTIFY);
-        intent.putExtra(EXTRA_FAVORITES_PLACE_SAVED, 1);
+        intent.putExtra(extra, 1);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 

@@ -18,7 +18,7 @@ public class DetailsResponse implements Parcelable {
         mPlace = place;
     }
 
-    protected DetailsResponse(Parcel in) {
+    private DetailsResponse(Parcel in) {
         mStatus = in.readString();
         mPlace = in.readParcelable(Place.class.getClassLoader());
     }

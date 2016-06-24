@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.view.ViewPager;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
 import java.util.ArrayList;
@@ -18,11 +19,12 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
     private final AroundMeDBHelper mDbHelper;
 
 
-    public SearchAsyncLoaderCallbacks(Context context, SearchRecyclerAdapter adapter, AroundMeDBHelper dbHelper)
+    public SearchAsyncLoaderCallbacks(Context context, SearchRecyclerAdapter adapter, ViewPager viewPager)
     {
         mContext = context;
         mSearchAdapter = adapter;
-        mDbHelper = dbHelper;
+        ViewPager mViewPager = viewPager;
+        mDbHelper = new AroundMeDBHelper(mContext);
     }
 
 
@@ -38,6 +40,7 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
+//        mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
         mSearchAdapter.setData(data);
     }
 
