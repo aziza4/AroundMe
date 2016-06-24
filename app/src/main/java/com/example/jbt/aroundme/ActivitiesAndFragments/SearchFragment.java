@@ -65,16 +65,16 @@ public class SearchFragment extends Fragment {
         return v;
     }
 
-    public void refresh()
+    public boolean refresh()
     {
         AppCompatActivity activity = (AppCompatActivity)getActivity();
-        if (activity == null) {
-            Toast.makeText(getContext(), "SearchFragment not attached to Activity", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (activity == null)
+            return false;
 
         activity.getSupportLoaderManager()
                 .restartLoader(LOADER_ID, null, mSearchLoaderCallbacks)
                 .forceLoad();
+
+        return true;
     }
 }

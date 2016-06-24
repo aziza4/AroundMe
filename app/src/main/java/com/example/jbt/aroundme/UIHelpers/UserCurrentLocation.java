@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.widget.Toast;
 import com.example.jbt.aroundme.Data.NearbyRequest;
+import com.example.jbt.aroundme.Helpers.SharedPrefHelper;
 import com.example.jbt.aroundme.LocationProvider.LocationInterface;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.Services.NearbyService;
@@ -86,10 +87,15 @@ public class UserCurrentLocation {
 
     private NearbyRequest getNearbyRequest(String keyword)
     {
+        SharedPrefHelper sharedPref = new SharedPrefHelper(mContext);
+
         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         int radius = 100;
         String[] types = { "" /*"bank", "atm", "restaurant"*/};
-        String language = mContext.getString(R.string.nearby_language_val);
+        String language = sharedPref.isEnglish() ?
+                mContext.getString(R.string.nearby_language_val_en) :
+                mContext.getString(R.string.nearby_language_val_iw) ;
+
         String rank = mContext.getString(R.string.nearby_rank_val);
         return new NearbyRequest(latLng, radius, types, keyword, language, rank);
     }

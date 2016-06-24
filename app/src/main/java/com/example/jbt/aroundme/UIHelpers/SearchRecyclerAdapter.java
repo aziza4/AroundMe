@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -120,10 +121,8 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    Intent intent = new Intent(NearbyService.ACTION_PLACE_FAVORITES, null, mContext, NearbyService.class);
-                    intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, new DetailsRequest(mPlace));
-                    intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_SAVE, true);
-                    mContext.startService(intent);
+                    AppCompatActivity activity = (AppCompatActivity) mContext;
+                    activity.startSupportActionMode(new SearchActionModeCallbacks(activity, mPlace));
                     return true;
                 }
             });

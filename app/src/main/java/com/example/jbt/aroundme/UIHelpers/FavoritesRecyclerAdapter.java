@@ -5,13 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jbt.aroundme.Data.DetailsRequest;
 import com.example.jbt.aroundme.Data.Place;
@@ -125,10 +131,8 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    Intent intent = new Intent(NearbyService.ACTION_PLACE_FAVORITES, null, mContext, NearbyService.class);
-                    intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, new DetailsRequest(mPlace));
-                    intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_REMOVE, true);
-                    mContext.startService(intent);
+                    AppCompatActivity activity = (AppCompatActivity) mContext;
+                    activity.startSupportActionMode(new FavoritesActionModeCallbacks(activity, mPlace));
                     return true;
                 }
             });

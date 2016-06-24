@@ -30,26 +30,47 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        int placesSaved = intent.getIntExtra(NearbyService.EXTRA_NEARBY_PLACES_SAVED, -1);
+        String action = intent.getAction();
 
-        if (placesSaved >= 0 ) {
+        switch (action)
+        {
+            case NearbyService.ACTION_NEARBY_NOTIFY:
+                int placesSaved = intent.getIntExtra(NearbyService.EXTRA_NEARBY_PLACES_SAVED, -1);
 
-            if (placesSaved == 0)
-                Toast.makeText(mActivity,mActivity.getString(R.string.msg_zero_results), Toast.LENGTH_SHORT).show();
+                if (placesSaved < 0 )
+                    break;
 
-            SearchFragment searchFragment = (SearchFragment) mTabsPagerAdapter.getRegisteredFragment(TabsPagerAdapter.SEARCH_TAB);
-            searchFragment.refresh();
-            mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
-            return;
-        }
+                if (placesSaved == 0)
+                    Toast.makeText(mActivity, mActivity.getString(R.string.msg_zero_results),
+                            Toast.LENGTH_SHORT).show();
 
-        int detailsSaved = intent.getIntExtra(NearbyService.EXTRA_FAVORITES_PLACE_SAVED, -1);
-        int detailsremoved = intent.getIntExtra(NearbyService.EXTRA_FAVORITES_PLACE_REMOVED, -1);
+                SearchFragment searchFragment = (SearchFragment) mTabsPagerAdapter
+                        .getRegisteredFragment(TabsPagerAdapter.SEARCH_TAB);
 
-        if (detailsSaved > 0 || detailsremoved > 0) {
-            FavoritesFragment favoritesFragment = (FavoritesFragment) mTabsPagerAdapter.getRegisteredFragment(TabsPagerAdapter.FAVORITES_TAB);
-            favoritesFragment.refresh();
-            mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
+                if (!searchFragment.refresh())
+                    Toast.makeText(mActivity, "SearchFragment not attached to Activity",
+                            Toast.LENGTH_SHORT).show();
+
+                mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
+                break;
+
+            case NearbyService.ACTION_FAVORITES_NOTIFY:
+                int detailsSaved = intent.getIntExtra(NearbyService.EXTRA_FAVORITES_PLACE_SAVED, -1);
+                int detailsremoved = intent.getIntExtra(NearbyService.EXTRA_FAVORITES_PLACE_REMOVED, -1);
+                int detailsremovedAll = intent.getIntExtra(NearbyService.EXTRA_FAVORITES_PLACE_REMOVED_ALL, -1);
+
+                if (detailsSaved < 0 && detailsremoved < 0 && detailsremovedAll < 0)
+                    break;
+
+                FavoritesFragment favoritesFragment = (FavoritesFragment) mTabsPagerAdapter
+                        .getRegisteredFragment(TabsPagerAdapter.FAVORITES_TAB);
+
+                if ( ! favoritesFragment.refresh())
+                    Toast.makeText(mActivity, "FavoriteFragment not attached to Activity",
+                            Toast.LENGTH_SHORT).show();
+
+                mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
+                break;
         }
     }
 }

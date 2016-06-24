@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Around Me</string>
+    <string name="settings_name">Settings</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,26 +9,36 @@
 
     <string name="search_title">Search</string>
     <string name="favorite_title">Favorites</string>
+
     <string name="menu_my_loc">Search My Location</string>
     <string name="menu_my_places">Search Places</string>
+    <string name="menu_search_by_keyword">Search</string>
+    <string name="menu_item_delete_Favorites">Delete Favorites</string>
+
+    <string name="menu_item_delete">Delete</string>
+    <string name="menu_item_favorites">Favorites</string>
 
      <string name="formatted_place_data">
         Name: %1$s\nAddress: %2$s\nPhone: %3$s\nWebsite: %4$s\nRating: %5$s\nLat: %6$s\nLng: %7$s\nId: %8$s\n
     </string>
-    <string name="hello_favorite_frag">Hello from Favorite fragment</string>
-    <string name="hello_search_frag">Hello from Search fragment</string>
-
 
     <string name="search_place_photo">Place Photo</string>
 
     <string name="searchable">Search</string>
-    <string name="menu_search_by_keyword">Search</string>
+
     <string name="msg_zero_results">Zero results found</string>
 
+    <string name="pref_lang_label">UI Language</string>
+    <string name="pref_lang_label_english">English</string>
+    <string name="pref_lang_label_hebrew">Hebrew</string>
 
 
     <!--+++++++++++++  Non-Translatable Strings ++++++++++++++++-->
 
+
+    <string name="pref_lang_key" translatable="false">lang</string>
+    <string name="pref_lang_english" translatable="false">en</string>
+    <string name="pref_lang_hebrew" translatable="false">iw</string>
 
     <!--++++++++++++++++++  request strings ++++++++++++++++++++-->
     <string name="https_scheme" translatable="false">https</string>
@@ -35,7 +46,8 @@
 
     <string name="nearby_path" translatable="false">maps/api/place/nearbysearch/json</string>
     <string name="nearby_language_key" translatable="false">language</string>
-    <string name="nearby_language_val" translatable="false">iw</string>
+    <string name="nearby_language_val_en" translatable="false">en</string>
+    <string name="nearby_language_val_iw" translatable="false">iw</string>
     <string name="nearby_lat_lng_key" translatable="false">location</string>
     <string name="nearby_radius_key" translatable="false">radius</string>
     <string name="nearby_types_key" translatable="false">types</string>

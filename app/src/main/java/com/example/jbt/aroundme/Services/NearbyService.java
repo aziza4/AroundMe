@@ -22,7 +22,9 @@ public class NearbyService extends IntentService {
     public static final String ACTION_NEARBY_PLACES = "com.example.jbt.aroundme.Services.action.ACTION_NEARBY_GET";
     public static final String EXTRA_NEARBY_REQUEST = "com.example.jbt.aroundme.Services.extra.nearbyplaces.request";
 
-    public static final String ACTION_PLACE_FAVORITES = "com.example.jbt.aroundme.Services.action.ACTION_PLACE_FAVORITES";
+    public static final String ACTION_PLACE_FAVORITES_SAVE = "com.example.jbt.aroundme.Services.action.ACTION_PLACE_FAVORITES_SAVE";
+    public static final String ACTION_PLACE_FAVORITES_REMOVE = "com.example.jbt.aroundme.Services.action.ACTION_PLACE_FAVORITES_REMOVE";
+    public static final String ACTION_PLACE_FAVORITES_REMOVE_ALL = "com.example.jbt.aroundme.Services.action.ACTION_PLACE_FAVORITES_REMOVE_ALL";
     public static final String EXTRA_PLACE_FAVORITES_DATA = "com.example.jbt.aroundme.Services.extra.placedetails.request";
     public static final String EXTRA_PLACE_FAVORITES_ACTION_SAVE = "com.example.jbt.aroundme.Services.extra.placedetails.action.save";
     public static final String EXTRA_PLACE_FAVORITES_ACTION_REMOVE = "com.example.jbt.aroundme.Services.extra.placedetails.action.remove";
@@ -33,6 +35,7 @@ public class NearbyService extends IntentService {
     public static final String ACTION_FAVORITES_NOTIFY = "com.example.jbt.aroundme.Services.action.ACTION_FAVORITES_NOTIFY";
     public static final String EXTRA_FAVORITES_PLACE_SAVED = "com.example.jbt.aroundme.Services.extra.placedetails.saved";
     public static final String EXTRA_FAVORITES_PLACE_REMOVED = "com.example.jbt.aroundme.Services.extra.placedetails.removed";
+    public static final String EXTRA_FAVORITES_PLACE_REMOVED_ALL = "com.example.jbt.aroundme.Services.extra.placedetails.removedall";
 
 
     private GooglePlacesNearbyHelper mNearbyHelper;
@@ -59,21 +62,36 @@ public class NearbyService extends IntentService {
             case ACTION_NEARBY_PLACES:
                 NearbyRequest nearbyRequset = intent.getParcelableExtra(EXTRA_NEARBY_REQUEST);
                 mDbHelper.searchDeleteAllPlaces();
-                mDbHelper.favoritesDeleteAllPlaces(); // Todo: remove later, only for debug
+
                 if ( downloadNearbyPlacesWithPhotos(nearbyRequset))
                     downloadPlacesPhotoAndSaveToDB();
                 break;
 
-            case ACTION_PLACE_FAVORITES:
-                DetailsRequest detailsRequest = intent.getParcelableExtra(EXTRA_PLACE_FAVORITES_DATA);
+            case ACTION_PLACE_FAVORITES_SAVE:
+                DetailsRequest saveDataRequest = intent.getParcelableExtra(EXTRA_PLACE_FAVORITES_DATA);
 
                 if (intent.getBooleanExtra(EXTRA_PLACE_FAVORITES_ACTION_SAVE, false))
-                    downloadPlaceDetailsAndAddToFavorites(detailsRequest);
+                    downloadPlaceDetailsAndAddToFavorites(saveDataRequest);
+                break;
+
+            case ACTION_PLACE_FAVORITES_REMOVE:
+                DetailsRequest removeDataRequest = intent.getParcelableExtra(EXTRA_PLACE_FAVORITES_DATA);
 
                 if (intent.getBooleanExtra(EXTRA_PLACE_FAVORITES_ACTION_REMOVE, false))
-                    deleteFromFavorites(detailsRequest);
+                    deleteFromFavorites(removeDataRequest);
                 break;
+
+            case ACTION_PLACE_FAVORITES_REMOVE_ALL:
+                    deleteAllFromFavorites();
+                break;
+
         }
+    }
+
+    private void deleteAllFromFavorites()
+    {
+        mDbHelper.favoritesDeleteAllPlaces();
+        notifyFavorites(EXTRA_FAVORITES_PLACE_REMOVED);
     }
 
     private void deleteFromFavorites(DetailsRequest request)
