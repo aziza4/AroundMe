@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
 
 import com.example.jbt.aroundme.Data.NearbyRequest;
 import com.example.jbt.aroundme.Helpers.SharedPrefHelper;
+import com.example.jbt.aroundme.Helpers.Utility;
 import com.example.jbt.aroundme.LocationProvider.ContLocationProvider;
 import com.example.jbt.aroundme.LocationProvider.LocationInterface;
 import com.example.jbt.aroundme.R;
@@ -26,7 +26,8 @@ public class UserCurrentLocation {
     private Location mLastLocation;
     private boolean mLocationReadyCalled;
     private String mPendingRequest;
-    private UserCurrentLocationListener mUserCurrentLocListener;
+    private final UserCurrentLocationListener mUserCurrentLocListener;
+    private final SharedPrefHelper mSharedPrefHelper;
 
     public UserCurrentLocation(Activity activity, OnLocationReadyListener listener)
     {
@@ -34,6 +35,7 @@ public class UserCurrentLocation {
         mListener = listener;
         mLocationReadyCalled = false;
         mPendingRequest = null;
+        mSharedPrefHelper = new SharedPrefHelper(mActivity);
 
         mUserCurrentLocListener = new UserCurrentLocationListener();
         mLocationProvider = new ContLocationProvider(mActivity, LocationManager.GPS_PROVIDER);
@@ -69,7 +71,11 @@ public class UserCurrentLocation {
         SharedPrefHelper sharedPref = new SharedPrefHelper(mActivity);
 
         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        int radius = 500;
+
+        int radius = sharedPref.getRadius();
+        if (! sharedPref.isMeters())
+            radius = Utility.feetToMeters(radius);
+
         String[] types = { "restaurant" };
         String language = sharedPref.isEnglish() ?
                 mActivity.getString(R.string.nearby_language_val_en) :
@@ -99,6 +105,7 @@ public class UserCurrentLocation {
                 .setPositiveButton(gpsButton,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
+                                mLocationProvider.stop();
                                 mLocationProvider = new ContLocationProvider(mActivity, LocationManager.GPS_PROVIDER);
                                 mLocationProvider.setOnLocationChangeListener(mUserCurrentLocListener);
                                 mLocationProvider.start();
@@ -116,6 +123,7 @@ public class UserCurrentLocation {
                 .setNegativeButton(networkButton,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
+                                mLocationProvider.stop();
                                 mLocationProvider = new ContLocationProvider(mActivity, LocationManager.NETWORK_PROVIDER);
                                 mLocationProvider.setOnLocationChangeListener(mUserCurrentLocListener);
                                 mLocationProvider.start();
@@ -133,6 +141,7 @@ public class UserCurrentLocation {
         public void onLocationChanged(Location location) {
 
             mLastLocation = location;
+            mSharedPrefHelper.saveLastUserLocation(location);
 
             if (!mLocationReadyCalled) {
                 mLocationReadyCalled = true;
@@ -147,15 +156,13 @@ public class UserCurrentLocation {
 
         @Override
         public void onNoGPSAndNetworkArePermitted() {
-            Toast.makeText(mActivity, "GPS and Network are not permitted", Toast.LENGTH_LONG).show();
-            mLocationProvider.stop();
+            //Toast.makeText(mActivity, "GPS and Network are not permitted", Toast.LENGTH_LONG).show();
             showNoSensorEnabledDialog();
         }
 
         @Override
         public void onNoGPSAndNetworkSignalsAvailable() {
-            Toast.makeText(mActivity, "GPS and Network are off\nPlease turn on at least one", Toast.LENGTH_LONG).show();
-            mLocationProvider.stop();
+            //Toast.makeText(mActivity, "GPS and Network are off\nPlease turn on at least one", Toast.LENGTH_LONG).show();
             showNoSensorEnabledDialog();
         }
     }

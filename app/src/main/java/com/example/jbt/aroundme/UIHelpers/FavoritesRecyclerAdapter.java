@@ -14,6 +14,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
+import com.example.jbt.aroundme.Helpers.Utility;
 import com.example.jbt.aroundme.R;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
@@ -103,6 +104,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
         public final ImageView mPlaceIV;
         public final TextView mNameTV;
         public final TextView mVicinityTV;
+        public final TextView mDistanceTV;
         public final RatingBar mRatingRatingBar;
         public final TextView mPhoneTV;
         public final ImageView mIconIV;
@@ -115,6 +117,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             mPlaceIV = (ImageView) view.findViewById(R.id.favoritesPlaceImageView);
             mNameTV = (TextView)view.findViewById(R.id.favoritesNameTextView);
             mVicinityTV = (TextView)view.findViewById(R.id.favoritesVicinityTextView);
+            mDistanceTV = (TextView)view.findViewById(R.id.favoritesDistanceTextView);
             mRatingRatingBar = (RatingBar) view.findViewById(R.id.favoritesPlaceRatingBar);
             mPhoneTV = (TextView)view.findViewById(R.id.favoritesPhoneTextView);
             mIconIV = (ImageView) view.findViewById(R.id.favoritesIconImageView);
@@ -153,6 +156,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
 
             mNameTV.setText(place.getName());
             mVicinityTV.setText(place.getVicinity());
+            mDistanceTV.setText(Utility.getDistanceMsg(mContext, place));
             mRatingRatingBar.setRating((float)place.getRating());
             mPhoneTV.setText(place.getPhone());
 

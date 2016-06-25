@@ -10,4 +10,20 @@
         android:entryValues="@array/pref_lang_values"
         android:entries="@array/pref_lang_options" />
 
+    <ListPreference
+        android:title="@string/pref_units_label"
+        android:key="@string/pref_units_key"
+        android:defaultValue="@string/pref_units_meters"
+        android:entryValues="@array/pref_units_values"
+        android:entries="@array/pref_units_options"
+        android:summary="@string/pref_units_label_meters"/>
+
+    <EditTextPreference
+        android:title="@string/pref_radius_label"
+        android:key="@string/pref_radius_key"
+        android:defaultValue="@string/pref_radius_def"
+        android:inputType="number"
+        android:singleLine="true"
+        android:summary="@string/pref_radius_def"/>
+
 </PreferenceScreen>

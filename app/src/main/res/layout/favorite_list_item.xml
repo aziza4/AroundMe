@@ -78,26 +78,52 @@
                 android:paddingTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:scrollbars="none"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:ellipsize="end"
                 android:textSize="@dimen/small_text"
                 android:text="Small Text"
                 android:id="@+id/favoritesVicinityTextView"/>
 
-            <TextView
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
                 android:layout_below="@+id/favoritesVicinityTextView"
                 android:layout_alignLeft="@+id/favoritesVicinityTextView"
-                android:layout_alignStart="@+id/favoritesVicinityTextView"
-                android:paddingTop="5dp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:scrollbars="none"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textSize="@dimen/small_text"
-                android:text="Small Text"
-                android:id="@+id/favoritesPhoneTextView"/>
+                android:layout_alignStart="@+id/favoritesVicinityTextView">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:scrollbars="none"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/small_text"
+                    android:text="Small Text"
+                    android:id="@+id/favoritesPhoneTextView"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="@dimen/small_text"
+                    android:text="@string/char_vertical_seperator" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="@dimen/small_text"
+                    android:id="@+id/favoritesDistanceTextView"
+                    android:text="Small Text"/>
+
+                </LinearLayout>
 
             <ImageView
                 android:layout_width="24dp"

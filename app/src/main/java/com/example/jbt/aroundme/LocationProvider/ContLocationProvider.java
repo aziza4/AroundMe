@@ -20,12 +20,12 @@ public class ContLocationProvider implements LocationInterface {
     private static final int LOCATION_TIMEOUT_MILLISECONDS = 5000;
 
     private boolean mIsProviderEnabled;
-    private LocationManager mLocationManager;
+    private final LocationManager mLocationManager;
     private LocationInterface.onLocationListener mListener;
     private ProviderListener mProviderListener;
     private boolean mGotLocation;
-    private String mProviderName;
-    private Activity mActivity;
+    private final String mProviderName;
+    private final Activity mActivity;
 
     public ContLocationProvider(Activity activity, String providerName)
     {

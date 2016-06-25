@@ -15,6 +15,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
+import com.example.jbt.aroundme.Helpers.Utility;
 import com.example.jbt.aroundme.R;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
     private final Context mContext;
     private final GooglePlacesNearbyHelper mNearbyHelper;
     private ArrayList<Place> mPlaces;
+
 
 
     public SearchRecyclerAdapter(Context context) {
@@ -103,6 +105,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         public final ImageView mPlaceIV;
         public final TextView mNameTV;
         public final TextView mVicinityTV;
+        public final TextView mDistanceTV;
         public final RatingBar mRatingRatingBar;
 
         private Place mPlace;
@@ -113,6 +116,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             mPlaceIV = (ImageView) view.findViewById(R.id.searchPlaceImageView);
             mNameTV = (TextView)view.findViewById(R.id.searchNameTextView);
             mVicinityTV = (TextView)view.findViewById(R.id.searchVicinityTextView);
+            mDistanceTV = (TextView)view.findViewById(R.id.searchDistanceTextView);
             mRatingRatingBar = (RatingBar) view.findViewById(R.id.searchPlaceRatingBar);
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -150,6 +154,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
 
             mNameTV.setText(place.getName());
             mVicinityTV.setText(place.getVicinity());
+            mDistanceTV.setText(Utility.getDistanceMsg(mContext, place));
 
             float rating = (float)place.getRating();
             if (rating > 0f)

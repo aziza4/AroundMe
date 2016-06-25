@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.UIHelpers.SearchAsyncLoaderCallbacks;
 import com.example.jbt.aroundme.UIHelpers.SearchRecyclerAdapter;

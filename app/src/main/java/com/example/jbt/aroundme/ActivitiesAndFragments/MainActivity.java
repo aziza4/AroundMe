@@ -21,7 +21,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.jbt.aroundme.Helpers.Utility;
-import com.example.jbt.aroundme.LocationProvider.*;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.Services.NearbyService;
 import com.example.jbt.aroundme.UIHelpers.*;
@@ -30,7 +29,6 @@ import com.example.jbt.aroundme.UIHelpers.*;
 public class MainActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = "AroundMe";
-    private UserCurrentLocation mUserCurrentLocation;
     private PlacesAutoComplete mPlacesAutoComplete;
     private DrawerHandler mDrawerHandler;
     private MainMenuHelper mMainMenuHelper;
@@ -62,9 +60,16 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         // User Location
-        mUserCurrentLocation = new UserCurrentLocation(this, new UserCurrentLocation.OnLocationReadyListener() {
-            @Override public void onLocationReady() { invalidateOptionsMenu(); }
-            @Override public void onPendingRequestHandled() { invalidateOptionsMenu(); }
+        UserCurrentLocation mUserCurrentLocation = new UserCurrentLocation(this, new UserCurrentLocation.OnLocationReadyListener() {
+            @Override
+            public void onLocationReady() {
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onPendingRequestHandled() {
+                invalidateOptionsMenu();
+            }
         });
 
         // Places AutoComplete Widget

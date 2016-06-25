@@ -23,6 +23,8 @@
         Name: %1$s\nAddress: %2$s\nPhone: %3$s\nWebsite: %4$s\nRating: %5$s\nLat: %6$s\nLng: %7$s\nId: %8$s\n
     </string>
 
+
+
     <string name="search_place_photo">Place Photo</string>
 
     <string name="searchable">Search</string>
@@ -32,6 +34,14 @@
     <string name="pref_lang_label">UI Language</string>
     <string name="pref_lang_label_english">English</string>
     <string name="pref_lang_label_hebrew">Hebrew</string>
+    <string name="pref_units_label">Distance Units</string>
+    <string name="pref_units_label_meters">Meters</string>
+    <string name="pref_units_label_feet">Feet</string>
+    <string name="pref_radius_label">Radius</string>
+
+    <string name="formatted_away_from_me_msg">away from me</string>
+    <string name="formatted_away_from_me_km">km</string>
+    <string name="formatted_away_from_me_miles">miles</string>
 
     <string name="no_sensor_enabled">No GPS or Network found\nPlease enable at least one of them</string>
     <string name="sensor_enabled_message">Please enable sensor and confirm your action</string>
@@ -46,6 +56,11 @@
     <string name="pref_lang_key" translatable="false">lang</string>
     <string name="pref_lang_english" translatable="false">en</string>
     <string name="pref_lang_hebrew" translatable="false">iw</string>
+    <string name="pref_units_key" translatable="false">units</string>
+    <string name="pref_units_meters" translatable="false">meters</string>
+    <string name="pref_units_feet" translatable="false">feet</string>
+    <string name="pref_radius_key" translatable="false">radius</string>
+    <string name="pref_radius_def" translatable="false">1000</string>
 
     <!--++++++++++++++++++  request strings ++++++++++++++++++++-->
     <string name="https_scheme" translatable="false">https</string>
@@ -100,5 +115,9 @@
     <string name="details_result_formatted_phone_number_key" translatable="false">formatted_phone_number</string>
     <string name="details_result_international_phone_number_key" translatable="false">international_phone_number</string>
     <string name="details_result_url_key" translatable="false">url</string>
+
+    <string name="shared_pref_last_location_lat" translatable="false">last_loc_lat</string>
+    <string name="shared_pref_last_location_lng" translatable="false">last_loc_lng</string>
+    <string name="char_vertical_seperator" translatable="false">|</string>
 
 </resources>

@@ -19,7 +19,7 @@ public class FastLocationProvider implements LocationInterface {
 
     private boolean mIsGpsEnabled;
     private boolean mIsNetworkLocationEnabled;
-    private LocationManager mLocationManager;
+    private final LocationManager mLocationManager;
     private Handler mHandler;
     private GetLastLocation mLastLocationRunnable;
     private LocationListenerGps mLocationListenerGps;
@@ -87,7 +87,7 @@ public class FastLocationProvider implements LocationInterface {
 
     }
 
-    public void cancelTimer() {
+    private void cancelTimer() {
         mHandler.removeCallbacks(mLastLocationRunnable);
         mLocationManager.removeUpdates(mLocationListenerGps);
         mLocationManager.removeUpdates(mLocationListenerNetwork);

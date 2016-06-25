@@ -71,11 +71,20 @@
                 android:paddingTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:scrollbars="none"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:ellipsize="end"
                 android:textSize="@dimen/small_text"
                 android:text="Small Text"
                 android:id="@+id/searchVicinityTextView"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="@dimen/small_text"
+                android:text="Small Text"
+                android:id="@+id/searchDistanceTextView"/>
 
         </LinearLayout>
 

@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.UIHelpers.FavoritesAsyncLoaderCallbacks;
 import com.example.jbt.aroundme.UIHelpers.FavoritesRecyclerAdapter;

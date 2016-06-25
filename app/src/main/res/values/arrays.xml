@@ -11,4 +11,14 @@
         <item>@string/pref_lang_hebrew</item>
     </string-array>
 
+    <string-array name="pref_units_options">
+        <item>@string/pref_units_label_meters</item>
+        <item>@string/pref_units_label_feet</item>
+    </string-array>
+
+    <string-array name="pref_units_values">
+        <item>@string/pref_units_meters</item>
+        <item>@string/pref_units_feet</item>
+    </string-array>
+
 </resources>
