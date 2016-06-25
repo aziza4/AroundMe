@@ -90,7 +90,7 @@ public class UserCurrentLocation {
         final String enableSensorMsg = mActivity.getString(R.string.sensor_enabled_message);
         final String gpsButton = mActivity.getString(R.string.sensor_gps_ok_button);
         final String networkButton = mActivity.getString(R.string.sensor_network_ok_button);
-        final String cancelButton = mActivity.getString(R.string.sensor_enabled_cancel_button);
+        final String stayOfflineButton = mActivity.getString(R.string.sensor_stay_offline_button);
 
         new AlertDialog.Builder(mActivity)
                 .setTitle(noSensorTitle)
@@ -106,7 +106,7 @@ public class UserCurrentLocation {
                             }
                         })
 
-                .setNeutralButton(cancelButton,
+                .setNeutralButton(stayOfflineButton,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.dismiss();

@@ -43,8 +43,10 @@ public class MainMenuHelper {
         ImageHelper.setDrawableEnableDisableColor(byKeywordIcon, enabled);
 
         MenuItem myLocation = menu.findItem(R.id.menu_search_my_loc);
+        MenuItem mySearch = menu.findItem(R.id.menu_search_places);
         MenuItem byKeyword = menu.findItem(R.id.menu_search_by_keyword);
         myLocation.setEnabled(enabled);
+        mySearch.setEnabled(enabled);
         byKeyword.setEnabled(enabled);
     }
 
