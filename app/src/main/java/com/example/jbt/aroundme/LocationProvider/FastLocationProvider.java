@@ -13,7 +13,7 @@ import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
 
 public class FastLocationProvider implements LocationInterface {
 
-    private static final int MIN_TIME_MILLISECONDS = 1000;
+    private static final int MIN_TIME_MILLISECONDS = 0;
     private static final int MIN_DISTANCE = 0;
     private static final int TIMEOUT_MILLISECONDS = 2000;
 
@@ -31,7 +31,8 @@ public class FastLocationProvider implements LocationInterface {
         mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     }
 
-    private void getLocation()
+    @Override
+    public void start()
     {
         if (mListener == null)
             return;
@@ -47,12 +48,6 @@ public class FastLocationProvider implements LocationInterface {
             mIsNetworkLocationEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         } catch (Exception ex) {
             // Handle exception
-        }
-
-        if (!mIsNetworkLocationEnabled && !mIsGpsEnabled) {
-            // Both network and GPS are disabled. We need to ask the user to enable at least one of them
-            mListener.onNoGPSAndNetworkArePermitted();
-            return;
         }
 
         mLocationListenerGps = new LocationListenerGps();
@@ -77,9 +72,19 @@ public class FastLocationProvider implements LocationInterface {
         // Create a task that retrieves the last known location for the user in case we can't get the current location.
         mLastLocationRunnable = new GetLastLocation();
 
-        // Use the last known location if we cannot obtain the user's location in 2000 msec
-        mHandler = new Handler();
-        mHandler.postDelayed(mLastLocationRunnable, TIMEOUT_MILLISECONDS);
+        if (!mIsNetworkLocationEnabled && !mIsGpsEnabled) {
+            // Both network and GPS are disabled. We need to ask the user to enable at least one of them
+            mListener.onNoGPSAndNetworkArePermitted();
+        } else {
+            // Use the last known location if we cannot obtain the user's location in 2000 msec
+            mHandler = new Handler();
+            mHandler.postDelayed(mLastLocationRunnable, TIMEOUT_MILLISECONDS);
+        }
+    }
+
+    @Override
+    public void stop() {
+
     }
 
     public void cancelTimer() {
@@ -161,19 +166,8 @@ public class FastLocationProvider implements LocationInterface {
         }
     }
 
-    @Override
-    public void start() {
-        getLocation();
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
     public void setOnLocationChangeListener(onLocationListener listener)
     {
         mListener = listener;
     }
-
 }

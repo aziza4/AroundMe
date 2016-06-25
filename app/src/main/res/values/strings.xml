@@ -33,6 +33,12 @@
     <string name="pref_lang_label_english">English</string>
     <string name="pref_lang_label_hebrew">Hebrew</string>
 
+    <string name="no_sensor_enabled">No GPS or Network found\nPlease enable at least one of them</string>
+    <string name="sensor_enabled_message">Please confirm what you have enabled</string>
+    <string name="sensor_gps_ok_button">GPS</string>
+    <string name="sensor_network_ok_button">Network</string>
+    <string name="sensor_enabled_cancel_button">Cancel</string>
+
 
     <!--+++++++++++++  Non-Translatable Strings ++++++++++++++++-->
 

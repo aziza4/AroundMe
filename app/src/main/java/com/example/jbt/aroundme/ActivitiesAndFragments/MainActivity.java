@@ -62,14 +62,10 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         // User Location
-        LocationInterface locationProvider = new FastLocationProvider(this);
-        mUserCurrentLocation = new UserCurrentLocation(this, locationProvider,
-                new UserCurrentLocation.OnLocationReadyListener() {
+        mUserCurrentLocation = new UserCurrentLocation(this, new UserCurrentLocation.OnLocationReadyListener() {
             @Override public void onLocationReady() { invalidateOptionsMenu(); }
             @Override public void onPendingRequestHandled() { invalidateOptionsMenu(); }
         });
-
-        mUserCurrentLocation.start();
 
         // Places AutoComplete Widget
         mPlacesAutoComplete = new PlacesAutoComplete(this);
@@ -123,12 +119,6 @@ public class MainActivity extends AppCompatActivity {
         mMainMenuHelper = new MainMenuHelper(this, mUserCurrentLocation, mPlacesAutoComplete);
     }
 
-
-    @Override
-    protected void onDestroy() {
-        mUserCurrentLocation.stop();
-        super.onDestroy();
-    }
 
     @Override
     public void onBackPressed() {
