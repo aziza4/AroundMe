@@ -12,6 +12,7 @@
     </style>
 
     <style name="SettingsTheme" parent="AppTheme"/>
+    <style name="MapTheme" parent="AppTheme"/>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

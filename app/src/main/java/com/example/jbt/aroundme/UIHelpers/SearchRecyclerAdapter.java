@@ -3,6 +3,7 @@ package com.example.jbt.aroundme.UIHelpers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.example.jbt.aroundme.ActivitiesAndFragments.MapActivity;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.Helpers.Utility;
@@ -118,6 +121,15 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             mVicinityTV = (TextView)view.findViewById(R.id.searchVicinityTextView);
             mDistanceTV = (TextView)view.findViewById(R.id.searchDistanceTextView);
             mRatingRatingBar = (RatingBar) view.findViewById(R.id.searchPlaceRatingBar);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, MapActivity.class);
+                    intent.putExtra(MapActivity.INTENT_MAP_PLACE_KEY, mPlace);
+                    mContext.startActivity(intent);
+                }
+            });
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

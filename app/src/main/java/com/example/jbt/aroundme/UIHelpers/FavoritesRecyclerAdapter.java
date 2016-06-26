@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.example.jbt.aroundme.ActivitiesAndFragments.MapActivity;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.Helpers.SharedPrefHelper;
@@ -108,12 +110,13 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
         public final ImageView mPlaceIV;
         public final TextView mNameTV;
         public final TextView mVicinityTV;
-        public final TextView mDistanceTV;
         public final RatingBar mRatingRatingBar;
-        public final TextView mPhoneTV;
         public final ImageView mIconIV;
-        public final LinearLayout mPhoneLayout;
+        public final TextView mPhoneTV;
+        public final TextView mDistanceTV;
+        public final LinearLayout mDialLayout;
         public final LinearLayout mDistanceLayout;
+        public final LinearLayout mWebsiteLayout;
 
         private Place mPlace;
 
@@ -123,12 +126,22 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             mPlaceIV = (ImageView) view.findViewById(R.id.favoritesPlaceImageView);
             mNameTV = (TextView) view.findViewById(R.id.favoritesNameTextView);
             mVicinityTV = (TextView) view.findViewById(R.id.favoritesVicinityTextView);
-            mDistanceTV = (TextView) view.findViewById(R.id.favoritesDistanceTextView);
             mRatingRatingBar = (RatingBar) view.findViewById(R.id.favoritesPlaceRatingBar);
-            mPhoneTV = (TextView) view.findViewById(R.id.favoritesPhoneTextView);
             mIconIV = (ImageView) view.findViewById(R.id.favoritesIconImageView);
-            mPhoneLayout = (LinearLayout) view.findViewById(R.id.favoritePhoneLayout);
-            mDistanceLayout = (LinearLayout) view.findViewById(R.id.favoriteDistanceLayout);
+            mPhoneTV = (TextView) view.findViewById(R.id.favoritesPhoneTextView);
+            mDistanceTV = (TextView) view.findViewById(R.id.favoritesDistanceTextView);
+            mDialLayout = (LinearLayout)view.findViewById(R.id.favoritesDialLayout);
+            mDistanceLayout = (LinearLayout)view.findViewById(R.id.favoritesDistanceLayout);
+            mWebsiteLayout = (LinearLayout)view.findViewById(R.id.favoritesWebsiteLayout);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, MapActivity.class);
+                    intent.putExtra(MapActivity.INTENT_MAP_PLACE_KEY, mPlace);
+                    mContext.startActivity(intent);
+                }
+            });
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -139,7 +152,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
                 }
             });
 
-            mPhoneLayout.setOnClickListener(new View.OnClickListener() {
+            mDialLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Uri uri = Utility.getDialingUri(mContext, mPlace);
@@ -154,6 +167,18 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
                     Uri uri = Utility.getDirectionsUri(mContext, mPlace);
                     Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
                     mContext.startActivity(intent);
+                }
+            });
+
+            mWebsiteLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String url = mPlace.getUrl();
+                    if (url != null && !url.isEmpty()) {
+                        Uri uri = Uri.parse(url);
+                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                        mContext.startActivity(intent);
+                    }
                 }
             });
         }

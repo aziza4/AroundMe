@@ -19,8 +19,7 @@
             android:layout_height="match_parent"
             android:padding="10dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:id="@+id/dial">
+            android:layout_marginBottom="5dp">
 
             <ImageView
                 android:layout_width="96dp"
@@ -70,106 +69,124 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/topLinearLayout"
+                android:layout_alignLeft="@+id/topLinearLayout"
+                android:layout_alignStart="@+id/topLinearLayout"
+                android:id="@+id/favoritesVicinityTextView"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="@dimen/small_text"
+                android:text="Small Text"/>
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:id="@+id/favoritesIconImageView"
+                android:contentDescription="@string/search_place_photo"
+                android:src="@android:drawable/ic_menu_report_image"
+                android:alpha="0.7"
+                android:adjustViewBounds="false"
+                android:layout_alignBottom="@+id/favoritesPlaceImageView"
+                android:layout_alignLeft="@+id/favoritesVicinityTextView"
+                android:layout_alignStart="@+id/favoritesVicinityTextView" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:layout_marginTop="@dimen/elements_vertical_margin"
-                android:id="@+id/favoriteAddressLayout"
-                android:layout_below="@+id/topLinearLayout"
-                android:layout_alignLeft="@+id/topLinearLayout"
-                android:layout_alignStart="@+id/topLinearLayout">
+                android:layout_below="@+id/favoritesPlaceImageView"
+                android:layout_alignLeft="@+id/favoritesPlaceImageView"
+                android:layout_alignStart="@+id/favoritesPlaceImageView">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:scrollbars="none"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textSize="@dimen/small_text"
-                    android:text="Small Text"
-                    android:id="@+id/favoritesVicinityTextView"/>
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/favoritesDialLayout">
 
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_gravity="end"
-                    android:layout_marginLeft="@dimen/elements_horizontal_margin"
-                    android:layout_marginStart="@dimen/elements_horizontal_margin"
-                    android:id="@+id/favoritesIconImageView"
-                    android:contentDescription="@string/search_place_photo"
-                    android:src="@android:drawable/ic_menu_report_image"
-                    android:alpha="0.6"
-                    android:adjustViewBounds="false" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/favorite_place_dial"
+                        android:src="@drawable/ic_action_dial"
+                        android:tint="@color/dialer"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textSize="@dimen/small_text"
+                        android:text="Small Text"
+                        android:id="@+id/favoritesPhoneTextView"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/elements_vertical_margin"
-                android:id="@+id/favoritePhoneLayout"
-                android:layout_below="@+id/favoriteAddressLayout"
-                android:layout_alignLeft="@+id/favoriteAddressLayout"
-                android:layout_alignStart="@+id/favoriteAddressLayout">
+                </LinearLayout>
 
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:contentDescription="@string/search_place_dial"
-                    android:id="@+id/favoritesDialImageView"
-                    android:src="@drawable/ic_action_dial"
-                    android:tint="@color/dialer"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:scrollbars="none"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textSize="@dimen/small_text"
-                    android:text="Small Text"
-                    android:id="@+id/favoritesPhoneTextView"/>
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/favoritesDistanceLayout">
 
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/favorite_place_distance"
+                        android:src="@drawable/ic_action_distance"
+                        android:tint="@color/distance"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:id="@+id/favoriteDistanceLayout"
-                android:layout_alignTop="@+id/favoritePhoneLayout"
-                android:layout_toRightOf="@+id/favoritePhoneLayout"
-                android:layout_toEndOf="@+id/favoritePhoneLayout"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textSize="@dimen/small_text"
+                        android:text="Small Text"
+                        android:id="@+id/favoritesDistanceTextView"/>
 
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:contentDescription="@string/search_place_dial"
-                    android:id="@+id/favoritesDistanceImageView"
-                    android:src="@drawable/ic_action_distance"
-                    android:tint="@color/distance"/>
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textSize="@dimen/small_text"
-                    android:id="@+id/favoritesDistanceTextView"
-                    android:text="Small Text"/>
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/favoritesWebsiteLayout">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/favorite_place_website"
+                        android:src="@drawable/ic_action_website"
+                        android:tint="@color/website"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textSize="@dimen/small_text"
+                        android:text="@string/favorite_place_website"
+                        android:id="@+id/favoritesWebsiteTextView"/>
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
