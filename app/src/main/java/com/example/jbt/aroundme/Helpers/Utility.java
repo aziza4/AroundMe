@@ -107,4 +107,45 @@ public class Utility {
         String milesString = context.getString(R.string.formatted_away_from_me_miles);
         return String.format(Locale.ENGLISH, "%.1f %s %s", distanceInMiles, milesString, formatString);
     }
+
+
+    public static Uri getDialingUri(Context context, Place place)
+    {
+        String scheme = context.getString(R.string.dialer_scheme);
+        return Uri.parse(scheme + ":" + place.getPhone());
+    }
+
+
+    public static Uri getDirectionsUri(Context context, Place place)
+    {
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
+        LatLng userLoc = sharedPrefHelper.getLastUserLocation();
+
+        String scheme = context.getString(R.string.https_scheme);
+        String authority = context.getString(R.string.directions_authority);
+        String path = context.getString(R.string.directions_path);
+        String reqKey = context.getString(R.string.directions_req_key);
+        String reqVal = context.getString(R.string.directions_req_val);
+        String langKey = context.getString(R.string.directions_lang_key);
+        String modeKey = context.getString(R.string.directions_mode_key);
+        String modeVal = context.getString(R.string.directions_mode_val);
+        String startAddressKey = context.getString(R.string.directions_start_address_key);
+        String endAddressKey = context.getString(R.string.directions_end_address_key);
+
+        String langVal = sharedPrefHelper.getSelectedLanguage();
+        String startAddressVal = userLoc.latitude + "," + userLoc.longitude;
+        String endAddressVal = place.getName() + ", " + place.getAddress();
+
+        Uri.Builder builder = new Uri.Builder();
+
+        return builder.scheme(scheme)
+                .authority(authority)
+                .path(path)
+                .appendQueryParameter(reqKey, reqVal)
+                .appendQueryParameter(langKey, langVal)
+                .appendQueryParameter(modeKey, modeVal)
+                .appendQueryParameter(startAddressKey, startAddressVal)
+                .appendQueryParameter(endAddressKey, endAddressVal)
+                .build();
+    }
 }

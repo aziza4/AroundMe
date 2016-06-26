@@ -40,11 +40,15 @@ public class SharedPrefHelper {
         resources.updateConfiguration(configuration, mContext.getResources().getDisplayMetrics());
     }
 
-    public boolean isEnglish() {
+    public String getSelectedLanguage() {
         String key = mContext.getString(R.string.pref_lang_key);
         String def = mContext.getString(R.string.pref_lang_english);
+        return mPrefs.getString(key, def);
+    }
+
+    public boolean isEnglish() {
         String english = mContext.getString(R.string.pref_lang_english);
-        return mPrefs.getString(key, def).equals(english);
+        return getSelectedLanguage().equals(english);
     }
 
     public boolean isMeters() {

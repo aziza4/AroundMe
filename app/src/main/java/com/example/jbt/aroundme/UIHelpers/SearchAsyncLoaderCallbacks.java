@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.view.ViewPager;
+
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
 import java.util.ArrayList;
@@ -19,11 +19,10 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
     private final AroundMeDBHelper mDbHelper;
 
 
-    public SearchAsyncLoaderCallbacks(Context context, SearchRecyclerAdapter adapter, ViewPager viewPager)
+    public SearchAsyncLoaderCallbacks(Context context, SearchRecyclerAdapter adapter)
     {
         mContext = context;
         mSearchAdapter = adapter;
-        ViewPager mViewPager = viewPager;
         mDbHelper = new AroundMeDBHelper(mContext);
     }
 

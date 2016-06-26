@@ -2,7 +2,6 @@ package com.example.jbt.aroundme.ActivitiesAndFragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,11 +18,9 @@ public class FavoritesFragment extends Fragment {
 
     private static final int FAVORITES_LOADER_ID = 2;
     private FavoritesAsyncLoaderCallbacks mFavoritesLoaderCallbacks;
-    private static ViewPager mViewPager;
 
 
-    public static FavoritesFragment newInstance(int page, String title, ViewPager viewPager) {
-        mViewPager = viewPager;
+    public static FavoritesFragment newInstance(int page, String title) {
 
         FavoritesFragment fragment = new FavoritesFragment();
         Bundle args = new Bundle();
@@ -53,7 +50,7 @@ public class FavoritesFragment extends Fragment {
         recyclerView.setAdapter(favoritesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mFavoritesLoaderCallbacks = new FavoritesAsyncLoaderCallbacks(getActivity(), favoritesAdapter, mViewPager);
+        mFavoritesLoaderCallbacks = new FavoritesAsyncLoaderCallbacks(getActivity(), favoritesAdapter);
 
         getActivity().getSupportLoaderManager()
                 .initLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks)

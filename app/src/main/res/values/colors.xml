@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#5D4037</color>
     <color name="colorAccent">#FFAB40</color>
     <color name="separator">#ddd</color>
+    <color name="dialer">#A4C739</color>
+    <color name="distance">#5D4037</color>
 </resources>

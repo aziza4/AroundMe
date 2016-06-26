@@ -26,6 +26,7 @@
 
 
     <string name="search_place_photo">Place Photo</string>
+    <string name="search_place_dial">Dial</string>
 
     <string name="searchable">Search</string>
 
@@ -39,7 +40,7 @@
     <string name="pref_units_label_feet">Feet</string>
     <string name="pref_radius_label">Radius</string>
 
-    <string name="formatted_away_from_me_msg">away from me</string>
+    <string name="formatted_away_from_me_msg">away</string>
     <string name="formatted_away_from_me_km">km</string>
     <string name="formatted_away_from_me_miles">miles</string>
 
@@ -61,6 +62,8 @@
     <string name="pref_units_feet" translatable="false">feet</string>
     <string name="pref_radius_key" translatable="false">radius</string>
     <string name="pref_radius_def" translatable="false">1000</string>
+
+    <string name="dialer_scheme" translatable="false">tel</string>
 
     <!--++++++++++++++++++  request strings ++++++++++++++++++++-->
     <string name="https_scheme" translatable="false">https</string>
@@ -86,6 +89,16 @@
 
     <string name="details_path" translatable="false">maps/api/place/details/json</string>
     <string name="details_place_id" translatable="false">placeid</string>
+
+    <string name="directions_authority" translatable="false">maps.google.com</string>
+    <string name="directions_path" translatable="false">maps</string>
+    <string name="directions_req_key" translatable="false">f</string>
+    <string name="directions_req_val" translatable="false">d</string>
+    <string name="directions_lang_key" translatable="false">hl</string>
+    <string name="directions_mode_key" translatable="false">directionsmode</string>
+    <string name="directions_mode_val" translatable="false">walking</string>
+    <string name="directions_start_address_key" translatable="false">saddr</string>
+    <string name="directions_end_address_key" translatable="false">daddr</string>
 
     <!--++++++++++++++++++  response strings ++++++++++++++++++++-->
     <string name="nearby_status_key" translatable="false">status</string>

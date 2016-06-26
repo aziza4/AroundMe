@@ -2,6 +2,7 @@ package com.example.jbt.aroundme.UIHelpers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
+import com.example.jbt.aroundme.Helpers.SharedPrefHelper;
 import com.example.jbt.aroundme.Helpers.Utility;
 import com.example.jbt.aroundme.R;
 import com.squareup.picasso.Picasso;
@@ -31,6 +34,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
 
     public FavoritesRecyclerAdapter(Context context) {
         mContext = context;
+        SharedPrefHelper mSharedPrefHelper = new SharedPrefHelper(mContext);
         mNearbyHelper = new GooglePlacesNearbyHelper(mContext);
         mPlaces = null;
     }
@@ -108,6 +112,8 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
         public final RatingBar mRatingRatingBar;
         public final TextView mPhoneTV;
         public final ImageView mIconIV;
+        public final LinearLayout mPhoneLayout;
+        public final LinearLayout mDistanceLayout;
 
         private Place mPlace;
 
@@ -115,12 +121,14 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             super(view);
 
             mPlaceIV = (ImageView) view.findViewById(R.id.favoritesPlaceImageView);
-            mNameTV = (TextView)view.findViewById(R.id.favoritesNameTextView);
-            mVicinityTV = (TextView)view.findViewById(R.id.favoritesVicinityTextView);
-            mDistanceTV = (TextView)view.findViewById(R.id.favoritesDistanceTextView);
+            mNameTV = (TextView) view.findViewById(R.id.favoritesNameTextView);
+            mVicinityTV = (TextView) view.findViewById(R.id.favoritesVicinityTextView);
+            mDistanceTV = (TextView) view.findViewById(R.id.favoritesDistanceTextView);
             mRatingRatingBar = (RatingBar) view.findViewById(R.id.favoritesPlaceRatingBar);
-            mPhoneTV = (TextView)view.findViewById(R.id.favoritesPhoneTextView);
+            mPhoneTV = (TextView) view.findViewById(R.id.favoritesPhoneTextView);
             mIconIV = (ImageView) view.findViewById(R.id.favoritesIconImageView);
+            mPhoneLayout = (LinearLayout) view.findViewById(R.id.favoritePhoneLayout);
+            mDistanceLayout = (LinearLayout) view.findViewById(R.id.favoriteDistanceLayout);
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -128,6 +136,24 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
                     AppCompatActivity activity = (AppCompatActivity) mContext;
                     activity.startSupportActionMode(new FavoritesActionModeCallbacks(activity, mPlace));
                     return true;
+                }
+            });
+
+            mPhoneLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri uri = Utility.getDialingUri(mContext, mPlace);
+                    Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+                    mContext.startActivity(intent);
+                }
+            });
+
+            mDistanceLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri uri = Utility.getDirectionsUri(mContext, mPlace);
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                    mContext.startActivity(intent);
                 }
             });
         }

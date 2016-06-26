@@ -3,7 +3,6 @@ package com.example.jbt.aroundme.ActivitiesAndFragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,12 +19,10 @@ public class SearchFragment extends Fragment {
 
     private static final int SEARCH_LOADER_ID = 1;
 
-    private static ViewPager mViewPager;
     private SearchAsyncLoaderCallbacks mSearchLoaderCallbacks;
 
 
-    public static SearchFragment newInstance(int page, String title, ViewPager viewPager) {
-        mViewPager = viewPager;
+    public static SearchFragment newInstance(int page, String title) {
 
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
@@ -55,7 +52,7 @@ public class SearchFragment extends Fragment {
         recyclerView.setAdapter(searchAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mSearchLoaderCallbacks = new SearchAsyncLoaderCallbacks(getActivity(), searchAdapter, mViewPager);
+        mSearchLoaderCallbacks = new SearchAsyncLoaderCallbacks(getActivity(), searchAdapter);
 
         getActivity().getSupportLoaderManager()
                 .initLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)

@@ -9,6 +9,7 @@
         android:layout_height="match_parent"
         android:padding="@dimen/activity_vertical_margin"
         android:id="@+id/favoritesListView"
+        android:alpha="1"
         android:background="@drawable/fav_bkgnd_portrait" />
 
 </FrameLayout>

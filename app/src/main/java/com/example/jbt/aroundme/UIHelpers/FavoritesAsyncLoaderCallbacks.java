@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.view.ViewPager;
+
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
 import java.util.ArrayList;
@@ -18,11 +18,10 @@ public class FavoritesAsyncLoaderCallbacks implements LoaderManager.LoaderCallba
     private final AroundMeDBHelper mDbHelper;
 
 
-    public FavoritesAsyncLoaderCallbacks(Context context, FavoritesRecyclerAdapter adapter, ViewPager viewPager)
+    public FavoritesAsyncLoaderCallbacks(Context context, FavoritesRecyclerAdapter adapter)
     {
         mContext = context;
         mFavoritesAdapter = adapter;
-        ViewPager mViewPager = viewPager;
         mDbHelper = new AroundMeDBHelper(mContext);
     }
 
