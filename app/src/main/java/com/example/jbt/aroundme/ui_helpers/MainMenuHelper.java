@@ -58,9 +58,6 @@ public class MainMenuHelper {
         MenuInflater inflater = mActivity.getMenuInflater();
         inflater.inflate(R.menu.main, menu);
 
-        // Todo: gray icon until location updates are available. Also make search by keyword work
-        // http://stackoverflow.com/questions/9642990/is-it-possible-to-grey-out-not-just-disable-a-menuitem-in-android
-
         SearchView searchView = (SearchView)menu.findItem(R.id.menu_search_by_keyword).getActionView();
         SearchManager searchManager = (SearchManager) mActivity.getSystemService(Activity.SEARCH_SERVICE);
         ComponentName componentName = mActivity.getComponentName();

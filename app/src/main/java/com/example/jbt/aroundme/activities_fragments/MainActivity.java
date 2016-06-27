@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_main, R.string.app_name);
-        //setContentView(R.layout.activity_main);
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,18 +74,8 @@ public class MainActivity extends AppCompatActivity {
         // Places AutoComplete Widget
         mPlacesAutoComplete = new PlacesAutoComplete(this);
 
-        // FAB
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (fab != null )
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
-
-        // Drawer
+        // Drawer - no time for implementing this... later...
+        /*
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -104,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             mDrawerHandler = new DrawerHandler(drawerLayout);
             navigationView.setNavigationItemSelectedListener(mDrawerHandler);
         }
+        */
 
         // register receiver
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
