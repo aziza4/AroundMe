@@ -7,12 +7,16 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
+import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
+import com.example.jbt.aroundme.Helpers.BroadcastHelper;
 import com.example.jbt.aroundme.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+
+import java.util.ArrayList;
 
 
 public class PlacesAutoComplete {
@@ -55,19 +59,19 @@ public class PlacesAutoComplete {
         if (requestCode != REQUEST_SELECT_PLACE)
             return;
 
+
         if (resultCode == Activity.RESULT_OK) {
 
             Place place = PlaceAutocomplete.getPlace(mActivity, data);
-            String info = mActivity.getString(R.string.formatted_place_data,
-                    place.getName(),
-                    place.getAddress(),
-                    place.getPhoneNumber(),
-                    place.getWebsiteUri(),
-                    place.getRating(),
-                    place.getLatLng() != null ? place.getLatLng().latitude : "",
-                    place.getLatLng() != null ? place.getLatLng().longitude : "",
-                    place.getId());
-            Toast.makeText(mActivity, info, Toast.LENGTH_LONG).show();
+            com.example.jbt.aroundme.Data.Place myPlace = new com.example.jbt.aroundme.Data.Place(place);
+
+            ArrayList<com.example.jbt.aroundme.Data.Place> places = new ArrayList<>();
+            places.add(myPlace);
+
+            AroundMeDBHelper dbHelper = new AroundMeDBHelper(mActivity);
+            dbHelper.searchDeleteAllPlaces();
+            dbHelper.searchBulkInsert(places);
+            BroadcastHelper.broadcastSearchPlacesSaved(mActivity, places);
 
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
             Status status = PlaceAutocomplete.getStatus(mActivity, data);

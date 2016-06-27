@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.jbt.aroundme.Helpers.BroadcastHelper;
 import com.example.jbt.aroundme.Helpers.Utility;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.Services.NearbyService;
@@ -108,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
         // register receiver
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
         NearbyNotificationReceiver receiver = new NearbyNotificationReceiver(this, tabsPagerAdapter, viewPager);
-        IntentFilter nearby = new IntentFilter(NearbyService.ACTION_NEARBY_NOTIFY);
-        IntentFilter details = new IntentFilter(NearbyService.ACTION_FAVORITES_NOTIFY);
+        IntentFilter nearby = new IntentFilter(BroadcastHelper.ACTION_NEARBY_NOTIFY);
+        IntentFilter details = new IntentFilter(BroadcastHelper.ACTION_FAVORITES_NOTIFY);
         localBroadcastManager.registerReceiver(receiver, nearby);
         localBroadcastManager.registerReceiver(receiver, details);
 

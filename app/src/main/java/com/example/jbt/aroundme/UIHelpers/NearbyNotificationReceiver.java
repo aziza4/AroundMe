@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 import com.example.jbt.aroundme.ActivitiesAndFragments.FavoritesFragment;
 import com.example.jbt.aroundme.ActivitiesAndFragments.SearchFragment;
+import com.example.jbt.aroundme.Helpers.BroadcastHelper;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.Services.NearbyService;
 
@@ -33,9 +34,9 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
 
         switch (action)
         {
-            case NearbyService.ACTION_NEARBY_NOTIFY:
+            case BroadcastHelper.ACTION_NEARBY_NOTIFY:
 
-                int placesSaved = intent.getIntExtra(NearbyService.EXTRA_NEARBY_PLACES_SAVED, -1);
+                int placesSaved = intent.getIntExtra(BroadcastHelper.EXTRA_NEARBY_PLACES_SAVED, -1);
 
                 if (placesSaved < 0 )
                     break;
@@ -51,11 +52,11 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
                 mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
                 break;
 
-            case NearbyService.ACTION_FAVORITES_NOTIFY:
+            case BroadcastHelper.ACTION_FAVORITES_NOTIFY:
 
-                int detailsSaved = intent.getIntExtra(NearbyService.EXTRA_FAVORITES_PLACE_SAVED, -1);
-                int detailsRemoved = intent.getIntExtra(NearbyService.EXTRA_FAVORITES_PLACE_REMOVED, -1);
-                int detailsRemovedAll = intent.getIntExtra(NearbyService.EXTRA_FAVORITES_PLACE_REMOVED_ALL, -1);
+                int detailsSaved = intent.getIntExtra(BroadcastHelper.EXTRA_FAVORITES_PLACE_SAVED, -1);
+                int detailsRemoved = intent.getIntExtra(BroadcastHelper.EXTRA_FAVORITES_PLACE_REMOVED, -1);
+                int detailsRemovedAll = intent.getIntExtra(BroadcastHelper.EXTRA_FAVORITES_PLACE_REMOVED_ALL, -1);
 
                 if (detailsSaved < 0 && detailsRemoved < 0 && detailsRemovedAll < 0)
                     break;

@@ -29,6 +29,25 @@ public class Place implements Parcelable {
     private String mIntlPhone;
     private String mUrl;
 
+    public Place(com.google.android.gms.location.places.Place googlePlace)
+    {
+        this.mId = NOT_IN_DB;
+        this.mLoc = googlePlace.getLatLng();
+        this.mIcon = "";
+        this.mName = googlePlace.getName() != null ? googlePlace.getName().toString() : "";
+        this.mPhoto = null;
+        this.mPlaceId = googlePlace.getId();
+        this.mRating = googlePlace.getRating();
+        this.mReference = "";
+        this.mScope = "";
+        this.mTypes = new String[] { "" };
+        this.mVicinity = googlePlace.getAddress() != null? googlePlace.getAddress().toString() : "";
+        this.mAddress = googlePlace.getAddress() != null ? googlePlace.getAddress().toString() : "";
+        this.mPhone = googlePlace.getPhoneNumber() != null ? googlePlace.getPhoneNumber().toString() : "";
+        this.mIntlPhone = "";
+        this.mUrl = googlePlace.getWebsiteUri() != null? googlePlace.getWebsiteUri().toString() : "";
+    }
+
     public Place(LatLng loc, String icon, String name,
                  PlacePhoto photo, String placeId, double rating,
                  String reference, String scope, String[] typesArr, String vicinity) {

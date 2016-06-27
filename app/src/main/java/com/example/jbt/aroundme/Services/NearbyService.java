@@ -10,6 +10,7 @@ import com.example.jbt.aroundme.Data.NearbyRequest;
 import com.example.jbt.aroundme.Data.NearbyResponse;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
+import com.example.jbt.aroundme.Helpers.BroadcastHelper;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.Helpers.NetworkHelper;
 import java.net.URL;
@@ -27,14 +28,6 @@ public class NearbyService extends IntentService {
     public static final String EXTRA_PLACE_FAVORITES_DATA = "com.example.jbt.aroundme.Services.extra.placedetails.request";
     public static final String EXTRA_PLACE_FAVORITES_ACTION_SAVE = "com.example.jbt.aroundme.Services.extra.placedetails.action.save";
     public static final String EXTRA_PLACE_FAVORITES_ACTION_REMOVE = "com.example.jbt.aroundme.Services.extra.placedetails.action.remove";
-
-    public static final String ACTION_NEARBY_NOTIFY = "com.example.jbt.aroundme.Services.action.ACTION_NEARBY_NOTIFY";
-    public static final String EXTRA_NEARBY_PLACES_SAVED = "com.example.jbt.aroundme.Services.extra.nearbyplaces.places.saved";
-
-    public static final String ACTION_FAVORITES_NOTIFY = "com.example.jbt.aroundme.Services.action.ACTION_FAVORITES_NOTIFY";
-    public static final String EXTRA_FAVORITES_PLACE_SAVED = "com.example.jbt.aroundme.Services.extra.placedetails.saved";
-    public static final String EXTRA_FAVORITES_PLACE_REMOVED = "com.example.jbt.aroundme.Services.extra.placedetails.removed";
-    public static final String EXTRA_FAVORITES_PLACE_REMOVED_ALL = "com.example.jbt.aroundme.Services.extra.placedetails.removedall";
 
 
     private GooglePlacesNearbyHelper mNearbyHelper;
@@ -89,15 +82,14 @@ public class NearbyService extends IntentService {
     private void deleteAllFromFavorites()
     {
         mDbHelper.favoritesDeleteAllPlaces();
-        notifyFavorites(EXTRA_FAVORITES_PLACE_REMOVED_ALL);
+        BroadcastHelper.broadcastFavoritesPlacesDeletedAll(this);
     }
 
     private void deleteFromFavorites(DetailsRequest request)
     {
         Place place = request.getPlace();
         mDbHelper.favoritesDeletePlace(place.getId());
-
-        notifyFavorites(EXTRA_FAVORITES_PLACE_REMOVED);
+        BroadcastHelper.broadcastFavoritesPlaceDeleted(this);
     }
 
     private void downloadPlaceDetailsAndAddToFavorites(DetailsRequest request)
@@ -113,16 +105,8 @@ public class NearbyService extends IntentService {
         downloadPlacePhoto(place);
         mDbHelper.searchUpdatePlace(place);
 
-        notifyFavorites(EXTRA_FAVORITES_PLACE_SAVED);
+        BroadcastHelper.broadcastFavoritesPlaceSaved(this);
     }
-
-    private void notifyFavorites(String extra)
-    {
-        Intent intent = new Intent(ACTION_FAVORITES_NOTIFY);
-        intent.putExtra(extra, 1);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
-
 
 
     private boolean downloadNearbyPlacesWithPhotos(NearbyRequest request)
@@ -200,8 +184,6 @@ public class NearbyService extends IntentService {
             mDbHelper.searchBulkInsert(places);
         }
 
-        Intent intent = new Intent(ACTION_NEARBY_NOTIFY);
-        intent.putExtra(EXTRA_NEARBY_PLACES_SAVED, mPlaces.size());
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        BroadcastHelper.broadcastSearchPlacesSaved(this, places);
     }
 }

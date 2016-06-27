@@ -4,15 +4,19 @@ package com.example.jbt.aroundme.UIHelpers;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.example.jbt.aroundme.ActivitiesAndFragments.SettingsActivity;
 import com.example.jbt.aroundme.Helpers.ImageHelper;
 import com.example.jbt.aroundme.R;
@@ -82,10 +86,41 @@ public class MainMenuHelper {
                 break;
 
             case R.id.menu_delete_all_favorites:
-                mActivity.startService(
-                        new Intent(NearbyService.ACTION_PLACE_FAVORITES_REMOVE_ALL,
-                                null, mActivity, NearbyService.class));
+                showDeleteConfirmationDialog();
                 break;
         }
+    }
+
+    private void showDeleteConfirmationDialog() {
+
+        final String deleteTitle = mActivity.getString(R.string.delete_all_title);
+        final String deleteMsg = mActivity.getString(R.string.delete_all_message);
+        final String deleteButton = mActivity.getString(R.string.delete_all_delete_button);
+        final String cancelButton = mActivity.getString(R.string.delete_all_Cancel_button);
+
+        new AlertDialog.Builder(mActivity)
+                .setTitle(deleteTitle)
+                .setMessage(deleteMsg)
+                .setIcon(android.R.drawable.ic_delete)
+
+                .setPositiveButton(deleteButton,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                mActivity.startService(
+                                        new Intent(NearbyService.ACTION_PLACE_FAVORITES_REMOVE_ALL,
+                                                null, mActivity, NearbyService.class));
+                                dialog.dismiss();
+                            }
+                        })
+
+                .setNegativeButton(cancelButton,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+
+                .create()
+                .show();
     }
 }
