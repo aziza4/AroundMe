@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.jbt.aroundme.ActivitiesAndFragments.MapActivity;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
+import com.example.jbt.aroundme.Helpers.ImageHelper;
 import com.example.jbt.aroundme.Helpers.Utility;
 import com.example.jbt.aroundme.R;
 import com.squareup.picasso.Picasso;
@@ -28,14 +29,12 @@ import java.util.ArrayList;
 public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAdapter.PlaceViewHolder> {
 
     private final Context mContext;
-    private final GooglePlacesNearbyHelper mNearbyHelper;
     private ArrayList<Place> mPlaces;
 
 
 
     public SearchRecyclerAdapter(Context context) {
         mContext = context;
-        mNearbyHelper = new GooglePlacesNearbyHelper(mContext);
         mPlaces = null;
     }
 
@@ -147,23 +146,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         {
             mPlace = place;
 
-            //Bitmap imagePlaceHolder = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.placeholder);
-
-            Bitmap bitmap = place.getPhoto().getBitmap();
-            if ( bitmap != null) {
-                mPlaceIV.setImageBitmap(bitmap);
-            } else {
-                if (place.getPhotoRef() == null) {
-                    mPlaceIV.setImageBitmap(null);
-                    //mPlaceIV.setVisibility(View.GONE);
-                } else {
-                    Uri uri = mNearbyHelper.getPhotoUri(place);
-                    Picasso.with(mContext)
-                            .load(uri)
-                            .placeholder(R.drawable.placeholder)
-                            .into(mPlaceIV);
-                }
-            }
+            ImageHelper.SetImageViewLogic(mContext, mPlaceIV, mPlace, false);
 
             mNameTV.setText(place.getName());
             mVicinityTV.setText(place.getVicinity());

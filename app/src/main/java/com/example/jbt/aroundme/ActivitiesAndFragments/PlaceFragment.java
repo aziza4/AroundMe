@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
+import com.example.jbt.aroundme.Helpers.ImageHelper;
 import com.example.jbt.aroundme.Helpers.Utility;
 import com.example.jbt.aroundme.R;
 import com.squareup.picasso.Picasso;
@@ -26,7 +27,6 @@ import com.squareup.picasso.Picasso;
 public class PlaceFragment extends Fragment {
 
     private Place mPlace;
-    private GooglePlacesNearbyHelper mNearbyHelper;
 
     private ImageView mPlaceIV;
     private TextView mNameTV;
@@ -47,9 +47,7 @@ public class PlaceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View view =  inflater.inflate(R.layout.favorite_list_item, container, false);
-
-        mNearbyHelper = new GooglePlacesNearbyHelper(getActivity());
+        View view =  inflater.inflate(R.layout.fragment_place, container, false);
 
         mPlaceIV = (ImageView) view.findViewById(R.id.favoritesPlaceImageView);
         mNameTV = (TextView) view.findViewById(R.id.favoritesNameTextView);
@@ -86,35 +84,16 @@ public class PlaceFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-
-        Bitmap bitmap = mPlace.getPhoto().getBitmap();
-        if ( bitmap != null) {
-            mPlaceIV.setImageBitmap(bitmap);
-        } else {
-            if (mPlace.getPhotoRef() == null) {
-                Bitmap imagePlaceHolder = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.placeholder);
-                mPlaceIV.setImageBitmap(imagePlaceHolder);
-            } else {
-                Uri uri = mNearbyHelper.getPhotoUri(mPlace);
-                Picasso.with(getActivity())
-                        .load(uri)
-                        .placeholder(R.drawable.placeholder)
-                        .into(mPlaceIV, new com.squareup.picasso.Callback() {
-                            @Override
-                            public void onSuccess() {
-                                Bitmap bitmap = ((BitmapDrawable)mPlaceIV.getDrawable()).getBitmap();
-                                mPlace.getPhoto().setBitmap(bitmap);
-                            }
-
-                            @Override public void onError() {}
-                        });
-            }
-        }
+        ImageHelper.SetImageViewLogic(getActivity(), mPlaceIV, mPlace, false);
 
         mNameTV.setText(mPlace.getName());
         mVicinityTV.setText(mPlace.getVicinity());
-        mRatingRatingBar.setRating((float)mPlace.getRating());
 
+        float rating = (float)mPlace.getRating();
+        if (rating > 0f)
+            mRatingRatingBar.setRating((float)mPlace.getRating());
+        else
+            mRatingRatingBar.setVisibility(View.INVISIBLE);
 
         String distance = Utility.getDistanceMsg(getActivity(), mPlace);
         if (distance == null || distance.isEmpty())

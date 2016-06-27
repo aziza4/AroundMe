@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.jbt.aroundme.ActivitiesAndFragments.MapActivity;
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
+import com.example.jbt.aroundme.Helpers.ImageHelper;
 import com.example.jbt.aroundme.Helpers.SharedPrefHelper;
 import com.example.jbt.aroundme.Helpers.Utility;
 import com.example.jbt.aroundme.R;
@@ -36,7 +37,6 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
 
     public FavoritesRecyclerAdapter(Context context) {
         mContext = context;
-        SharedPrefHelper mSharedPrefHelper = new SharedPrefHelper(mContext);
         mNearbyHelper = new GooglePlacesNearbyHelper(mContext);
         mPlaces = null;
     }
@@ -175,25 +175,16 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
         {
             mPlace = place;
 
-            Bitmap bitmap = place.getPhoto().getBitmap();
-            if ( bitmap != null) {
-                mPlaceIV.setImageBitmap(bitmap);
-            } else {
-                if (place.getPhotoRef() == null) {
-                    mPlaceIV.setImageBitmap(null);
-                } else {
-                    Uri uri = mNearbyHelper.getPhotoUri(place);
-                    Picasso.with(mContext)
-                            .load(uri)
-                            .placeholder(R.drawable.placeholder)
-                            .into(mPlaceIV);
-                }
-            }
+            ImageHelper.SetImageViewLogic(mContext, mPlaceIV, mPlace, false);
 
             mNameTV.setText(place.getName());
             mVicinityTV.setText(place.getVicinity());
-            mRatingRatingBar.setRating((float)place.getRating());
 
+            float rating = (float)place.getRating();
+            if (rating > 0f)
+                mRatingRatingBar.setRating((float)place.getRating());
+            else
+                mRatingRatingBar.setVisibility(View.INVISIBLE);
 
             String distance = Utility.getDistanceMsg(mContext, place);
             if (distance == null || distance.isEmpty())
