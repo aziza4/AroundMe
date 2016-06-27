@@ -16,7 +16,7 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
 
     private final AppCompatActivity mActivity;
     private final TabsPagerAdapter mTabsPagerAdapter;
-    private ViewPager mViewPager;
+    private final ViewPager mViewPager;
 
     public NearbyNotificationReceiver(AppCompatActivity activity, TabsPagerAdapter tabsPagerAdapter, ViewPager viewPager)
     {
@@ -34,6 +34,7 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
         switch (action)
         {
             case NearbyService.ACTION_NEARBY_NOTIFY:
+
                 int placesSaved = intent.getIntExtra(NearbyService.EXTRA_NEARBY_PLACES_SAVED, -1);
 
                 if (placesSaved < 0 )
@@ -51,6 +52,7 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
                 break;
 
             case NearbyService.ACTION_FAVORITES_NOTIFY:
+
                 int detailsSaved = intent.getIntExtra(NearbyService.EXTRA_FAVORITES_PLACE_SAVED, -1);
                 int detailsRemoved = intent.getIntExtra(NearbyService.EXTRA_FAVORITES_PLACE_REMOVED, -1);
                 int detailsRemovedAll = intent.getIntExtra(NearbyService.EXTRA_FAVORITES_PLACE_REMOVED_ALL, -1);
@@ -62,7 +64,9 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
                         .getRegisteredFragment(TabsPagerAdapter.FAVORITES_TAB);
 
                 favoritesFragment.refresh(mActivity);
-                mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
+
+                if (detailsSaved > 0)
+                    mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
                 break;
         }
     }

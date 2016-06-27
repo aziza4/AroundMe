@@ -9,7 +9,7 @@ import com.example.jbt.aroundme.Helpers.ImageHelper;
 
 public class PlacePhoto implements Parcelable{
 
-    public static final String PHOTO_MAX_WIDTH = "400";
+    public static final String PHOTO_MAX_WIDTH = "200";
 
     private final int mHeight;
     private final int mWidth;

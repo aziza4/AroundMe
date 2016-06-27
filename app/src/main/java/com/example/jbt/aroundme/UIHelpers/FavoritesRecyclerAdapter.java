@@ -116,7 +116,6 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
         public final TextView mDistanceTV;
         public final LinearLayout mDialLayout;
         public final LinearLayout mDistanceLayout;
-        public final LinearLayout mWebsiteLayout;
 
         private Place mPlace;
 
@@ -132,13 +131,13 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             mDistanceTV = (TextView) view.findViewById(R.id.favoritesDistanceTextView);
             mDialLayout = (LinearLayout)view.findViewById(R.id.favoritesDialLayout);
             mDistanceLayout = (LinearLayout)view.findViewById(R.id.favoritesDistanceLayout);
-            mWebsiteLayout = (LinearLayout)view.findViewById(R.id.favoritesWebsiteLayout);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, MapActivity.class);
-                    intent.putExtra(MapActivity.INTENT_MAP_PLACE_KEY, mPlace);
+                    intent.putExtra(MapActivity.INTENT_MAP_ID_KEY, mPlace.getId());
+                    intent.putExtra(MapActivity.INTENT_MAP_TYPE_KEY, MapActivity.INTENT_MAP_TYPE_FAVORITES_VAL);
                     mContext.startActivity(intent);
                 }
             });
@@ -169,26 +168,12 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
                     mContext.startActivity(intent);
                 }
             });
-
-            mWebsiteLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String url = mPlace.getUrl();
-                    if (url != null && !url.isEmpty()) {
-                        Uri uri = Uri.parse(url);
-                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-                        mContext.startActivity(intent);
-                    }
-                }
-            });
         }
 
 
         public void bind(Place place)
         {
             mPlace = place;
-
-            //Bitmap imagePlaceHolder = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.placeholder);
 
             Bitmap bitmap = place.getPhoto().getBitmap();
             if ( bitmap != null) {
@@ -207,9 +192,20 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
 
             mNameTV.setText(place.getName());
             mVicinityTV.setText(place.getVicinity());
-            mDistanceTV.setText(Utility.getDistanceMsg(mContext, place));
             mRatingRatingBar.setRating((float)place.getRating());
-            mPhoneTV.setText(place.getPhone());
+
+
+            String distance = Utility.getDistanceMsg(mContext, place);
+            if (distance == null || distance.isEmpty())
+                mDistanceLayout.setVisibility(View.GONE);
+            else
+                mDistanceTV.setText(distance);
+
+            String phone = place.getPhone();
+            if (phone == null || phone.isEmpty())
+                mDialLayout.setVisibility(View.GONE);
+            else
+                mPhoneTV.setText(phone);
 
             String url = place.getIcon();
             if (url != null)

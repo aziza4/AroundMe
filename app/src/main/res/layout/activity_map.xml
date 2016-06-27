@@ -11,8 +11,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/googleMapContainer"
-        android:layout_weight="2">
+        android:layout_weight="1"
+        android:id="@+id/googleMapContainer">
+
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -26,9 +27,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/PlaceContainer"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:id="@+id/PlaceContainer">
 
         <fragment
             android:id="@+id/placeFrag"

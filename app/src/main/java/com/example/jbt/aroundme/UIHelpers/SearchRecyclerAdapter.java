@@ -126,7 +126,8 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, MapActivity.class);
-                    intent.putExtra(MapActivity.INTENT_MAP_PLACE_KEY, mPlace);
+                    intent.putExtra(MapActivity.INTENT_MAP_ID_KEY, mPlace.getId());
+                    intent.putExtra(MapActivity.INTENT_MAP_TYPE_KEY, MapActivity.INTENT_MAP_TYPE_SEARCH_VAL);
                     mContext.startActivity(intent);
                 }
             });

@@ -187,6 +187,8 @@ public class NearbyService extends IntentService {
         if (photo == null)
             return;
 
+        int bytesCount = photo.getByteCount();
+
         place.setPhoto(photo);
     }
 
