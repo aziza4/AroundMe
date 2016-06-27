@@ -76,7 +76,7 @@ public class UserCurrentLocation {
         if (! sharedPref.isMeters())
             radius = Utility.feetToMeters(radius);
 
-        String[] types = { "restaurant" };
+        String[] types = { ""/*"restaurant"*/ };
         String language = sharedPref.isEnglish() ?
                 mActivity.getString(R.string.nearby_language_val_en) :
                 mActivity.getString(R.string.nearby_language_val_iw) ;
