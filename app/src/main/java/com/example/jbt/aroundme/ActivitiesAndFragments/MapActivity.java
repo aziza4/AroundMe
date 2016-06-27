@@ -6,8 +6,13 @@ import android.os.Bundle;
 
 import com.example.jbt.aroundme.Data.Place;
 import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
+import com.example.jbt.aroundme.Helpers.MapManipulation;
 import com.example.jbt.aroundme.Helpers.Utility;
 import com.example.jbt.aroundme.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
 public class MapActivity extends AppCompatActivity {
 
@@ -15,6 +20,9 @@ public class MapActivity extends AppCompatActivity {
     public static final String INTENT_MAP_TYPE_KEY = "type";
     public static final String INTENT_MAP_TYPE_SEARCH_VAL = "search";
     public static final String INTENT_MAP_TYPE_FAVORITES_VAL = "favorites";
+
+    private Place mPlace;
+    private MapManipulation mMapManipulation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +34,22 @@ public class MapActivity extends AppCompatActivity {
         String type = intent.getStringExtra(INTENT_MAP_TYPE_KEY);
 
         AroundMeDBHelper dbHelper = new AroundMeDBHelper(this);
-        Place place = type.equals(INTENT_MAP_TYPE_SEARCH_VAL) ?
+        mPlace = type.equals(INTENT_MAP_TYPE_SEARCH_VAL) ?
             dbHelper.searchGetPlace(id) :
             dbHelper.favoriteGetPlace(id);
 
         PlaceFragment placeFragment = (PlaceFragment)getSupportFragmentManager().findFragmentById(R.id.placeFrag);
-        placeFragment.setPlace(place);
+        placeFragment.setPlace(mPlace);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.mapFrag);
+
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                mMapManipulation = new MapManipulation(MapActivity.this, googleMap);
+                mMapManipulation.Manipulate(mPlace);
+            }
+        });
     }
 }

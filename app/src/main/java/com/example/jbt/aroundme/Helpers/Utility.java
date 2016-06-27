@@ -21,7 +21,7 @@ import java.util.Locale;
 public class Utility {
 
     private static final double FEET_TO_METERS_RATIO = 0.3048;
-    private static final double KM_TO_MILES_RATIO = 0.621;
+    private static final double KM_TO_MILES_RATIO = 0.621371192;
 
     public static void setContentViewWithLocaleChange(AppCompatActivity activity,
                                                       int layoutId, int titleId)
@@ -69,7 +69,16 @@ public class Utility {
         return (float) (km * KM_TO_MILES_RATIO);
     }
 
-    private static float distanceInKM(LatLng latLng1, LatLng latLng2)
+
+    public static double radiusToZoom(double radiusInKM)
+    {
+        double radiusInKMExtended = radiusInKM * 1.3;
+        double radiusInMilesExtended = radiusInKMExtended * KM_TO_MILES_RATIO;
+        return (14 - Math.log(radiusInMilesExtended) / Math.log(2));
+    }
+
+
+    public static float distanceInKM(LatLng latLng1, LatLng latLng2)
     {
         Location loc1 = new Location("");
         loc1.setLatitude(latLng1.latitude);
