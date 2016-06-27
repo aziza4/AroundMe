@@ -143,7 +143,10 @@ public class Utility {
 
         String langVal = sharedPrefHelper.getSelectedLanguage();
         String startAddressVal = userLoc.latitude + "," + userLoc.longitude;
-        String endAddressVal = place.getName() + ", " + place.getAddress();
+
+        String endAddressVal = place.getAddress() == null || place.getAddress().isEmpty() ?
+                place.getLoc().latitude + "," + place.getLoc().longitude :
+                place.getName() + ", " + place.getAddress();
 
         Uri.Builder builder = new Uri.Builder();
 

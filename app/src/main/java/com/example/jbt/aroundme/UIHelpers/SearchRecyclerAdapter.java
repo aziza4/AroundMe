@@ -4,8 +4,6 @@ package com.example.jbt.aroundme.UIHelpers;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,11 +15,9 @@ import android.widget.TextView;
 
 import com.example.jbt.aroundme.ActivitiesAndFragments.MapActivity;
 import com.example.jbt.aroundme.Data.Place;
-import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.Helpers.ImageHelper;
 import com.example.jbt.aroundme.Helpers.Utility;
 import com.example.jbt.aroundme.R;
-import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 
@@ -62,15 +58,6 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             mPlaces.remove(0);
 
         notifyItemRangeRemoved(0, size);
-    }
-
-
-    private void removeItem(Place place)
-    {
-        if (mPlaces != null ) {
-            mPlaces.remove(place);
-            notifyDataSetChanged();
-        }
     }
 
 

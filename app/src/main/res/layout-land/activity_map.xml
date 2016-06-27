@@ -5,13 +5,13 @@
     android:id="@+id/mapFragLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context="com.example.jbt.aroundme.ActivitiesAndFragments.MapActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
         android:id="@+id/googleMapContainer">
 
 
@@ -28,6 +28,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0.7"
         android:id="@+id/PlaceContainer">
 
         <fragment
