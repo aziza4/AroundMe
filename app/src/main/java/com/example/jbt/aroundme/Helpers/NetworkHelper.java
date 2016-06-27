@@ -1,10 +1,10 @@
-package com.example.jbt.aroundme.Helpers;
+package com.example.jbt.aroundme.helpers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
+import com.example.jbt.aroundme.activities_fragments.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

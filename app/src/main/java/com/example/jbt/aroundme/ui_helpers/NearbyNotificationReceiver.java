@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.UIHelpers;
+package com.example.jbt.aroundme.ui_helpers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,11 +6,10 @@ import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-import com.example.jbt.aroundme.ActivitiesAndFragments.FavoritesFragment;
-import com.example.jbt.aroundme.ActivitiesAndFragments.SearchFragment;
-import com.example.jbt.aroundme.Helpers.BroadcastHelper;
+import com.example.jbt.aroundme.activities_fragments.FavoritesFragment;
+import com.example.jbt.aroundme.activities_fragments.SearchFragment;
+import com.example.jbt.aroundme.helpers.BroadcastHelper;
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.Services.NearbyService;
 
 
 public class NearbyNotificationReceiver extends BroadcastReceiver {

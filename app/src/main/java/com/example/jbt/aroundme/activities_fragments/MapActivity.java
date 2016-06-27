@@ -1,16 +1,15 @@
-package com.example.jbt.aroundme.ActivitiesAndFragments;
+package com.example.jbt.aroundme.activities_fragments;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.jbt.aroundme.Data.Place;
-import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
-import com.example.jbt.aroundme.Helpers.MapManipulation;
-import com.example.jbt.aroundme.Helpers.Utility;
+import com.example.jbt.aroundme.data.Place;
+import com.example.jbt.aroundme.helpers.AroundMeDBHelper;
+import com.example.jbt.aroundme.helpers.MapManipulation;
+import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.R;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 

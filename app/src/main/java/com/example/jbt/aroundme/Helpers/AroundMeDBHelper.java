@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.Helpers;
+package com.example.jbt.aroundme.helpers;
 
 
 import android.content.ContentValues;
@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 
-import com.example.jbt.aroundme.Data.Place;
+import com.example.jbt.aroundme.data.Place;
 import java.util.ArrayList;
 
 public class AroundMeDBHelper extends SQLiteOpenHelper {

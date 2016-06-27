@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.UIHelpers;
+package com.example.jbt.aroundme.ui_helpers;
 
 
 import android.app.Activity;
@@ -8,13 +8,13 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.AlertDialog;
 
-import com.example.jbt.aroundme.Data.NearbyRequest;
-import com.example.jbt.aroundme.Helpers.SharedPrefHelper;
-import com.example.jbt.aroundme.Helpers.Utility;
-import com.example.jbt.aroundme.LocationProvider.ContLocationProvider;
-import com.example.jbt.aroundme.LocationProvider.LocationInterface;
+import com.example.jbt.aroundme.data.NearbyRequest;
+import com.example.jbt.aroundme.helpers.SharedPrefHelper;
+import com.example.jbt.aroundme.helpers.Utility;
+import com.example.jbt.aroundme.location_provider.ContLocationProvider;
+import com.example.jbt.aroundme.location_provider.LocationInterface;
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.Services.NearbyService;
+import com.example.jbt.aroundme.services.NearbyService;
 import com.google.android.gms.maps.model.LatLng;
 
 

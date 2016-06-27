@@ -1,15 +1,13 @@
-package com.example.jbt.aroundme.UIHelpers;
+package com.example.jbt.aroundme.ui_helpers;
 
 
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
-import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
-import com.example.jbt.aroundme.Helpers.BroadcastHelper;
-import com.example.jbt.aroundme.R;
+import com.example.jbt.aroundme.activities_fragments.MainActivity;
+import com.example.jbt.aroundme.helpers.AroundMeDBHelper;
+import com.example.jbt.aroundme.helpers.BroadcastHelper;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -63,9 +61,9 @@ public class PlacesAutoComplete {
         if (resultCode == Activity.RESULT_OK) {
 
             Place place = PlaceAutocomplete.getPlace(mActivity, data);
-            com.example.jbt.aroundme.Data.Place myPlace = new com.example.jbt.aroundme.Data.Place(place);
+            com.example.jbt.aroundme.data.Place myPlace = new com.example.jbt.aroundme.data.Place(place);
 
-            ArrayList<com.example.jbt.aroundme.Data.Place> places = new ArrayList<>();
+            ArrayList<com.example.jbt.aroundme.data.Place> places = new ArrayList<>();
             places.add(myPlace);
 
             AroundMeDBHelper dbHelper = new AroundMeDBHelper(mActivity);

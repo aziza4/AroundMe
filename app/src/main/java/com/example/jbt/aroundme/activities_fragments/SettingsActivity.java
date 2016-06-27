@@ -1,9 +1,9 @@
-package com.example.jbt.aroundme.ActivitiesAndFragments;
+package com.example.jbt.aroundme.activities_fragments;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.jbt.aroundme.Helpers.Utility;
+import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.R;
 
 public class SettingsActivity extends AppCompatActivity {

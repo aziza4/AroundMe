@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.UIHelpers;
+package com.example.jbt.aroundme.ui_helpers;
 
 
 import android.app.Activity;
@@ -15,12 +15,11 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.example.jbt.aroundme.ActivitiesAndFragments.SettingsActivity;
-import com.example.jbt.aroundme.Helpers.ImageHelper;
+import com.example.jbt.aroundme.activities_fragments.SettingsActivity;
+import com.example.jbt.aroundme.helpers.ImageHelper;
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.Services.NearbyService;
+import com.example.jbt.aroundme.services.NearbyService;
 
 public class MainMenuHelper {
 

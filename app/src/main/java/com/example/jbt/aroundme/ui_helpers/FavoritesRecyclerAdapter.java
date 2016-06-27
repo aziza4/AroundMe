@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.UIHelpers;
+package com.example.jbt.aroundme.ui_helpers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,10 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.jbt.aroundme.ActivitiesAndFragments.MapActivity;
-import com.example.jbt.aroundme.Data.Place;
-import com.example.jbt.aroundme.Helpers.ImageHelper;
-import com.example.jbt.aroundme.Helpers.Utility;
+import com.example.jbt.aroundme.activities_fragments.MapActivity;
+import com.example.jbt.aroundme.data.Place;
+import com.example.jbt.aroundme.helpers.ImageHelper;
+import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.R;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.ActivitiesAndFragments;
+package com.example.jbt.aroundme.activities_fragments;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -20,11 +20,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.jbt.aroundme.Helpers.BroadcastHelper;
-import com.example.jbt.aroundme.Helpers.Utility;
+import com.example.jbt.aroundme.helpers.BroadcastHelper;
+import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.Services.NearbyService;
-import com.example.jbt.aroundme.UIHelpers.*;
+import com.example.jbt.aroundme.ui_helpers.*;
 
 
 public class MainActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.Helpers;
+package com.example.jbt.aroundme.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;

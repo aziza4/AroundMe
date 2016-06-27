@@ -1,12 +1,12 @@
-package com.example.jbt.aroundme.UIHelpers;
+package com.example.jbt.aroundme.ui_helpers;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.example.jbt.aroundme.ActivitiesAndFragments.FavoritesFragment;
+import com.example.jbt.aroundme.activities_fragments.FavoritesFragment;
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.ActivitiesAndFragments.SearchFragment;
+import com.example.jbt.aroundme.activities_fragments.SearchFragment;
 
 public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter {
 

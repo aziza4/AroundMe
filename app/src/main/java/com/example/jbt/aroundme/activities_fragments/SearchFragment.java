@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.ActivitiesAndFragments;
+package com.example.jbt.aroundme.activities_fragments;
 
 
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.UIHelpers.SearchAsyncLoaderCallbacks;
-import com.example.jbt.aroundme.UIHelpers.SearchRecyclerAdapter;
+import com.example.jbt.aroundme.ui_helpers.SearchAsyncLoaderCallbacks;
+import com.example.jbt.aroundme.ui_helpers.SearchRecyclerAdapter;
 
 
 public class SearchFragment extends Fragment {

@@ -1,28 +1,27 @@
-package com.example.jbt.aroundme.UIHelpers;
-
+package com.example.jbt.aroundme.ui_helpers;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.example.jbt.aroundme.Data.Place;
-import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
+import com.example.jbt.aroundme.data.Place;
+import com.example.jbt.aroundme.helpers.AroundMeDBHelper;
 import java.util.ArrayList;
 
 
-public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks<ArrayList<Place>>
+public class FavoritesAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks<ArrayList<Place>>
 {
 
     private final Context mContext;
-    private final SearchRecyclerAdapter mSearchAdapter;
+    private final FavoritesRecyclerAdapter mFavoritesAdapter;
     private final AroundMeDBHelper mDbHelper;
 
 
-    public SearchAsyncLoaderCallbacks(Context context, SearchRecyclerAdapter adapter)
+    public FavoritesAsyncLoaderCallbacks(Context context, FavoritesRecyclerAdapter adapter)
     {
         mContext = context;
-        mSearchAdapter = adapter;
+        mFavoritesAdapter = adapter;
         mDbHelper = new AroundMeDBHelper(mContext);
     }
 
@@ -32,19 +31,19 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
         return new AsyncTaskLoader<ArrayList<Place>>(mContext) {
             @Override
             public ArrayList<Place> loadInBackground() {
-                return mDbHelper.searchGetArrayList();
+                return mDbHelper.favoritesGetArrayList();
             }
         };
     }
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
-//        mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
-        mSearchAdapter.setData(data);
+      //  mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
+        mFavoritesAdapter.setData(data);
     }
 
     @Override
     public void onLoaderReset(android.support.v4.content.Loader<ArrayList<Place>> loader) {
-        mSearchAdapter.clearData();
+        mFavoritesAdapter.clearData();
     }
 }

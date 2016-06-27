@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.UIHelpers;
+package com.example.jbt.aroundme.ui_helpers;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

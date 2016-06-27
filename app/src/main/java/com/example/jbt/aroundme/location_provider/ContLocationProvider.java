@@ -1,5 +1,5 @@
 
-package com.example.jbt.aroundme.LocationProvider;
+package com.example.jbt.aroundme.location_provider;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.Data;
+package com.example.jbt.aroundme.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

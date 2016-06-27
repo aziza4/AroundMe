@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.Helpers;
+package com.example.jbt.aroundme.helpers;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
 
-import com.example.jbt.aroundme.Data.Place;
+import com.example.jbt.aroundme.data.Place;
 import com.example.jbt.aroundme.R;
 import com.squareup.picasso.Picasso;
 

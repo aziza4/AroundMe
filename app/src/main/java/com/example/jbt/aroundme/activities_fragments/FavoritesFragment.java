@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.ActivitiesAndFragments;
+package com.example.jbt.aroundme.activities_fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.UIHelpers.FavoritesAsyncLoaderCallbacks;
-import com.example.jbt.aroundme.UIHelpers.FavoritesRecyclerAdapter;
+import com.example.jbt.aroundme.ui_helpers.FavoritesAsyncLoaderCallbacks;
+import com.example.jbt.aroundme.ui_helpers.FavoritesRecyclerAdapter;
 
 
 public class FavoritesFragment extends Fragment {

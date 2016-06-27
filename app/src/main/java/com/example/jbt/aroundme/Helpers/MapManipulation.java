@@ -1,8 +1,8 @@
-package com.example.jbt.aroundme.Helpers;
+package com.example.jbt.aroundme.helpers;
 
 import android.content.Context;
 import android.graphics.Color;
-import com.example.jbt.aroundme.Data.Place;
+import com.example.jbt.aroundme.data.Place;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

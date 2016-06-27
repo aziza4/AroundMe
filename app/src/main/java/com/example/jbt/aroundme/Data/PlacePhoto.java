@@ -1,11 +1,11 @@
-package com.example.jbt.aroundme.Data;
+package com.example.jbt.aroundme.data;
 
 
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.jbt.aroundme.Helpers.ImageHelper;
+import com.example.jbt.aroundme.helpers.ImageHelper;
 
 public class PlacePhoto implements Parcelable{
 

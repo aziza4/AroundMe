@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.ActivitiesAndFragments;
+package com.example.jbt.aroundme.activities_fragments;
 
 import android.content.Intent;
 import android.os.Bundle;

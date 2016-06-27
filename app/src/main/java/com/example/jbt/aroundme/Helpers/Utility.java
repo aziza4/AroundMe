@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.Helpers;
+package com.example.jbt.aroundme.helpers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.jbt.aroundme.Data.Place;
+import com.example.jbt.aroundme.data.Place;
 import com.example.jbt.aroundme.R;
 import com.google.android.gms.maps.model.LatLng;
 

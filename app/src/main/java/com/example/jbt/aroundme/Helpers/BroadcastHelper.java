@@ -1,11 +1,11 @@
-package com.example.jbt.aroundme.Helpers;
+package com.example.jbt.aroundme.helpers;
 
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.example.jbt.aroundme.Data.Place;
+import com.example.jbt.aroundme.data.Place;
 
 import java.util.ArrayList;
 

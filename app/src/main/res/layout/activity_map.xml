@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.jbt.aroundme.ActivitiesAndFragments.MapActivity">
+    tools:context="com.example.jbt.aroundme.activities_fragments.MapActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
 
         <fragment
             android:id="@+id/placeFrag"
-            android:name="com.example.jbt.aroundme.ActivitiesAndFragments.PlaceFragment"
+            android:name="com.example.jbt.aroundme.activities_fragments.PlaceFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

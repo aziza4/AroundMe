@@ -1,18 +1,18 @@
-package com.example.jbt.aroundme.Services;
+package com.example.jbt.aroundme.services;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v4.content.LocalBroadcastManager;
-import com.example.jbt.aroundme.Data.DetailsRequest;
-import com.example.jbt.aroundme.Data.DetailsResponse;
-import com.example.jbt.aroundme.Data.NearbyRequest;
-import com.example.jbt.aroundme.Data.NearbyResponse;
-import com.example.jbt.aroundme.Data.Place;
-import com.example.jbt.aroundme.Helpers.AroundMeDBHelper;
-import com.example.jbt.aroundme.Helpers.BroadcastHelper;
-import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
-import com.example.jbt.aroundme.Helpers.NetworkHelper;
+
+import com.example.jbt.aroundme.data.DetailsRequest;
+import com.example.jbt.aroundme.data.DetailsResponse;
+import com.example.jbt.aroundme.data.NearbyRequest;
+import com.example.jbt.aroundme.data.NearbyResponse;
+import com.example.jbt.aroundme.data.Place;
+import com.example.jbt.aroundme.helpers.AroundMeDBHelper;
+import com.example.jbt.aroundme.helpers.BroadcastHelper;
+import com.example.jbt.aroundme.helpers.GooglePlacesNearbyHelper;
+import com.example.jbt.aroundme.helpers.NetworkHelper;
 import java.net.URL;
 import java.util.ArrayList;
 

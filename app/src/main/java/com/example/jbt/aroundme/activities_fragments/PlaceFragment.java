@@ -1,10 +1,7 @@
-package com.example.jbt.aroundme.ActivitiesAndFragments;
+package com.example.jbt.aroundme.activities_fragments;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,10 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.jbt.aroundme.Data.Place;
-import com.example.jbt.aroundme.Helpers.GooglePlacesNearbyHelper;
-import com.example.jbt.aroundme.Helpers.ImageHelper;
-import com.example.jbt.aroundme.Helpers.Utility;
+import com.example.jbt.aroundme.data.Place;
+import com.example.jbt.aroundme.helpers.ImageHelper;
+import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.R;
 import com.squareup.picasso.Picasso;
 

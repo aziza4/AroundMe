@@ -1,17 +1,17 @@
-package com.example.jbt.aroundme.Helpers;
+package com.example.jbt.aroundme.helpers;
 
 
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.jbt.aroundme.ActivitiesAndFragments.MainActivity;
-import com.example.jbt.aroundme.Data.DetailsRequest;
-import com.example.jbt.aroundme.Data.DetailsResponse;
-import com.example.jbt.aroundme.Data.NearbyRequest;
-import com.example.jbt.aroundme.Data.NearbyResponse;
-import com.example.jbt.aroundme.Data.Place;
-import com.example.jbt.aroundme.Data.PlacePhoto;
+import com.example.jbt.aroundme.activities_fragments.MainActivity;
+import com.example.jbt.aroundme.data.DetailsRequest;
+import com.example.jbt.aroundme.data.DetailsResponse;
+import com.example.jbt.aroundme.data.NearbyRequest;
+import com.example.jbt.aroundme.data.NearbyResponse;
+import com.example.jbt.aroundme.data.Place;
+import com.example.jbt.aroundme.data.PlacePhoto;
 import com.example.jbt.aroundme.R;
 import com.google.android.gms.maps.model.LatLng;
 

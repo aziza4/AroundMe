@@ -18,7 +18,7 @@
             android:value="AIzaSyDnTOAuzpUlLxbtctr2Pn59ATGqC4_HxWE" />
 
         <activity
-            android:name=".ActivitiesAndFragments.MainActivity"
+            android:name=".activities_fragments.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -42,21 +42,19 @@
         </activity>
 
         <service
-            android:name=".Services.NearbyService"
+            android:name=".services.NearbyService"
             android:exported="false" />
 
         <activity
-            android:name=".ActivitiesAndFragments.SettingsActivity"
+            android:name=".activities_fragments.SettingsActivity"
             android:label="@string/settings_name"
-            android:parentActivityName=".ActivitiesAndFragments.MainActivity"
+            android:parentActivityName=".activities_fragments.MainActivity"
             android:theme="@style/SettingsTheme" />
 
-        <activity android:name=".ActivitiesAndFragments.MapActivity">
-            android:name=".ActivitiesAndFragments.MapActivity"
+        <activity android:name=".activities_fragments.MapActivity"
             android:label="@string/map_name"
-            android:parentActivityName=".ActivitiesAndFragments.MainActivity"
+            android:parentActivityName=".activities_fragments.MainActivity"
             android:theme="@style/MapTheme" />
-        </activity>
 
     </application>
 

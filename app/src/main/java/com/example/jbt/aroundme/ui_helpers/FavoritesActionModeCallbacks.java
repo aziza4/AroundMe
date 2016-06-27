@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.UIHelpers;
+package com.example.jbt.aroundme.ui_helpers;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,20 +6,19 @@ import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
-import com.example.jbt.aroundme.Data.DetailsRequest;
-import com.example.jbt.aroundme.Data.Place;
-import com.example.jbt.aroundme.Helpers.Utility;
+import com.example.jbt.aroundme.data.DetailsRequest;
+import com.example.jbt.aroundme.data.Place;
+import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.Services.NearbyService;
+import com.example.jbt.aroundme.services.NearbyService;
 
 
-class SearchActionModeCallbacks implements ActionMode.Callback {
+class FavoritesActionModeCallbacks implements ActionMode.Callback {
 
     private final AppCompatActivity mActivity;
     private final Place mPlace;
 
-    public SearchActionModeCallbacks(AppCompatActivity activity, Place place)
+    public FavoritesActionModeCallbacks(AppCompatActivity activity, Place place)
     {
         mActivity = activity;
         mPlace = place;
@@ -29,7 +28,7 @@ class SearchActionModeCallbacks implements ActionMode.Callback {
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 
         MenuInflater inflater = mode.getMenuInflater();
-        inflater.inflate(R.menu.search_actionmode, menu);
+        inflater.inflate(R.menu.favorites_actionmode, menu);
 
         // http://stackoverflow.com/questions/23513647/share-item-in-actionbar-using-contextual-actionbar
         Utility.setShareActionProviderForLocation(menu, mPlace);
@@ -47,11 +46,11 @@ class SearchActionModeCallbacks implements ActionMode.Callback {
 
         switch (item.getItemId())
         {
-            case R.id.favoritesMenuItem:
+            case R.id.deleteMenuItem:
 
-                Intent intent = new Intent(NearbyService.ACTION_PLACE_FAVORITES_SAVE, null, mActivity, NearbyService.class);
+                Intent intent = new Intent(NearbyService.ACTION_PLACE_FAVORITES_REMOVE, null, mActivity, NearbyService.class);
                 intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, new DetailsRequest(mPlace));
-                intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_SAVE, true);
+                intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_REMOVE, true);
                 mActivity.startService(intent);
                 mode.finish();
                 return true;
@@ -64,4 +63,3 @@ class SearchActionModeCallbacks implements ActionMode.Callback {
     @Override
     public void onDestroyActionMode(ActionMode mode) { }
 }
-
