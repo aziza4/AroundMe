@@ -11,7 +11,7 @@ import android.support.v7.app.AlertDialog;
 import com.example.jbt.aroundme.data.NearbyRequest;
 import com.example.jbt.aroundme.helpers.SharedPrefHelper;
 import com.example.jbt.aroundme.helpers.Utility;
-import com.example.jbt.aroundme.location_provider.ContLocationProvider;
+import com.example.jbt.aroundme.location_provider.CurrentLocationProvider;
 import com.example.jbt.aroundme.location_provider.LocationInterface;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.services.NearbyService;
@@ -73,7 +73,7 @@ public class UserCurrentLocation {
         if (! mSharedPrefHelper.isMeters())
             radius = Utility.feetToMeters(radius);
 
-        String[] types = { ""/*"restaurant"*/ };
+        String[] types = { ""/*"restaurant"*/ }; //ToDo: get from Settings
         String language = mSharedPrefHelper.isEnglish() ?
                 mActivity.getString(R.string.nearby_language_val_en) :
                 mActivity.getString(R.string.nearby_language_val_iw) ;
@@ -152,15 +152,9 @@ public class UserCurrentLocation {
             }
         }
 
-        @Override
-        public void onNoGPSAndNetworkArePermitted() {
-            //Toast.makeText(mActivity, "GPS and Network are not permitted", Toast.LENGTH_LONG).show();
-            showNoSensorEnabledDialog();
-        }
 
         @Override
-        public void onNoGPSAndNetworkSignalsAvailable() {
-            //Toast.makeText(mActivity, "GPS and Network are off\nPlease turn on at least one", Toast.LENGTH_LONG).show();
+        public void onLocationNotAvailable() {
             showNoSensorEnabledDialog();
         }
     }
@@ -168,7 +162,7 @@ public class UserCurrentLocation {
 
     public void startListening(String providerName)
     {
-        mLocationProvider = new ContLocationProvider(mActivity, providerName);
+        mLocationProvider = new CurrentLocationProvider(mActivity, providerName);
         mLocationProvider.setOnLocationChangeListener(mUserCurrentLocListener);
         mLocationProvider.start();
     }

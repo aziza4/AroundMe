@@ -25,9 +25,8 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter {
     public Fragment getItem(int position) {
 
         switch (position) {
-            case SEARCH_TAB: return SearchFragment.newInstance(0,  mContext.getString(R.string.search_title));
-
-            case FAVORITES_TAB: return FavoritesFragment.newInstance(1, mContext.getString(R.string.favorite_title));
+            case SEARCH_TAB: return SearchFragment.newInstance();
+            case FAVORITES_TAB: return FavoritesFragment.newInstance();
             default: return null;
         }
     }

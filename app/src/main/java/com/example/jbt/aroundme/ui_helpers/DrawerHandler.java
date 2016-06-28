@@ -1,6 +1,6 @@
 package com.example.jbt.aroundme.ui_helpers;
 
-
+/*
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -53,3 +53,4 @@ public class DrawerHandler implements NavigationView.OnNavigationItemSelectedLis
         return false;
     }
 }
+*/

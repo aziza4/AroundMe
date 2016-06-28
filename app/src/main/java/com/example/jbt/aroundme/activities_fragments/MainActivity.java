@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private PlacesAutoComplete mPlacesAutoComplete;
     private MainMenuHelper mMainMenuHelper;
     private UserCurrentLocation mUserCurrentLocation;
-    PowerConnectionReceiver mPowerConnectionReceiver;
+    private PowerConnectionReceiver mPowerConnectionReceiver;
     /*
     private DrawerHandler mDrawerHandler;
     */

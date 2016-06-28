@@ -20,22 +20,9 @@ public class FavoritesFragment extends Fragment {
     private FavoritesAsyncLoaderCallbacks mFavoritesLoaderCallbacks;
 
 
-    public static FavoritesFragment newInstance(int page, String title) {
-
-        FavoritesFragment fragment = new FavoritesFragment();
-        Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        int mPage = getArguments().getInt("someInt", 0);
-        String mTitle = getArguments().getString("someTitle");
+    public static FavoritesFragment newInstance()
+    {
+        return new FavoritesFragment();
     }
 
 

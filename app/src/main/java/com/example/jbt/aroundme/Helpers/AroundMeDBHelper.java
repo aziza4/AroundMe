@@ -37,11 +37,8 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     private static final String DETAILS_COL_INTL_PHONE = "intl_phone";
     private static final String DETAILS_COL_URL = "url";
 
-    private final Context mContext;
-
     public AroundMeDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        mContext = context;
     }
 
 
@@ -76,16 +73,12 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
 
 
     public void searchBulkInsert(ArrayList<Place> places) { bulkInsert(places, SEARCH_TABLE_NAME); }
-    public void searchInsertPlace(Place place) { insertPlace(place, SEARCH_TABLE_NAME); }
     public boolean searchUpdatePlace(Place place) { return updatePlace(place, SEARCH_TABLE_NAME); }
-    public boolean searchDeletePlace(long id) { return deletePlace(id, SEARCH_TABLE_NAME); }
     public boolean searchDeleteAllPlaces() { return deleteAllPlaces(SEARCH_TABLE_NAME); }
     public ArrayList<Place> searchGetArrayList() { return getArrayList(SEARCH_TABLE_NAME); }
     public Place searchGetPlace(long id) { return getPlace(SEARCH_TABLE_NAME, id); }
 
-    public void favoritesBulkInsert(ArrayList<Place> places) { bulkInsert(places, FAVORITES_TABLE_NAME); }
     public void favoritesInsertPlace(Place place) { insertPlace(place, FAVORITES_TABLE_NAME); }
-    public boolean favoritesUpdatePlace(Place place) { return updatePlace(place, FAVORITES_TABLE_NAME); }
     public boolean favoritesDeletePlace(long id) { return deletePlace(id, FAVORITES_TABLE_NAME); }
     public boolean favoritesDeleteAllPlaces() { return deleteAllPlaces(FAVORITES_TABLE_NAME); }
     public ArrayList<Place> favoritesGetArrayList() { return getArrayList(FAVORITES_TABLE_NAME); }

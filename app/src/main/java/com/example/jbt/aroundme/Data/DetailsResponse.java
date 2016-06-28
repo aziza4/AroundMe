@@ -7,8 +7,6 @@ import android.os.Parcelable;
 
 public class DetailsResponse implements Parcelable {
 
-    public static final String STATUS_OK = "OK";
-
     private final String mStatus;
     private final Place mPlace;
 

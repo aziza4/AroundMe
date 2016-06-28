@@ -22,22 +22,8 @@ public class SearchFragment extends Fragment {
     private SearchAsyncLoaderCallbacks mSearchLoaderCallbacks;
 
 
-    public static SearchFragment newInstance(int page, String title) {
-
-        SearchFragment fragment = new SearchFragment();
-        Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        int mPage = getArguments().getInt("someInt", 0);
-        String mTitle = getArguments().getString("someTitle");
+    public static SearchFragment newInstance() {
+        return new SearchFragment();
     }
 
 

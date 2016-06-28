@@ -17,7 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class ContLocationProvider implements LocationInterface {
+public class CurrentLocationProvider implements LocationInterface {
 
     private static final int MIN_TIME_MILLISECONDS = 1000;
     private static final int MIN_DISTANCE = 0;
@@ -29,9 +29,9 @@ public class ContLocationProvider implements LocationInterface {
     private boolean mGotLocation;
     private final String mProviderName;
     private final Activity mActivity;
-    private SharedPrefHelper mSharedPrefHelper;
+    private final SharedPrefHelper mSharedPrefHelper;
 
-    public ContLocationProvider(Activity activity, String providerName)
+    public CurrentLocationProvider(Activity activity, String providerName)
     {
         mActivity = activity;
         mGotLocation = false;
@@ -59,7 +59,8 @@ public class ContLocationProvider implements LocationInterface {
         if (mSharedPrefHelper.isPermissionDeniedByUser() || mListener == null)
             return;
 
-        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED )
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED )
             return;
 
         mProviderListener = new ProviderListener();
@@ -79,7 +80,7 @@ public class ContLocationProvider implements LocationInterface {
                     mActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mListener.onNoGPSAndNetworkSignalsAvailable();
+                            mListener.onLocationNotAvailable();
                         }
                     });
                 }
@@ -94,7 +95,8 @@ public class ContLocationProvider implements LocationInterface {
     @Override
     public void stop() {
 
-        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED )
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED )
             return;
 
         if (mLocationManager != null && mProviderListener != null)

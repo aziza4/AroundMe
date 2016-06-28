@@ -25,6 +25,7 @@ public class SharedPrefHelper {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
+    @SuppressWarnings("deprecation")
     public void changeLocale() {
 
         String key = mContext.getString(R.string.pref_lang_key);

@@ -11,7 +11,6 @@ public interface LocationInterface {
 
     interface onLocationListener {
         void onLocationChanged(Location location);
-        void onNoGPSAndNetworkArePermitted();
-        void onNoGPSAndNetworkSignalsAvailable();
+        void onLocationNotAvailable();
     }
 }

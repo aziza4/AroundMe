@@ -39,7 +39,6 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
-//        mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
         mSearchAdapter.setData(data);
     }
 

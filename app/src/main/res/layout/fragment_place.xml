@@ -102,7 +102,8 @@
             android:id="@+id/favoritesDistanceLayout"
             android:layout_alignBottom="@+id/favoritesPlaceImageView"
             android:layout_alignLeft="@+id/favoritesVicinityTextView"
-            android:layout_alignStart="@+id/favoritesVicinityTextView">
+            android:layout_alignStart="@+id/favoritesVicinityTextView"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -122,7 +123,6 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,7 +131,8 @@
             android:id="@+id/favoritesDialLayout"
             android:layout_alignTop="@+id/favoritesDistanceLayout"
             android:layout_toRightOf="@+id/favoritesDistanceLayout"
-            android:layout_toEndOf="@+id/favoritesDistanceLayout">
+            android:layout_toEndOf="@+id/favoritesDistanceLayout"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -150,9 +151,6 @@
                 android:id="@+id/favoritesPhoneTextView"/>
 
         </LinearLayout>
-
-
-
 
     </RelativeLayout>
 

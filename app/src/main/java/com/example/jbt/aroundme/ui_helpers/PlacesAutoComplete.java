@@ -57,7 +57,6 @@ public class PlacesAutoComplete {
         if (requestCode != REQUEST_SELECT_PLACE)
             return;
 
-
         if (resultCode == Activity.RESULT_OK) {
 
             Place place = PlaceAutocomplete.getPlace(mActivity, data);

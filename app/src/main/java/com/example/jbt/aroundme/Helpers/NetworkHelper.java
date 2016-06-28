@@ -9,7 +9,6 @@ import com.example.jbt.aroundme.activities_fragments.MainActivity;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -17,26 +16,13 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class NetworkHelper {
 
-    private URL mUrl;
+    private final URL mUrl;
 
 
 
     public NetworkHelper(URL url)
     {
         this.mUrl = url;
-    }
-
-
-    public NetworkHelper(String urlString)
-    {
-        try {
-
-            this.mUrl = new URL(urlString);
-
-        } catch (MalformedURLException e) {
-
-            Log.e(MainActivity.LOG_TAG, "" + e.getMessage());
-        }
     }
 
 

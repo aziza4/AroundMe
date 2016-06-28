@@ -38,7 +38,6 @@ public class FavoritesAsyncLoaderCallbacks implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
-      //  mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
         mFavoritesAdapter.setData(data);
     }
 

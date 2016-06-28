@@ -21,9 +21,9 @@ public class MapManipulation {
     private static final double REASONABLE_DISTANCE = 5.0;
     private static final float DEFAULT_ZOOM_FOR_PLACE_CENTERED = 17.0f;
 
-    private Context mContext;
-    private boolean mIsPermissionDeniedByUser;
-    private GoogleMap mMap;
+    private final Context mContext;
+    private final boolean mIsPermissionDeniedByUser;
+    private final GoogleMap mMap;
 
     public MapManipulation(Context context, GoogleMap map)
     {

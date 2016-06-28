@@ -52,10 +52,10 @@ public class NearbyService extends IntentService {
         switch (action)
         {
             case ACTION_NEARBY_PLACES:
-                NearbyRequest nearbyRequset = intent.getParcelableExtra(EXTRA_NEARBY_REQUEST);
+                NearbyRequest nearbyRequest = intent.getParcelableExtra(EXTRA_NEARBY_REQUEST);
                 mDbHelper.searchDeleteAllPlaces();
 
-                if ( downloadNearbyPlacesWithPhotos(nearbyRequset))
+                if ( downloadNearbyPlacesWithPhotos(nearbyRequest))
                     downloadPlacesPhotoAndSaveToDB();
                 break;
 
@@ -170,8 +170,6 @@ public class NearbyService extends IntentService {
 
         if (photo == null)
             return;
-
-        int bytesCount = photo.getByteCount();
 
         place.setPhoto(photo);
     }

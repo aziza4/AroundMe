@@ -4,9 +4,7 @@ package com.example.jbt.aroundme.helpers;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
-
 import com.example.jbt.aroundme.data.Place;
-
 import java.util.ArrayList;
 
 public class BroadcastHelper

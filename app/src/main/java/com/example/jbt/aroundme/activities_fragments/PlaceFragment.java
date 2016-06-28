@@ -80,7 +80,7 @@ public class PlaceFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        ImageHelper.SetImageViewLogic(getActivity(), mPlaceIV, mPlace, false);
+        ImageHelper.SetImageViewLogic(getActivity(), mPlaceIV, mPlace, true);
 
         mNameTV.setText(mPlace.getName());
         mVicinityTV.setText(mPlace.getVicinity());
