@@ -73,7 +73,11 @@ public class UserCurrentLocation {
         if (! mSharedPrefHelper.isMeters())
             radius = Utility.feetToMeters(radius);
 
-        String[] types = { ""/*"restaurant"*/ }; //ToDo: get from Settings
+        String typesString = mSharedPrefHelper.getSelectedTypes();
+        String[] types = typesString.split("\\|");
+        if (types[0].equals(mActivity.getString(R.string.pref_types_all)))
+            types[0] = "";
+
         String language = mSharedPrefHelper.isEnglish() ?
                 mActivity.getString(R.string.nearby_language_val_en) :
                 mActivity.getString(R.string.nearby_language_val_iw) ;

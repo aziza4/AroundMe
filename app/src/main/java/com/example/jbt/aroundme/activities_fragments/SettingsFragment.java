@@ -24,6 +24,7 @@ public class SettingsFragment extends PreferenceFragment
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_lang_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_radius_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_types_key)));
     }
 
 

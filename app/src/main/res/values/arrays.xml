@@ -21,4 +21,27 @@
         <item>@string/pref_units_feet</item>
     </string-array>
 
+    <string-array name="pref_types_options">
+        <item>@string/pref_types_label_all</item>
+        <item>@string/pref_types_label_restaurant_cafe_bar_nightclub</item>
+        <item>@string/pref_types_label_parking</item>
+        <item>@string/pref_types_label_bank_atm</item>
+        <item>@string/pref_types_label_museum_gallery</item>
+        <item>@string/pref_types_label_gas</item>
+        <item>@string/pref_types_label_bus_train_taxi</item>
+        <item>@string/pref_types_label_doctor_hospital_pharmacy</item>
+
+    </string-array>
+
+    <string-array name="pref_types_values">
+        <item>@string/pref_types_all</item>
+        <item>@string/pref_types_restaurant_cafe_bar_nightclub</item>
+        <item>@string/pref_types_parking</item>
+        <item>@string/pref_types_bank_atm</item>
+        <item>@string/pref_types_museum_gallery</item>
+        <item>@string/pref_types_gas</item>
+        <item>@string/pref_types_doctor_hospital_pharmacy</item>
+        <item>@string/pref_types_bus_train_taxi</item>
+    </string-array>
+
 </resources>

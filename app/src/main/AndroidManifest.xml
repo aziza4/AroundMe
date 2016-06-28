@@ -39,20 +39,21 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <service
-            android:name=".services.NearbyService"
-            android:exported="false" />
-
         <activity
             android:name=".activities_fragments.SettingsActivity"
             android:label="@string/settings_name"
             android:parentActivityName=".activities_fragments.MainActivity"
             android:theme="@style/SettingsTheme" />
+
         <activity
             android:name=".activities_fragments.MapActivity"
             android:label="@string/map_name"
             android:parentActivityName=".activities_fragments.MainActivity"
             android:theme="@style/MapTheme" />
+
+        <service
+            android:name=".services.NearbyService"
+            android:exported="false" />
 
     </application>
 

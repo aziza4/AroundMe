@@ -47,6 +47,7 @@ public class SharedPrefHelper {
         return mPrefs.getString(key, def);
     }
 
+
     public boolean isEnglish() {
         String english = mContext.getString(R.string.pref_lang_english);
         return getSelectedLanguage().equals(english);
@@ -66,6 +67,13 @@ public class SharedPrefHelper {
         return Integer.parseInt( val_string.equals("") ? def: val_string);
 //      return mPrefs.getInt(key, Integer.parseInt(def)); --> not working! see: http://stackoverflow.com/questions/3721358/preferenceactivity-save-value-as-integer
     }
+
+    public String getSelectedTypes() {
+        String key = mContext.getString(R.string.pref_types_key);
+        String def = mContext.getString(R.string.pref_types_all);
+        return mPrefs.getString(key, def);
+    }
+
 
     public void saveLastUserLocation(Location location)
     {

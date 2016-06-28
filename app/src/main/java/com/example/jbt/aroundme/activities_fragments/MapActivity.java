@@ -1,5 +1,6 @@
 package com.example.jbt.aroundme.activities_fragments;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -58,6 +59,7 @@ public class MapActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.map, menu);
         return true;
@@ -69,6 +71,6 @@ public class MapActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.menu_action_settings)
             startActivity(new Intent(this, SettingsActivity.class));
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }
