@@ -32,13 +32,13 @@ public class FavoritesFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_favorite, container, false);
 
+        // user recycler-adapter with async-loader
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.favoritesListView);
         FavoritesRecyclerAdapter favoritesAdapter = new FavoritesRecyclerAdapter(getActivity());
         recyclerView.setAdapter(favoritesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mFavoritesLoaderCallbacks = new FavoritesAsyncLoaderCallbacks(getActivity(), favoritesAdapter);
-
         getActivity().getSupportLoaderManager()
                 .initLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks)
                 .forceLoad(); // see: http://stackoverflow.com/questions/10524667/android-asynctaskloader-doesnt-start-loadinbackground
@@ -47,7 +47,7 @@ public class FavoritesFragment extends Fragment {
         return v;
     }
 
-    public void refresh(AppCompatActivity activity)
+    public void refresh(AppCompatActivity activity) // called when service finished download-and-save/delete/delete-all
     {
         activity.getSupportLoaderManager()
                 .restartLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks)

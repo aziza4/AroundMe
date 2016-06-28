@@ -31,6 +31,7 @@ public class CurrentLocationProvider implements LocationInterface {
     private final Activity mActivity;
     private final SharedPrefHelper mSharedPrefHelper;
 
+
     public CurrentLocationProvider(Activity activity, String providerName)
     {
         mActivity = activity;
@@ -52,6 +53,7 @@ public class CurrentLocationProvider implements LocationInterface {
             mSharedPrefHelper.setPermissionDeniedByUser(false);
         }
     }
+
 
     @Override
     public void start()
@@ -92,6 +94,7 @@ public class CurrentLocationProvider implements LocationInterface {
         timer.schedule(task, timeout);
     }
 
+
     @Override
     public void stop() {
 
@@ -102,6 +105,7 @@ public class CurrentLocationProvider implements LocationInterface {
         if (mLocationManager != null && mProviderListener != null)
             mLocationManager.removeUpdates(mProviderListener);
     }
+
 
     @Override
     public void setOnLocationChangeListener(onLocationListener listener)

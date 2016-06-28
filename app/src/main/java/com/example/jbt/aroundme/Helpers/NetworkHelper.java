@@ -19,12 +19,10 @@ public class NetworkHelper {
     private final URL mUrl;
 
 
-
     public NetworkHelper(URL url)
     {
         this.mUrl = url;
     }
-
 
     public String getJsonString()
     {

@@ -20,9 +20,9 @@
     <string name="menu_item_favorites">Favorites</string>
     <string name="menu_item_share">Share</string>
 
-     <string name="formatted_place_data">
-        Name: %1$s\nAddress: %2$s\nPhone: %3$s\nWebsite: %4$s\nRating: %5$s\nLat: %6$s\nLng: %7$s\nId: %8$s\n
-    </string>
+     <!--<string name="formatted_place_data">-->
+        <!--Name: %1$s\nAddress: %2$s\nPhone: %3$s\nWebsite: %4$s\nRating: %5$s\nLat: %6$s\nLng: %7$s\nId: %8$s\n-->
+    <!--</string>-->
 
 
     <string name="search_place_photo">Place Photo</string>

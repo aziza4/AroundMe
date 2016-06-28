@@ -31,6 +31,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     private final String mScheme;
     private final String mAuthority;
 
+    // search-request strings
     private final String mNearByPath;
     private final String mLangKey;
     private final String mLocKey;
@@ -42,15 +43,17 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     private final String mApiKeyKey;
     private final String mApiKeyVal;
 
+    // photo-request strings
     private final String mPhotoPath;
     private final String mPhotoMaxWidth;
     private final String mPhotoReference;
 
+    // details-request strings
     private final String mDetailsPath;
     private final String mDetailsPlaceId;
 
 
-    // response strings
+    // search-response strings
     private final String mStatusKey;
     private final String mNextPageTokenKey;
     private final String mHtmlAttributionsKey;
@@ -72,6 +75,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     private final String mPhotoReferenceKey;
     private final String mPhotoHtmlAttributionsKey;
 
+    // details-response strings
     private final String mResultKey;
     private final String mAddressKey;
     private final String mPhoneKey;
@@ -79,8 +83,9 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
     private final String mUrlKey;
 
 
+    // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=32.0850818,34.8128246&radius=1000&type=restaurant&rank=prominence&key=AIzaSyBS45GLyDCuEaMBvpfWekbJ-6bSzdzaR_I
-    // -------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // https://maps.googleapis.com/maps/api/place/nearbysearch/
     // json?
     // language=iw&

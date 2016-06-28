@@ -29,7 +29,7 @@ public class Utility {
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(activity);
         sharedPrefHelper.changeLocale();
         activity.setContentView(layoutId);
-        resetTitle(activity, titleId); // workaround android bug, see above
+        resetTitle(activity, titleId);
     }
 
 
@@ -43,6 +43,7 @@ public class Utility {
     }
 
 
+    // Prepare url that suits not only google map, but waze (for example) as well...
     public static void setShareActionProviderForLocation(Menu menu, Place place)
     {
         MenuItem item = menu.findItem(R.id.shareMenuItem);
@@ -57,6 +58,7 @@ public class Utility {
         intent.setData(uri);
         provider.setShareIntent(intent);
     }
+
 
     public static int feetToMeters(int feet)
     {
@@ -92,6 +94,7 @@ public class Utility {
     }
 
 
+    // Although user's input are in meter/feet - btter to display result on KM/miles...
     public static String getDistanceMsg(Context context, Place place)
     {
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
@@ -144,6 +147,8 @@ public class Utility {
         String langVal = sharedPrefHelper.getSelectedLanguage();
         String startAddressVal = userLoc.latitude + "," + userLoc.longitude;
 
+        // if we have full data (place name and address on 'Favorites') lets help googlemaps
+        // do a better job... Otherwize ('Search'), we use what we have (LatLng only...)
         String endAddressVal = place.getAddress() == null || place.getAddress().isEmpty() ?
                 place.getLoc().latitude + "," + place.getLoc().longitude :
                 place.getName() + ", " + place.getAddress();

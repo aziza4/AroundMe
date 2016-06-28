@@ -6,7 +6,9 @@ import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class NearbyRequest implements  Parcelable{
+// Search' request object to share information between activity and service
+// Basically it contains all info to build a request to googlemaps nearby service
+public class NearbyRequest implements  Parcelable {
 
     private final LatLng mLatLng;
     private final int mRadius;

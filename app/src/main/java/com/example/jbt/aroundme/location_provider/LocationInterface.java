@@ -3,7 +3,7 @@ package com.example.jbt.aroundme.location_provider;
 
 import android.location.Location;
 
-public interface LocationInterface {
+public interface LocationInterface { // my stadard interface. open for new LocationProvider implementations
 
     void start();
     void stop();

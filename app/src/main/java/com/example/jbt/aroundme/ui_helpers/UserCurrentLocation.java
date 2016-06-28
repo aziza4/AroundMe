@@ -18,7 +18,7 @@ import com.example.jbt.aroundme.services.NearbyService;
 import com.google.android.gms.maps.model.LatLng;
 
 
-public class UserCurrentLocation {
+public class UserCurrentLocation { // controls the availability of location via LocationProvider it manages.
 
     private final Activity mActivity;
     private LocationInterface mLocationProvider;
@@ -29,6 +29,7 @@ public class UserCurrentLocation {
     private final UserCurrentLocationListener mUserCurrentLocListener;
     private final SharedPrefHelper mSharedPrefHelper;
 
+
     public UserCurrentLocation(Activity activity, OnLocationReadyListener listener)
     {
         mActivity = activity;
@@ -38,25 +39,25 @@ public class UserCurrentLocation {
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
 
         mUserCurrentLocListener = new UserCurrentLocationListener();
-
-        startListening(LocationManager.GPS_PROVIDER);
+        startListening(LocationManager.GPS_PROVIDER); // first thing to do...
     }
 
 
     public boolean ready()
     {
-        return mLastLocation != null;
+        return mLastLocation != null; // signals UI to enable/disable search functionality
     }
 
 
-    public void getAndHandle(String keyword) {
+    public void getAndHandle(String keyword) { // all search request go through here
 
         if ( !ready() ) {
-            mPendingRequest = keyword;
-            mLocationProvider.start();
+            mPendingRequest = keyword; // we can (later) process that once we have location available
+            mLocationProvider.start(); // ask for location updates
             return;
         }
 
+        // if location is available then GO! - use our service to download from internet...
         Intent intent = new Intent(NearbyService.ACTION_NEARBY_PLACES, null, mActivity, NearbyService.class);
         intent.putExtra(NearbyService.EXTRA_NEARBY_REQUEST, getNearbyRequest(keyword));
         mActivity.startService(intent);
@@ -65,7 +66,7 @@ public class UserCurrentLocation {
     }
 
 
-    private NearbyRequest getNearbyRequest(String keyword)
+    private NearbyRequest getNearbyRequest(String keyword) // prepere request object with all query prms
     {
         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
@@ -93,7 +94,8 @@ public class UserCurrentLocation {
         void onPendingRequestHandled();
     }
 
-    private void showNoSensorEnabledDialog() {
+
+    private void showLocationOffDialog() {
 
         if (mSharedPrefHelper.isPermissionDeniedByUser())
             return;
@@ -108,7 +110,7 @@ public class UserCurrentLocation {
                 .setTitle(noSensorTitle)
                 .setMessage(enableSensorMsg)
 
-                .setPositiveButton(gpsButton,
+                .setPositiveButton(gpsButton, // gps
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 mLocationProvider.stop();
@@ -117,7 +119,7 @@ public class UserCurrentLocation {
                             }
                         })
 
-                .setNeutralButton(stayOfflineButton,
+                .setNeutralButton(stayOfflineButton, // cancel
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.dismiss();
@@ -126,7 +128,7 @@ public class UserCurrentLocation {
 
                 .setNegativeButton(networkButton,
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
+                            public void onClick(DialogInterface dialog, int whichButton) { // network
                                 mLocationProvider.stop();
                                 startListening(LocationManager.NETWORK_PROVIDER);
                                 dialog.dismiss();
@@ -147,19 +149,18 @@ public class UserCurrentLocation {
 
             if (!mLocationReadyCalled) {
                 mLocationReadyCalled = true;
-                mListener.onLocationReady();
+                mListener.onLocationReady(); // update activity to refresh menu icons
             }
 
             if (mPendingRequest != null) {
-                getAndHandle(mPendingRequest);
-                mListener.onPendingRequestHandled();
+                getAndHandle(mPendingRequest); // we have pending request, now its time to handle it
+                mListener.onPendingRequestHandled(); // update activity to refresh menu icons
             }
         }
 
-
         @Override
         public void onLocationNotAvailable() {
-            showNoSensorEnabledDialog();
+            showLocationOffDialog(); // need the user intervention here...
         }
     }
 

@@ -8,7 +8,7 @@ import com.example.jbt.aroundme.activities_fragments.FavoritesFragment;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.activities_fragments.SearchFragment;
 
-public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter {
+public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standard implementation
 
     public static final int SEARCH_TAB = 0;
     public static final int FAVORITES_TAB = 1;

@@ -4,7 +4,8 @@ package com.example.jbt.aroundme.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
+// Favorites' response object to share information between GooglePlacesNearbyHelper object and its client
+// Basically it contains place's details plus additional metadata (status)
 public class DetailsResponse implements Parcelable {
 
     private final String mStatus;

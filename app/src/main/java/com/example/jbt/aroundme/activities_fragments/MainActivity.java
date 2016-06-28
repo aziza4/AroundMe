@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        // setContentView with locale change
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_main, R.string.app_name);
 
         // Toolbar
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         Utility.resetTitle(this, R.string.app_name);
 
 
-        // Tabs
+        // Viewpager - 2 tabs: Search & Favorites
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPagerContainer);
         TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(tabsPagerAdapter);
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Places AutoComplete Widget
+        // Google's places' AutoComplete Widget
         mPlacesAutoComplete = new PlacesAutoComplete(this);
 
         // Drawer - no time for implementing this... later...
@@ -127,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        unregisterReceiver(mPowerConnectionReceiver);
+        unregisterReceiver(mPowerConnectionReceiver); // stop alerting the user on app exit
         super.onDestroy();
     }
 
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        mMainMenuHelper.onPrepareOptionsMenu(menu);
+        mMainMenuHelper.onPrepareOptionsMenu(menu); // handle toolbar icons disable/enble states
         return true;
     }
 
@@ -158,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        mMainMenuHelper.onOptionsItemSelected(item);
+        mMainMenuHelper.onOptionsItemSelected(item); // workflow majority starts here...
         return true;
     }
 
@@ -166,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        // google's place autocomplete widget support
         mPlacesAutoComplete.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -174,16 +177,15 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == LOCATION_REQUEST_CODE ) {
+        if (requestCode != LOCATION_REQUEST_CODE )
+            return;
 
-            SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
+        if (grantResults[0] != PackageManager.PERMISSION_GRANTED)
+            return;
 
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mUserCurrentLocation.startListening(LocationManager.GPS_PROVIDER);
-                sharedPrefHelper.setPermissionDeniedByUser(false);
-            } else {
-                sharedPrefHelper.setPermissionDeniedByUser(true);
-            }
-        }
+        // runtime permission handling
+        mUserCurrentLocation.startListening(LocationManager.GPS_PROVIDER);
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
+        sharedPrefHelper.setPermissionDeniedByUser(false); // user granted permission
     }
 }

@@ -49,6 +49,7 @@ class SearchActionModeCallbacks implements ActionMode.Callback {
         {
             case R.id.favoritesMenuItem:
 
+                // add via service to make db this operation async as well, as others are.
                 Intent intent = new Intent(NearbyService.ACTION_PLACE_FAVORITES_SAVE, null, mActivity, NearbyService.class);
                 intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, new DetailsRequest(mPlace));
                 intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_SAVE, true);

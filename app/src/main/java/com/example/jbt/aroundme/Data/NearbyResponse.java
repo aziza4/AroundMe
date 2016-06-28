@@ -4,6 +4,8 @@ package com.example.jbt.aroundme.data;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+// Search' response object to share information between GooglePlacesNearbyHelper object and its client
+// Basically it contains list of places plus additional metadata (status, next-page-token, attribution)
 public class NearbyResponse implements Serializable {
 
     public static final String STATUS_OK = "OK";

@@ -33,13 +33,13 @@ public class SearchFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
+        // user recycler-adapter with async-loader
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.searchListView);
         SearchRecyclerAdapter searchAdapter = new SearchRecyclerAdapter(getActivity());
         recyclerView.setAdapter(searchAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mSearchLoaderCallbacks = new SearchAsyncLoaderCallbacks(getActivity(), searchAdapter);
-
         getActivity().getSupportLoaderManager()
                 .initLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)
                 .forceLoad(); // see: http://stackoverflow.com/questions/10524667/android-asynctaskloader-doesnt-start-loadinbackground
@@ -47,7 +47,7 @@ public class SearchFragment extends Fragment {
         return v;
     }
 
-    public void refresh(AppCompatActivity activity)
+    public void refresh(AppCompatActivity activity) // called when service finished downloading
     {
         activity.getSupportLoaderManager()
                 .restartLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)

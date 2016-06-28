@@ -7,7 +7,8 @@ import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 
-
+// This is the main data object on this app.
+// It encapsulate all place (from both Search, Favorites, and photo-download queries)
 public class Place implements Parcelable {
 
     private final static long NOT_IN_DB = -1L; // -1 signals this place is "not yet save in db"

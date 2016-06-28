@@ -50,23 +50,32 @@ public class ImageHelper {
         GooglePlacesNearbyHelper nearbyHelper = new GooglePlacesNearbyHelper(context);
 
         Bitmap bitmap = place.getPhoto().getBitmap();
+
         if ( bitmap != null) {
-            placeIV.setImageBitmap(bitmap);
-        } else {
-            if (place.getPhotoRef() == null) {
-                if (isPlaceHolder) {
-                    Bitmap imagePlaceHolder = BitmapFactory.decodeResource(context.getResources(), R.drawable.placeholder);
-                    placeIV.setImageBitmap(imagePlaceHolder);
-                } else {
-                    placeIV.setImageBitmap(null);
-                }
-            } else {
-                Uri uri = nearbyHelper.getPhotoUri(place);
-                Picasso.with(context)
-                        .load(uri)
-                        .placeholder(R.drawable.placeholder)
-                        .into(placeIV);
-            }
+
+            placeIV.setImageBitmap(bitmap); // if image exists
+            return;
         }
+
+        if (place.getPhotoRef() == null) { // if image n/a on googles servers
+
+            // go for placeholder image (on map view)
+            if (isPlaceHolder) {
+                Bitmap imagePlaceHolder = BitmapFactory.decodeResource(context.getResources(), R.drawable.placeholder);
+                placeIV.setImageBitmap(imagePlaceHolder);
+                return;
+            }
+
+            // go for blank space (on search/favorites view) for cleaner UX.
+            placeIV.setImageBitmap(null);
+            return;
+        }
+
+        // image does not exist but can be downloaded
+        Uri uri = nearbyHelper.getPhotoUri(place);
+        Picasso.with(context)
+                .load(uri)
+                .placeholder(R.drawable.placeholder)
+                .into(placeIV);
     }
 }

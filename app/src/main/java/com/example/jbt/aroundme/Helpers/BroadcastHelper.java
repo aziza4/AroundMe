@@ -26,20 +26,24 @@ public class BroadcastHelper
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
+
     public static void broadcastFavoritesPlaceSaved(Context context)
     {
         broadcastFavoritesOperation(context, EXTRA_FAVORITES_PLACE_SAVED);
     }
+
 
     public static void broadcastFavoritesPlaceDeleted(Context context)
     {
         broadcastFavoritesOperation(context, EXTRA_FAVORITES_PLACE_REMOVED);
     }
 
+
     public static void broadcastFavoritesPlacesDeletedAll(Context context)
     {
         broadcastFavoritesOperation(context, EXTRA_FAVORITES_PLACE_REMOVED_ALL);
     }
+
 
     private static void broadcastFavoritesOperation(Context context, String extra)
     {

@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
+// Favorites' request object to share information between activity and service
+// Basically it (currently) only encapsulate the Place object
 public class DetailsRequest implements Parcelable {
 
 

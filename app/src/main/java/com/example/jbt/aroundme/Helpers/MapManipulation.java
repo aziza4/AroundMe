@@ -25,7 +25,8 @@ public class MapManipulation {
     private final boolean mIsPermissionDeniedByUser;
     private final GoogleMap mMap;
 
-    public MapManipulation(Context context, GoogleMap map)
+
+    public MapManipulation(Context context, GoogleMap map) // execute all map "task" (moving, drawing, etc..)
     {
         mContext = context;
         mMap = map;
@@ -33,8 +34,9 @@ public class MapManipulation {
         mIsPermissionDeniedByUser = sharedPrefHelper.isPermissionDeniedByUser();
 
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED )
-             mMap.setMyLocationEnabled(true);
+             mMap.setMyLocationEnabled(true); // This is google's "current location" widget on map
     }
+
 
     public void Manipulate(Place place) {
 

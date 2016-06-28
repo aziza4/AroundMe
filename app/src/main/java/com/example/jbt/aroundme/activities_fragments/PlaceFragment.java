@@ -45,6 +45,7 @@ public class PlaceFragment extends Fragment {
     {
         View view =  inflater.inflate(R.layout.fragment_place, container, false);
 
+        // manage the cardview below th map
         mPlaceIV = (ImageView) view.findViewById(R.id.favoritesPlaceImageView);
         mNameTV = (TextView) view.findViewById(R.id.favoritesNameTextView);
         mVicinityTV = (TextView) view.findViewById(R.id.favoritesVicinityTextView);
@@ -55,6 +56,7 @@ public class PlaceFragment extends Fragment {
         mDialLayout = (LinearLayout)view.findViewById(R.id.favoritesDialLayout);
         mDistanceLayout = (LinearLayout)view.findViewById(R.id.favoritesDistanceLayout);
 
+        // on click event, allows getting a directions (google)
         mDialLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +66,7 @@ public class PlaceFragment extends Fragment {
             }
         });
 
+        // on click event, allows dial to place phone number
         mDistanceLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,31 +83,38 @@ public class PlaceFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        // set image if exists, placeholder if n/a, or download on last resort
         ImageHelper.SetImageViewLogic(getActivity(), mPlaceIV, mPlace, true);
 
         mNameTV.setText(mPlace.getName());
         mVicinityTV.setText(mPlace.getVicinity());
 
+        // don't show rating if not relevant (rating = 0.0)
         float rating = (float)mPlace.getRating();
         if (rating > 0f)
             mRatingRatingBar.setRating((float)mPlace.getRating());
         else
             mRatingRatingBar.setVisibility(View.INVISIBLE);
 
+        // show distance layout only if exists
         String distance = Utility.getDistanceMsg(getActivity(), mPlace);
         if (distance == null || distance.isEmpty())
             mDistanceLayout.setVisibility(View.GONE);
         else
             mDistanceTV.setText(distance);
 
+        // show phone layout only if exists (not exist after search, but exists post favorites)
         String phone = mPlace.getPhone();
         if (phone == null || phone.isEmpty())
             mDialLayout.setVisibility(View.GONE);
         else
             mPhoneTV.setText(phone);
 
+        // download place-type-icon (such as restaurant icon...)
         String url = mPlace.getIcon();
         if (url != null)
-            Picasso.with(getActivity()).load(Uri.parse(url)).into(mIconIV);
+            Picasso.with(getActivity())
+                    .load(Uri.parse(url))
+                    .into(mIconIV);
     }
 }

@@ -59,12 +59,14 @@ public class PlacesAutoComplete {
 
         if (resultCode == Activity.RESULT_OK) {
 
+            // convert google 'Place' class to my internal 'Place' class via ctor's overloading
             Place place = PlaceAutocomplete.getPlace(mActivity, data);
             com.example.jbt.aroundme.data.Place myPlace = new com.example.jbt.aroundme.data.Place(place);
 
             ArrayList<com.example.jbt.aroundme.data.Place> places = new ArrayList<>();
             places.add(myPlace);
 
+            // replace 'search' result with this single result
             AroundMeDBHelper dbHelper = new AroundMeDBHelper(mActivity);
             dbHelper.searchDeleteAllPlaces();
             dbHelper.searchBulkInsert(places);

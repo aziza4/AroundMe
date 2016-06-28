@@ -37,6 +37,7 @@ public class MainMenuHelper {
         mResources = mActivity.getResources();
     }
 
+
     public void onPrepareOptionsMenu(Menu menu) {
 
         boolean enabled = mUserCurrentLocation.ready();
@@ -52,6 +53,7 @@ public class MainMenuHelper {
         mySearch.setEnabled(enabled);
         byKeyword.setEnabled(enabled);
     }
+
 
     public void onCreateOptionsMenu(Menu menu) {
 
@@ -86,6 +88,7 @@ public class MainMenuHelper {
                 break;
         }
     }
+
 
     private void showDeleteConfirmationDialog() {
 

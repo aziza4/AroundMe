@@ -7,6 +7,7 @@ import android.os.Parcelable;
 
 import com.example.jbt.aroundme.helpers.ImageHelper;
 
+// This is Place inner-class (sub-object) that contains place's photo data.
 public class PlacePhoto implements Parcelable{
 
     public static final String PHOTO_MAX_WIDTH = "200";

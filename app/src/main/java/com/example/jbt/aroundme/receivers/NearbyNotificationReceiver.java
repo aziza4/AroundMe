@@ -12,7 +12,7 @@ import com.example.jbt.aroundme.helpers.BroadcastHelper;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.ui_helpers.TabsPagerAdapter;
 
-
+// this is the (local) receiver that MainActivity holds to get and process the service various notifications
 public class NearbyNotificationReceiver extends BroadcastReceiver {
 
     private final AppCompatActivity mActivity;
@@ -34,23 +34,25 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
 
         switch (action)
         {
+
             case BroadcastHelper.ACTION_NEARBY_NOTIFY:
 
                 int placesSaved = intent.getIntExtra(BroadcastHelper.EXTRA_NEARBY_PLACES_SAVED, -1);
 
                 if (placesSaved < 0 )
-                    break;
+                    break; // no extra...
 
-                if (placesSaved == 0)
+                if (placesSaved == 0) // must update the user on search's zero results
                     Toast.makeText(mActivity, mActivity.getString(R.string.msg_zero_results),
                             Toast.LENGTH_SHORT).show();
 
                 SearchFragment searchFragment = (SearchFragment) mTabsPagerAdapter
                         .getRegisteredFragment(TabsPagerAdapter.SEARCH_TAB);
 
-                searchFragment.refresh(mActivity);
-                mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
+                searchFragment.refresh(mActivity); // update UI
+                mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB); // verify user focus on search tab
                 break;
+
 
             case BroadcastHelper.ACTION_FAVORITES_NOTIFY:
 
@@ -64,9 +66,9 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
                 FavoritesFragment favoritesFragment = (FavoritesFragment) mTabsPagerAdapter
                         .getRegisteredFragment(TabsPagerAdapter.FAVORITES_TAB);
 
-                favoritesFragment.refresh(mActivity);
+                favoritesFragment.refresh(mActivity); // update UI
 
-                if (detailsSaved > 0)
+                if (detailsSaved > 0)  // verify user focus on favorites tab. only for add operation.
                     mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
                 break;
         }

@@ -133,6 +133,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         {
             mPlace = place;
 
+            // set image if exists, placeholder if n/a, or download on last resort
             ImageHelper.SetImageViewLogic(mContext, mPlaceIV, mPlace, false);
 
             mNameTV.setText(place.getName());

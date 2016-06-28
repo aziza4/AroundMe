@@ -24,6 +24,7 @@ class FavoritesActionModeCallbacks implements ActionMode.Callback {
         mPlace = place;
     }
 
+
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 
@@ -36,10 +37,12 @@ class FavoritesActionModeCallbacks implements ActionMode.Callback {
         return true;
     }
 
+
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
         return false;
     }
+
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
@@ -48,6 +51,7 @@ class FavoritesActionModeCallbacks implements ActionMode.Callback {
         {
             case R.id.deleteMenuItem:
 
+                // delete via service to make db this operation async as well, as others are.
                 Intent intent = new Intent(NearbyService.ACTION_PLACE_FAVORITES_REMOVE, null, mActivity, NearbyService.class);
                 intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, new DetailsRequest(mPlace));
                 intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_REMOVE, true);
@@ -59,6 +63,7 @@ class FavoritesActionModeCallbacks implements ActionMode.Callback {
                 return false;
         }
     }
+
 
     @Override
     public void onDestroyActionMode(ActionMode mode) { }

@@ -161,7 +161,8 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
         {
             mPlace = place;
 
-            ImageHelper.SetImageViewLogic(mContext, mPlaceIV, mPlace, false);
+            // set image if exists, placeholder if n/a, or download on last resort
+            ImageHelper.SetImageViewLogic(mContext, mPlaceIV, mPlace, true);
 
             mNameTV.setText(place.getName());
             mVicinityTV.setText(place.getVicinity());

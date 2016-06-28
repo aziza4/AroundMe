@@ -1,6 +1,5 @@
 package com.example.jbt.aroundme.activities_fragments;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

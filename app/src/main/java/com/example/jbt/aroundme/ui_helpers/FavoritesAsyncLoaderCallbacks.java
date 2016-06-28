@@ -36,10 +36,12 @@ public class FavoritesAsyncLoaderCallbacks implements LoaderManager.LoaderCallba
         };
     }
 
+
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
         mFavoritesAdapter.setData(data);
     }
+
 
     @Override
     public void onLoaderReset(android.support.v4.content.Loader<ArrayList<Place>> loader) {
