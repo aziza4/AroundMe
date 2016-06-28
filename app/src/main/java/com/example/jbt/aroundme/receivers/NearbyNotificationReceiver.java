@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.ui_helpers;
+package com.example.jbt.aroundme.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +10,7 @@ import com.example.jbt.aroundme.activities_fragments.FavoritesFragment;
 import com.example.jbt.aroundme.activities_fragments.SearchFragment;
 import com.example.jbt.aroundme.helpers.BroadcastHelper;
 import com.example.jbt.aroundme.R;
+import com.example.jbt.aroundme.ui_helpers.TabsPagerAdapter;
 
 
 public class NearbyNotificationReceiver extends BroadcastReceiver {

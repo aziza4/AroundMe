@@ -12,7 +12,6 @@ import com.example.jbt.aroundme.helpers.AroundMeDBHelper;
 import com.example.jbt.aroundme.helpers.MapManipulation;
 import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.ui_helpers.MainMenuHelper;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -26,7 +25,6 @@ public class MapActivity extends AppCompatActivity {
 
     private Place mPlace;
     private MapManipulation mMapManipulation;
-    private MainMenuHelper mMainMenuHelper;
 
 
     @Override

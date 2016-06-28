@@ -51,7 +51,7 @@
             android:label="@string/map_name"
             android:parentActivityName=".activities_fragments.MainActivity"
             android:theme="@style/MapTheme" />
-        <activity android:name=".activities_fragments.PermissionsActivity"></activity>
+
     </application>
 
 </manifest>

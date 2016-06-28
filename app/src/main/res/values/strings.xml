@@ -57,6 +57,12 @@
     <string name="delete_all_delete_button">Delete</string>
     <string name="delete_all_Cancel_button">Cancel</string>
 
+    <string name="receiver_power_connected">Connected to power source</string>
+    <string name="receiver_power_disconnected">Disconnected from power source</string>
+
+
+
+
     <!--+++++++++++++  Non-Translatable Strings ++++++++++++++++-->
 
 
