@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 
 import com.example.jbt.aroundme.data.NearbyRequest;
+import com.example.jbt.aroundme.helpers.BroadcastHelper;
 import com.example.jbt.aroundme.helpers.SharedPrefHelper;
 import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.location_provider.CurrentLocationProvider;
@@ -62,6 +64,7 @@ public class UserCurrentLocation { // controls the availability of location via 
         intent.putExtra(NearbyService.EXTRA_NEARBY_REQUEST, getNearbyRequest(keyword));
         mActivity.startService(intent);
 
+        BroadcastHelper.broadcastSearchStarted(mActivity);  // start progress bar
         mPendingRequest = null;
     }
 

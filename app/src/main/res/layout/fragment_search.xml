@@ -10,4 +10,12 @@
         android:padding="@dimen/activity_vertical_margin"
         android:id="@+id/searchListView" />
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/downloadProgressBar"
+        style="@android:style/Widget.ProgressBar.Large"
+        android:layout_gravity="center"
+        android:indeterminateDrawable="@xml/progressbar_background"/>
+
 </FrameLayout>

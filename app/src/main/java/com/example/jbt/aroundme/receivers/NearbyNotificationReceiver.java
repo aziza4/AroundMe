@@ -32,6 +32,9 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
 
         String action = intent.getAction();
 
+        SearchFragment searchFragment = (SearchFragment) mTabsPagerAdapter
+                .getRegisteredFragment(TabsPagerAdapter.SEARCH_TAB);
+
         switch (action)
         {
 
@@ -46,9 +49,7 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
                     Toast.makeText(mActivity, mActivity.getString(R.string.msg_zero_results),
                             Toast.LENGTH_SHORT).show();
 
-                SearchFragment searchFragment = (SearchFragment) mTabsPagerAdapter
-                        .getRegisteredFragment(TabsPagerAdapter.SEARCH_TAB);
-
+                searchFragment.removeProgressBar();
                 searchFragment.refresh(mActivity); // update UI
                 mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB); // verify user focus on search tab
                 break;
@@ -68,8 +69,10 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
 
                 favoritesFragment.refresh(mActivity); // update UI
 
-                if (detailsSaved > 0)  // verify user focus on favorites tab. only for add operation.
-                    mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
+                if (detailsSaved > 0) { // saved done
+                    searchFragment.removeProgressBar();
+                    mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB); // verify user focus on favorites tab. only for add operation.
+                }
                 break;
         }
     }

@@ -18,6 +18,8 @@ public class BroadcastHelper
     public static final String EXTRA_FAVORITES_PLACE_REMOVED = "com.example.jbt.aroundme.Services.extra.placedetails.removed";
     public static final String EXTRA_FAVORITES_PLACE_REMOVED_ALL = "com.example.jbt.aroundme.Services.extra.placedetails.removedall";
 
+    public static final String ACTION_SEARCH_OP_STARTED = "com.example.jbt.aroundme.Services.action.ACTION_SEARCH_OP_STARTED";
+    public static final String ACTION_ADD_FAVORITE_OP_STARTED = "com.example.jbt.aroundme.Services.action.ACTION_ADD_FAVORITE_OP_STARTED";
 
     public static void broadcastSearchPlacesSaved(Context context, ArrayList<Place> places)
     {
@@ -49,6 +51,18 @@ public class BroadcastHelper
     {
         Intent intent = new Intent(ACTION_FAVORITES_NOTIFY);
         intent.putExtra(extra, 1);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    public static void broadcastSearchStarted(Context context)
+    {
+        Intent intent = new Intent(ACTION_SEARCH_OP_STARTED);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    public static void broadcastAddFavoriteStarted(Context context)
+    {
+        Intent intent = new Intent(ACTION_ADD_FAVORITE_OP_STARTED);
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 }
