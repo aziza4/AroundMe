@@ -68,16 +68,14 @@ public class UserCurrentLocation {
 
     private NearbyRequest getNearbyRequest(String keyword)
     {
-        SharedPrefHelper sharedPref = new SharedPrefHelper(mActivity);
-
         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-        int radius = sharedPref.getRadius();
-        if (! sharedPref.isMeters())
+        int radius = mSharedPrefHelper.getRadius();
+        if (! mSharedPrefHelper.isMeters())
             radius = Utility.feetToMeters(radius);
 
         String[] types = { ""/*"restaurant"*/ };
-        String language = sharedPref.isEnglish() ?
+        String language = mSharedPrefHelper.isEnglish() ?
                 mActivity.getString(R.string.nearby_language_val_en) :
                 mActivity.getString(R.string.nearby_language_val_iw) ;
 
@@ -85,12 +83,17 @@ public class UserCurrentLocation {
         return new NearbyRequest(latLng, radius, types, keyword, language, rank);
     }
 
+
+
     public interface OnLocationReadyListener {
         void onLocationReady();
         void onPendingRequestHandled();
     }
 
     private void showNoSensorEnabledDialog() {
+
+        if (mSharedPrefHelper.isPermissionDeniedByUser())
+            return;
 
         final String noSensorTitle = mActivity.getString(R.string.no_sensor_enabled);
         final String enableSensorMsg = mActivity.getString(R.string.sensor_enabled_message);

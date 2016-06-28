@@ -87,4 +87,19 @@ public class SharedPrefHelper {
 
         return new LatLng(lat_val, lng_val);
     }
+
+    public void setPermissionDeniedByUser(boolean isDenied) {
+
+        String key = mContext.getString(R.string.shared_pref_loc_permission_denied_by_user);
+        mPrefs.edit()
+                .putBoolean(key, isDenied)
+                .apply();
+    }
+
+    public boolean isPermissionDeniedByUser() {
+
+        String key = mContext.getString(R.string.shared_pref_loc_permission_denied_by_user);
+        return mPrefs.getBoolean(key, false);
+    }
+
 }

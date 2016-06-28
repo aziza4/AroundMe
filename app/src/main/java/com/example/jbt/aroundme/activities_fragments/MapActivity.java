@@ -23,6 +23,7 @@ public class MapActivity extends AppCompatActivity {
     private Place mPlace;
     private MapManipulation mMapManipulation;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

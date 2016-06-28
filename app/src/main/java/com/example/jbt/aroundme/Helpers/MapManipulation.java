@@ -1,7 +1,12 @@
 package com.example.jbt.aroundme.helpers;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.support.v4.app.ActivityCompat;
+
 import com.example.jbt.aroundme.data.Place;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,12 +23,19 @@ public class MapManipulation {
     private static final float DEFAULT_ZOOM_FOR_PLACE_CENTERED = 17.0f;
 
     private Context mContext;
+    private boolean mIsPermissionDeniedByUser;
     private GoogleMap mMap;
 
     public MapManipulation(Context context, GoogleMap map)
     {
         mContext = context;
         mMap = map;
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(mContext);
+        mIsPermissionDeniedByUser = sharedPrefHelper.isPermissionDeniedByUser();
+
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED )
+            return;
+
         mMap.setMyLocationEnabled(true);
     }
 
@@ -55,7 +67,7 @@ public class MapManipulation {
         // add place marker for place
         mMap.addMarker(placeMarkerOptions);
 
-        if ( distInKM > REASONABLE_DISTANCE) {
+        if ( distInKM > REASONABLE_DISTANCE || mIsPermissionDeniedByUser ) {
 
             // move camera to user location
             float zoom = DEFAULT_ZOOM_FOR_PLACE_CENTERED;

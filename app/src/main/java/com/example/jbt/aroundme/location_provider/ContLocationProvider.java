@@ -1,13 +1,17 @@
 
 package com.example.jbt.aroundme.location_provider;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
+import android.support.v4.app.ActivityCompat;
+import com.example.jbt.aroundme.activities_fragments.MainActivity;
+import com.example.jbt.aroundme.helpers.SharedPrefHelper;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -19,13 +23,13 @@ public class ContLocationProvider implements LocationInterface {
     private static final int MIN_DISTANCE = 0;
     private static final int LOCATION_TIMEOUT_MILLISECONDS = 5000;
 
-    private boolean mIsProviderEnabled;
     private final LocationManager mLocationManager;
     private LocationInterface.onLocationListener mListener;
     private ProviderListener mProviderListener;
     private boolean mGotLocation;
     private final String mProviderName;
     private final Activity mActivity;
+    private SharedPrefHelper mSharedPrefHelper;
 
     public ContLocationProvider(Activity activity, String providerName)
     {
@@ -33,24 +37,28 @@ public class ContLocationProvider implements LocationInterface {
         mGotLocation = false;
         mProviderName = providerName;
         mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
+
+        mSharedPrefHelper = new SharedPrefHelper(mActivity);
+        mSharedPrefHelper.setPermissionDeniedByUser(false);
+
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED ) {
+
+            ActivityCompat.requestPermissions(
+                    mActivity,
+                    new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                    MainActivity.LOCATION_REQUEST_CODE);
+        }
     }
 
     @Override
     public void start()
     {
-        if (mListener == null)
+        if (mSharedPrefHelper.isPermissionDeniedByUser() || mListener == null)
             return;
 
-        try {
-            mIsProviderEnabled = mLocationManager.isProviderEnabled(mProviderName);
-        } catch (Exception ex) {
-            // Exceptions will be thrown if provider is not permitted.
-        }
-
-        if (!mIsProviderEnabled) {
-            mListener.onNoGPSAndNetworkArePermitted();
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED )
             return;
-        }
 
         mProviderListener = new ProviderListener();
 
@@ -60,7 +68,6 @@ public class ContLocationProvider implements LocationInterface {
                 MIN_DISTANCE,
                 mProviderListener
         );
-
 
         TimerTask task = new TimerTask() {
             @Override
@@ -84,7 +91,12 @@ public class ContLocationProvider implements LocationInterface {
 
     @Override
     public void stop() {
-        mLocationManager.removeUpdates(mProviderListener);
+
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED )
+            return;
+
+        if (mLocationManager != null && mProviderListener != null)
+            mLocationManager.removeUpdates(mProviderListener);
     }
 
     @Override
