@@ -2,7 +2,6 @@ package com.example.jbt.aroundme.helpers;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.support.v4.app.ActivityCompat;
@@ -33,10 +32,8 @@ public class MapManipulation {
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(mContext);
         mIsPermissionDeniedByUser = sharedPrefHelper.isPermissionDeniedByUser();
 
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED )
-            return;
-
-        mMap.setMyLocationEnabled(true);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED )
+             mMap.setMyLocationEnabled(true);
     }
 
     public void Manipulate(Place place) {

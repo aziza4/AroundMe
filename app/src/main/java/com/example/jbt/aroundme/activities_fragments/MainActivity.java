@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -167,11 +168,16 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == LOCATION_REQUEST_CODE )
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
+        if (requestCode == LOCATION_REQUEST_CODE ) {
+
+            SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mUserCurrentLocation.startListening(LocationManager.GPS_PROVIDER);
+                sharedPrefHelper.setPermissionDeniedByUser(false);
+            } else {
                 sharedPrefHelper.setPermissionDeniedByUser(true);
             }
+        }
     }
-
 }

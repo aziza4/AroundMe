@@ -38,9 +38,8 @@ public class UserCurrentLocation {
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
 
         mUserCurrentLocListener = new UserCurrentLocationListener();
-        mLocationProvider = new ContLocationProvider(mActivity, LocationManager.GPS_PROVIDER);
-        mLocationProvider.setOnLocationChangeListener(mUserCurrentLocListener);
-        mLocationProvider.start();
+
+        startListening(LocationManager.GPS_PROVIDER);
     }
 
 
@@ -109,9 +108,7 @@ public class UserCurrentLocation {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 mLocationProvider.stop();
-                                mLocationProvider = new ContLocationProvider(mActivity, LocationManager.GPS_PROVIDER);
-                                mLocationProvider.setOnLocationChangeListener(mUserCurrentLocListener);
-                                mLocationProvider.start();
+                                startListening(LocationManager.GPS_PROVIDER);
                                 dialog.dismiss();
                             }
                         })
@@ -127,9 +124,7 @@ public class UserCurrentLocation {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 mLocationProvider.stop();
-                                mLocationProvider = new ContLocationProvider(mActivity, LocationManager.NETWORK_PROVIDER);
-                                mLocationProvider.setOnLocationChangeListener(mUserCurrentLocListener);
-                                mLocationProvider.start();
+                                startListening(LocationManager.NETWORK_PROVIDER);
                                 dialog.dismiss();
                             }
                         })
@@ -168,5 +163,13 @@ public class UserCurrentLocation {
             //Toast.makeText(mActivity, "GPS and Network are off\nPlease turn on at least one", Toast.LENGTH_LONG).show();
             showNoSensorEnabledDialog();
         }
+    }
+
+
+    public void startListening(String providerName)
+    {
+        mLocationProvider = new ContLocationProvider(mActivity, providerName);
+        mLocationProvider.setOnLocationChangeListener(mUserCurrentLocListener);
+        mLocationProvider.start();
     }
 }

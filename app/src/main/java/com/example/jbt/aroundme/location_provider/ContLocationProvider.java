@@ -21,7 +21,7 @@ public class ContLocationProvider implements LocationInterface {
 
     private static final int MIN_TIME_MILLISECONDS = 1000;
     private static final int MIN_DISTANCE = 0;
-    private static final int LOCATION_TIMEOUT_MILLISECONDS = 5000;
+    private static final int LOCATION_TIMEOUT_MILLISECONDS = 15000;
 
     private final LocationManager mLocationManager;
     private LocationInterface.onLocationListener mListener;
@@ -37,17 +37,19 @@ public class ContLocationProvider implements LocationInterface {
         mGotLocation = false;
         mProviderName = providerName;
         mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
-
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
-        mSharedPrefHelper.setPermissionDeniedByUser(false);
 
         if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED ) {
 
+            mSharedPrefHelper.setPermissionDeniedByUser(true);
             ActivityCompat.requestPermissions(
                     mActivity,
                     new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
                     MainActivity.LOCATION_REQUEST_CODE);
+        }
+        else {
+            mSharedPrefHelper.setPermissionDeniedByUser(false);
         }
     }
 
