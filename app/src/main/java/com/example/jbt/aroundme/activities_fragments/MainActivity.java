@@ -36,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private MainMenuHelper mMainMenuHelper;
     private UserCurrentLocation mUserCurrentLocation;
     private PowerConnectionReceiver mPowerConnectionReceiver;
-    /*
-    private DrawerHandler mDrawerHandler;
-    */
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -83,27 +80,6 @@ public class MainActivity extends AppCompatActivity {
         // Google's places' AutoComplete Widget
         mPlacesAutoComplete = new PlacesAutoComplete(this);
 
-        // Drawer - no time for implementing this... later...
-        /*
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-        if (drawerLayout != null && navigationView != null) {
-
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this,
-                    drawerLayout,
-                    toolbar,
-                    R.string.navigation_drawer_open,
-                    R.string.navigation_drawer_close);
-
-            drawerLayout.addDrawerListener(toggle);
-            toggle.syncState();
-            mDrawerHandler = new DrawerHandler(drawerLayout);
-            navigationView.setNavigationItemSelectedListener(mDrawerHandler);
-        }
-        */
-
         // register local notification receiver
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
         NearbyNotificationReceiver receiver = new NearbyNotificationReceiver(this, tabsPagerAdapter, viewPager);
@@ -134,21 +110,10 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    /*
-    @Override
-    public void onBackPressed() {
-
-        if (mDrawerHandler.drawerClosingHandled())
-            return;
-
-        super.onBackPressed();
-    }
-    */
-
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        mMainMenuHelper.onPrepareOptionsMenu(menu); // handle toolbar icons disable/enble states
+        mMainMenuHelper.onPrepareOptionsMenu(menu); // handle toolbar icons disable/enable states
         return true;
     }
 

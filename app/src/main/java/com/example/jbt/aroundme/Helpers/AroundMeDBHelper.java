@@ -34,7 +34,7 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     private static final String SEARCH_COL_TYPES = "types";
     private static final String SEARCH_COL_VICINITY = "vicinity";
 
-    // These columns are used only by 'favorites' table, in addition to the above colums
+    // These columns are used only by 'favorites' table, in addition to the above columns
     private static final String DETAILS_COL_ADDRESS = "address";
     private static final String DETAILS_COL_PHONE = "phone";
     private static final String DETAILS_COL_INTL_PHONE = "intl_phone";

@@ -57,7 +57,7 @@ public class ImageHelper {
             return;
         }
 
-        if (place.getPhotoRef() == null) { // if image n/a on googles servers
+        if (place.getPhotoRef() == null) { // if image n/a on google's servers
 
             // go for placeholder image (on map view)
             if (isPlaceHolder) {

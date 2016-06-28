@@ -94,7 +94,7 @@ public class Utility {
     }
 
 
-    // Although user's input are in meter/feet - btter to display result on KM/miles...
+    // Although user's input are in meter/feet - better to display result on KM/miles...
     public static String getDistanceMsg(Context context, Place place)
     {
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
@@ -148,7 +148,7 @@ public class Utility {
         String startAddressVal = userLoc.latitude + "," + userLoc.longitude;
 
         // if we have full data (place name and address on 'Favorites') lets help googlemaps
-        // do a better job... Otherwize ('Search'), we use what we have (LatLng only...)
+        // do a better job... Otherwise ('Search'), we use what we have (LatLng only...)
         String endAddressVal = place.getAddress() == null || place.getAddress().isEmpty() ?
                 place.getLoc().latitude + "," + place.getLoc().longitude :
                 place.getName() + ", " + place.getAddress();
