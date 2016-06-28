@@ -16,8 +16,8 @@ import android.widget.ProgressBar;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.helpers.BroadcastHelper;
 import com.example.jbt.aroundme.receivers.SearchFragBroadcastReceiver;
-import com.example.jbt.aroundme.ui_helpers.SearchAsyncLoaderCallbacks;
-import com.example.jbt.aroundme.ui_helpers.SearchRecyclerAdapter;
+import com.example.jbt.aroundme.logic.SearchAsyncLoaderCallbacks;
+import com.example.jbt.aroundme.logic.SearchRecyclerAdapter;
 
 
 public class SearchFragment extends Fragment {

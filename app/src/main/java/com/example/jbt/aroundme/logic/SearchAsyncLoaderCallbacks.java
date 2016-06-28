@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.ui_helpers;
+package com.example.jbt.aroundme.logic;
 
 
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.support.v4.content.AsyncTaskLoader;
 
 import com.example.jbt.aroundme.data.Place;
 import com.example.jbt.aroundme.helpers.AroundMeDBHelper;
+
 import java.util.ArrayList;
 
 

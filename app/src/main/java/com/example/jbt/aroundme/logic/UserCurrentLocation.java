@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.ui_helpers;
+package com.example.jbt.aroundme.logic;
 
 
 import android.app.Activity;
@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.AlertDialog;
-import android.view.View;
 
 import com.example.jbt.aroundme.data.NearbyRequest;
 import com.example.jbt.aroundme.helpers.BroadcastHelper;

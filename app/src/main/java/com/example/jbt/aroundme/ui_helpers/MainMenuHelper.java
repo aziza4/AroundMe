@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import com.example.jbt.aroundme.activities_fragments.SettingsActivity;
 import com.example.jbt.aroundme.helpers.ImageHelper;
 import com.example.jbt.aroundme.R;
+import com.example.jbt.aroundme.logic.UserCurrentLocation;
 import com.example.jbt.aroundme.services.NearbyService;
 
 public class MainMenuHelper {

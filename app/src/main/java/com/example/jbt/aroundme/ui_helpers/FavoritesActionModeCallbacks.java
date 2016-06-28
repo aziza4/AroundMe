@@ -13,7 +13,7 @@ import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.services.NearbyService;
 
 
-class FavoritesActionModeCallbacks implements ActionMode.Callback {
+public class FavoritesActionModeCallbacks implements ActionMode.Callback {
 
     private final AppCompatActivity mActivity;
     private final Place mPlace;

@@ -21,6 +21,7 @@ import com.example.jbt.aroundme.helpers.BroadcastHelper;
 import com.example.jbt.aroundme.helpers.SharedPrefHelper;
 import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.R;
+import com.example.jbt.aroundme.logic.UserCurrentLocation;
 import com.example.jbt.aroundme.receivers.NearbyNotificationReceiver;
 import com.example.jbt.aroundme.receivers.PowerConnectionReceiver;
 import com.example.jbt.aroundme.ui_helpers.*;

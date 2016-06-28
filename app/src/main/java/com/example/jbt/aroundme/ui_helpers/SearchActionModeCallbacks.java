@@ -1,6 +1,6 @@
 package com.example.jbt.aroundme.ui_helpers;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
@@ -16,7 +16,7 @@ import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.services.NearbyService;
 
 
-class SearchActionModeCallbacks implements ActionMode.Callback {
+public class SearchActionModeCallbacks implements ActionMode.Callback {
 
     private final AppCompatActivity mActivity;
     private final Place mPlace;
