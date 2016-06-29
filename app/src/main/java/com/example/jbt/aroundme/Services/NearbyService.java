@@ -126,14 +126,12 @@ public class NearbyService extends IntentService {
 
             status = response.getStatus();
 
-            // debug
-            if (status.equals(NearbyResponse.STATUS_INVALID_REQUEST)) {
-                @SuppressWarnings("UnusedAssignment")
-                String myUrl = url.toString(); // Todo: investigate how come
+            if (response.isError()) {
+                BroadcastHelper.broadcastSearchError(this, status);
+                return false;
             }
 
-            if (status.equals(NearbyResponse.STATUS_OK) || status.equals(NearbyResponse.STATUS_ZERO_RESULTS))
-                handleNewPlaces(response.getPlaces());
+            handleNewPlaces(response.getPlaces());
 
             pageToken = response.getNextPageToken();
 

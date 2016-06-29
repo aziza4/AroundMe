@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 import com.example.jbt.aroundme.activities_fragments.FavoritesFragment;
 import com.example.jbt.aroundme.activities_fragments.SearchFragment;
+import com.example.jbt.aroundme.data.NearbyResponse;
 import com.example.jbt.aroundme.helpers.BroadcastHelper;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.ui_helpers.TabsPagerAdapter;
@@ -39,6 +40,14 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
         {
 
             case BroadcastHelper.ACTION_NEARBY_NOTIFY:
+
+                String status = intent.getStringExtra(BroadcastHelper.EXTRA_NEARBY_ERROR_MESSAGE);
+                if ( status != null && !status.equals(NearbyResponse.STATUS_INVALID_REQUEST)) {
+                    String message = mActivity.getString(R.string.server_error_message);
+                    Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
+                    searchFragment.removeProgressBar();
+                    break;
+                }
 
                 int placesSaved = intent.getIntExtra(BroadcastHelper.EXTRA_NEARBY_PLACES_SAVED, -1);
 

@@ -29,6 +29,18 @@ public class NearbyResponse implements Serializable {
         this.mHtmlAttributions = htmlAttributions;
     }
 
+    public boolean isOK()
+    {
+        return mStatus.equals(STATUS_OK) || mStatus.equals(STATUS_ZERO_RESULTS);
+    }
+
+    public boolean isError()
+    {
+        return mStatus.equals(STATUS_OVER_QUERY_LIMIT) ||
+                mStatus.equals(STATUS_REQUEST_DENIED) ||
+                mStatus.equals(STATUS_INVALID_REQUEST);
+    }
+
     public String getStatus() { return mStatus; }
 
     public ArrayList<Place> getPlaces() { return mPlaces; }

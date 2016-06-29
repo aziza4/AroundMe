@@ -64,6 +64,7 @@
     <string name="pref_general_category_title">GENERAL</string>
     <string name="pref_search_category_title">SEARCH</string>
 
+    <string name="server_error_message">Server error - Please try later</string>
 
 
     <!--+++++++++++++  Non-Translatable Strings ++++++++++++++++-->
@@ -86,7 +87,6 @@
     <string name="pref_types_gas" translatable="false">gas_station</string>
     <string name="pref_types_bus_train_taxi" translatable="false">bus_station|train_station|taxi_stand</string>
     <string name="pref_types_doctor_hospital_pharmacy" translatable="false">hospital|doctor|pharmacy</string>
-
 
     <string name="dialer_scheme" translatable="false">tel</string>
 
