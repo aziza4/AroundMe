@@ -29,7 +29,7 @@ public class SharedPrefHelper {
     public void changeLocale() {
 
         String key = mContext.getString(R.string.pref_lang_key);
-        String def = mContext.getString(R.string.pref_lang_english);
+        String def = mContext.getString(R.string.pref_lang_def);
         String lang = mPrefs.getString(key, def);
 
         Locale locale = new Locale(lang);
@@ -43,7 +43,7 @@ public class SharedPrefHelper {
 
     public String getSelectedLanguage() {
         String key = mContext.getString(R.string.pref_lang_key);
-        String def = mContext.getString(R.string.pref_lang_english);
+        String def = mContext.getString(R.string.pref_lang_def);
         return mPrefs.getString(key, def);
     }
 
@@ -55,7 +55,7 @@ public class SharedPrefHelper {
 
     public boolean isMeters() {
         String key = mContext.getString(R.string.pref_units_key);
-        String def = mContext.getString(R.string.pref_units_meters);
+        String def = mContext.getString(R.string.pref_units_def);
         String meters = mContext.getString(R.string.pref_units_meters);
         return mPrefs.getString(key, def).equals(meters);
     }
@@ -70,7 +70,7 @@ public class SharedPrefHelper {
 
     public String getSelectedTypes() {
         String key = mContext.getString(R.string.pref_types_key);
-        String def = mContext.getString(R.string.pref_types_all);
+        String def = mContext.getString(R.string.pref_types_def);
         return mPrefs.getString(key, def);
     }
 

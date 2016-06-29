@@ -8,14 +8,14 @@
         <ListPreference
             android:title="@string/pref_lang_label"
             android:key="@string/pref_lang_key"
-            android:defaultValue="@string/pref_lang_english"
+            android:defaultValue="@string/pref_lang_def"
             android:entryValues="@array/pref_lang_values"
             android:entries="@array/pref_lang_options" />
 
         <ListPreference
             android:title="@string/pref_units_label"
             android:key="@string/pref_units_key"
-            android:defaultValue="@string/pref_units_meters"
+            android:defaultValue="@string/pref_units_def"
             android:entryValues="@array/pref_units_values"
             android:entries="@array/pref_units_options"
             android:summary="@string/pref_units_label_meters"/>
@@ -35,7 +35,7 @@
         <ListPreference
             android:title="@string/pref_types_label"
             android:key="@string/pref_types_key"
-            android:defaultValue="@string/pref_types_all"
+            android:defaultValue="@string/pref_types_def"
             android:entryValues="@array/pref_types_values"
             android:entries="@array/pref_types_options"
             android:summary="@string/pref_types_label_all"/>

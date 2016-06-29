@@ -73,12 +73,15 @@
     <string name="pref_lang_key" translatable="false">lang</string>
     <string name="pref_lang_english" translatable="false">en</string>
     <string name="pref_lang_hebrew" translatable="false">iw</string>
+    <string name="pref_lang_def" translatable="false">iw</string>
     <string name="pref_units_key" translatable="false">units</string>
     <string name="pref_units_meters" translatable="false">meters</string>
+    <string name="pref_units_def" translatable="false">meters</string>
     <string name="pref_units_feet" translatable="false">feet</string>
     <string name="pref_radius_key" translatable="false">radius</string>
     <string name="pref_radius_def" translatable="false">1000</string>
     <string name="pref_types_key" translatable="false">types</string>
+    <string name="pref_types_def" translatable="false">all</string>
     <string name="pref_types_all" translatable="false">all</string>
     <string name="pref_types_restaurant_cafe_bar_nightclub" translatable="false">restaurant|cafe|night_club|bar</string>
     <string name="pref_types_museum_gallery" translatable="false">museum|art_gallery</string>

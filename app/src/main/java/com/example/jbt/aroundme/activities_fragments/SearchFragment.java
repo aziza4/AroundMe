@@ -45,7 +45,7 @@ public class SearchFragment extends Fragment {
         mProgressBar = (ProgressBar) v.findViewById(R.id.downloadProgressBar);
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        // register recieiver for both search-start and add-place-to-favorite actions
+        // register receiver for both search-start and add-place-to-favorite actions
         mReceiver = new SearchFragBroadcastReceiver(mProgressBar);
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
         IntentFilter searchStartedIntent = new IntentFilter(BroadcastHelper.ACTION_SEARCH_OP_STARTED);

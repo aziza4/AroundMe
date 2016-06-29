@@ -68,7 +68,7 @@ public class UserCurrentLocation { // controls the availability of location via 
     }
 
 
-    private NearbyRequest getNearbyRequest(String keyword) // prepare request object with all query prms
+    private NearbyRequest getNearbyRequest(String keyword) // prepare request object with all query parameters
     {
         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
