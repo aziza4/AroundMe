@@ -1,28 +1,30 @@
-package com.example.jbt.aroundme.logic;
+package com.example.jbt.aroundme.async_loaders;
+
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.example.jbt.aroundme.adapters.SearchRecyclerAdapter;
 import com.example.jbt.aroundme.data.Place;
-import com.example.jbt.aroundme.helpers.AroundMeDBHelper;
+import com.example.jbt.aroundme.db.AroundMeDBHelper;
 
 import java.util.ArrayList;
 
 
-public class FavoritesAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks<ArrayList<Place>>
+public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks<ArrayList<Place>>
 {
 
     private final Context mContext;
-    private final FavoritesRecyclerAdapter mFavoritesAdapter;
+    private final SearchRecyclerAdapter mSearchAdapter;
     private final AroundMeDBHelper mDbHelper;
 
 
-    public FavoritesAsyncLoaderCallbacks(Context context, FavoritesRecyclerAdapter adapter)
+    public SearchAsyncLoaderCallbacks(Context context, SearchRecyclerAdapter adapter)
     {
         mContext = context;
-        mFavoritesAdapter = adapter;
+        mSearchAdapter = adapter;
         mDbHelper = new AroundMeDBHelper(mContext);
     }
 
@@ -32,20 +34,18 @@ public class FavoritesAsyncLoaderCallbacks implements LoaderManager.LoaderCallba
         return new AsyncTaskLoader<ArrayList<Place>>(mContext) {
             @Override
             public ArrayList<Place> loadInBackground() {
-                return mDbHelper.favoritesGetArrayList();
+                return mDbHelper.searchGetArrayList();
             }
         };
     }
 
-
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
-        mFavoritesAdapter.setData(data);
+        mSearchAdapter.setData(data);
     }
-
 
     @Override
     public void onLoaderReset(android.support.v4.content.Loader<ArrayList<Place>> loader) {
-        mFavoritesAdapter.clearData();
+        mSearchAdapter.clearData();
     }
 }

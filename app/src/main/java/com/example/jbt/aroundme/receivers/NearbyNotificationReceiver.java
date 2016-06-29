@@ -11,7 +11,7 @@ import com.example.jbt.aroundme.activities_fragments.SearchFragment;
 import com.example.jbt.aroundme.data.NearbyResponse;
 import com.example.jbt.aroundme.helpers.BroadcastHelper;
 import com.example.jbt.aroundme.R;
-import com.example.jbt.aroundme.ui_helpers.TabsPagerAdapter;
+import com.example.jbt.aroundme.adapters.TabsPagerAdapter;
 
 // this is the (local) receiver that MainActivity holds to get and process the service various notifications
 public class NearbyNotificationReceiver extends BroadcastReceiver {

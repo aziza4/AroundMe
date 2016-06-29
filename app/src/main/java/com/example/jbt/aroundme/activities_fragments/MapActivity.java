@@ -8,7 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.jbt.aroundme.data.Place;
-import com.example.jbt.aroundme.helpers.AroundMeDBHelper;
+import com.example.jbt.aroundme.db.AroundMeDBHelper;
 import com.example.jbt.aroundme.helpers.MapManipulation;
 import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.R;

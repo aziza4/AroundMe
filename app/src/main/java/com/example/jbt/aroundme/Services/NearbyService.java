@@ -9,7 +9,7 @@ import com.example.jbt.aroundme.data.DetailsResponse;
 import com.example.jbt.aroundme.data.NearbyRequest;
 import com.example.jbt.aroundme.data.NearbyResponse;
 import com.example.jbt.aroundme.data.Place;
-import com.example.jbt.aroundme.helpers.AroundMeDBHelper;
+import com.example.jbt.aroundme.db.AroundMeDBHelper;
 import com.example.jbt.aroundme.helpers.BroadcastHelper;
 import com.example.jbt.aroundme.helpers.GooglePlacesNearbyHelper;
 import com.example.jbt.aroundme.helpers.NetworkHelper;

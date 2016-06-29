@@ -1,4 +1,4 @@
-package com.example.jbt.aroundme.logic;
+package com.example.jbt.aroundme.ui_helpers;
 
 
 import android.app.Activity;

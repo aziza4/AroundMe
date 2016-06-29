@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.jbt.aroundme.activities_fragments.MainActivity;
-import com.example.jbt.aroundme.helpers.AroundMeDBHelper;
+import com.example.jbt.aroundme.db.AroundMeDBHelper;
 import com.example.jbt.aroundme.helpers.BroadcastHelper;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
