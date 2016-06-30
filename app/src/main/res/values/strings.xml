@@ -47,8 +47,8 @@
     <string name="formatted_away_from_me_km">km</string>
     <string name="formatted_away_from_me_miles">miles</string>
 
-    <string name="no_sensor_enabled">No GPS or Network found\nPlease enable at least one of them</string>
-    <string name="sensor_enabled_message">Please enable sensor and confirm your action</string>
+    <string name="no_sensor_enabled">User Location is not available</string>
+    <string name="sensor_enabled_message">For full application functionality, please enable device\'s "Location".\n\nAlso, wait until location icon stop blinking, and then retry!</string>
     <string name="sensor_gps_ok_button">GPS</string>
     <string name="sensor_network_ok_button">Network</string>
     <string name="sensor_stay_offline_button">Stay Offline</string>

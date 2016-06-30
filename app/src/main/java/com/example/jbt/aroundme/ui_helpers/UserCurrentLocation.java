@@ -22,13 +22,14 @@ import com.google.android.gms.maps.model.LatLng;
 public class UserCurrentLocation { // controls the availability of location via LocationProvider it manages.
 
     private final Activity mActivity;
-    private LocationInterface mLocationProvider;
     private final OnLocationReadyListener mListener;
+    private final SharedPrefHelper mSharedPrefHelper;
+    private LocationInterface mLocationProvider;
     private Location mLastLocation;
     private boolean mLocationReadyCalled;
     private String mPendingRequest;
-    private final UserCurrentLocationListener mUserCurrentLocListener;
-    private final SharedPrefHelper mSharedPrefHelper;
+    private UserCurrentLocationListener mUserCurrentLocListener;
+    private boolean mStartup;
 
 
     public UserCurrentLocation(Activity activity, OnLocationReadyListener listener)
@@ -39,6 +40,7 @@ public class UserCurrentLocation { // controls the availability of location via 
         mPendingRequest = null;
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
 
+        mStartup = true;
         mUserCurrentLocListener = new UserCurrentLocationListener();
         startListening(LocationManager.GPS_PROVIDER); // first thing to do...
     }
@@ -109,6 +111,7 @@ public class UserCurrentLocation { // controls the availability of location via 
         final String stayOfflineButton = mActivity.getString(R.string.sensor_stay_offline_button);
 
         new AlertDialog.Builder(mActivity)
+                .setCancelable(false)
                 .setTitle(noSensorTitle)
                 .setMessage(enableSensorMsg)
 
@@ -162,6 +165,15 @@ public class UserCurrentLocation { // controls the availability of location via 
 
         @Override
         public void onLocationNotAvailable() {
+
+            if (mStartup) {
+
+                mStartup = false;
+                mUserCurrentLocListener = new UserCurrentLocationListener();
+                startListening(LocationManager.NETWORK_PROVIDER); // on startup only - if gps fails, try network...
+                return;
+            }
+
             showLocationOffDialog(); // need the user intervention here...
         }
     }

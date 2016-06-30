@@ -2,8 +2,11 @@ package com.example.jbt.aroundme.helpers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -38,8 +41,17 @@ public class Utility {
     {
         ActionBar actionBar = activity.getSupportActionBar();
 
-        if (actionBar != null)
+        if (actionBar != null) {
+
+            // set title
             actionBar.setTitle(activity.getString(id));
+
+            // set up icon
+            final Drawable upArrow = ContextCompat.getDrawable(activity, R.drawable.ic_arrow_back_black_24dp);
+            final int arrowColor = ContextCompat.getColor(activity, android.R.color.primary_text_dark);
+            upArrow.setColorFilter(arrowColor, PorterDuff.Mode.SRC_ATOP);
+            actionBar.setHomeAsUpIndicator(upArrow);
+        }
     }
 
 
