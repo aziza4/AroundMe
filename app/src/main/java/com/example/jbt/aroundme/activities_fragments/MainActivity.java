@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        // set shared-place transition exit
+        TransitionsHelper.setMainActivityExitTransition(this);
+
         // setContentView with locale change
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_main, R.string.app_name);
 

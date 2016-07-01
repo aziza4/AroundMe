@@ -12,7 +12,8 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="4dp">
+    card_view:cardCornerRadius="4dp"
+    android:transitionName="@string/shared_place_transition_name">
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -103,7 +104,8 @@
             android:layout_alignBottom="@+id/favoritesPlaceImageView"
             android:layout_alignLeft="@+id/favoritesVicinityTextView"
             android:layout_alignStart="@+id/favoritesVicinityTextView"
-            tools:ignore="UseCompoundDrawables">
+            tools:ignore="UseCompoundDrawables"
+            android:background="?android:attr/selectableItemBackground">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -132,7 +134,8 @@
             android:layout_alignTop="@+id/favoritesDistanceLayout"
             android:layout_toRightOf="@+id/favoritesDistanceLayout"
             android:layout_toEndOf="@+id/favoritesDistanceLayout"
-            tools:ignore="UseCompoundDrawables">
+            tools:ignore="UseCompoundDrawables"
+            android:background="?android:attr/selectableItemBackground">
 
             <ImageView
                 android:layout_width="wrap_content"

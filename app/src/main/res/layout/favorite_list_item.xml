@@ -19,7 +19,8 @@
             android:layout_height="match_parent"
             android:padding="10dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            android:background="?android:attr/selectableItemBackground">
 
             <ImageView
                 android:layout_width="96dp"
@@ -102,7 +103,8 @@
                 android:layout_alignBottom="@+id/favoritesPlaceImageView"
                 android:layout_alignLeft="@+id/favoritesVicinityTextView"
                 android:layout_alignStart="@+id/favoritesVicinityTextView"
-                tools:ignore="UseCompoundDrawables">
+                tools:ignore="UseCompoundDrawables"
+                android:background="?android:attr/selectableItemBackground">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -131,7 +133,8 @@
                 android:layout_alignTop="@+id/favoritesDistanceLayout"
                 android:layout_toRightOf="@+id/favoritesDistanceLayout"
                 android:layout_toEndOf="@+id/favoritesDistanceLayout"
-                tools:ignore="UseCompoundDrawables">
+                tools:ignore="UseCompoundDrawables"
+                android:background="?android:attr/selectableItemBackground">
 
                 <ImageView
                     android:layout_width="wrap_content"

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.example.jbt.aroundme.helpers.ImageHelper;
 import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.R;
 import com.example.jbt.aroundme.action_mode_callbacks.FavoritesActionModeCallbacks;
+import com.example.jbt.aroundme.ui_helpers.TransitionsHelper;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
@@ -122,10 +124,15 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     Intent intent = new Intent(mContext, MapActivity.class);
                     intent.putExtra(MapActivity.INTENT_MAP_ID_KEY, mPlace.getId());
                     intent.putExtra(MapActivity.INTENT_MAP_TYPE_KEY, MapActivity.INTENT_MAP_TYPE_FAVORITES_VAL);
-                    mContext.startActivity(intent);
+
+                    Bundle transitionBundle = TransitionsHelper
+                            .getTransitionBundle((AppCompatActivity)mContext, view);
+
+                    mContext.startActivity(intent, transitionBundle);
                 }
             });
 

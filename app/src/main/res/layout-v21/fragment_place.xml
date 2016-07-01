@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<tools:LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +11,7 @@
 
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     card_view:cardCornerRadius="4dp"
     android:transitionName="@string/shared_place_transition_name">
 
@@ -29,11 +29,8 @@
             android:id="@+id/favoritesPlaceImageView"
             android:contentDescription="@string/search_place_photo"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginEnd="@dimen/elements_horizontal_margin"
-            android:layout_marginRight="@dimen/elements_horizontal_margin"
             android:src="@android:drawable/ic_menu_report_image"
             android:scaleType="fitXY"/>
 
@@ -43,13 +40,12 @@
             android:orientation="horizontal"
             android:id="@+id/topLinearLayout"
             android:gravity="center_vertical"
-            android:layout_below="@+id/favoritesPlaceImageView"
-            tools:ignore="UseCompoundDrawables">
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/favoritesPlaceImageView">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/elements_horizontal_margin"
                 android:layout_marginEnd="@dimen/elements_horizontal_margin"
                 android:id="@+id/favoritesIconImageView"
                 android:contentDescription="@string/search_place_photo"
@@ -67,12 +63,23 @@
                 android:ellipsize="end"
                 android:id="@+id/favoritesNameTextView"/>
 
+            <RatingBar
+                android:id="@+id/favoritesPlaceRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/elements_horizontal_margin"
+                android:width="0dp"
+                style="?android:attr/ratingBarStyleSmall"
+                android:numStars="5"
+                android:stepSize="0.1"
+                android:isIndicator="true" />
+
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/topLinearLayout"
+            android:layout_below="@+id/topLinearLayout"
             android:layout_alignStart="@+id/topLinearLayout"
             android:layout_marginTop="@dimen/elements_vertical_margin"
             android:id="@+id/favoritesVicinityTextView"
@@ -80,57 +87,16 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:textSize="@dimen/small_text"
-            android:text="Small Text"
-            android:layout_below="@+id/topLinearLayout"/>
+            android:text="Small Text"/>
 
-        <RatingBar
-            android:id="@+id/favoritesPlaceRatingBar"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/elements_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:width="0dp"
-            style="?android:attr/ratingBarStyleSmall"
-            android:numStars="5"
-            android:stepSize="0.1"
-            android:isIndicator="true"
-            android:layout_below="@+id/favoritesVicinityTextView"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/favoritesDialLayout"
-            android:layout_above="@+id/favoritesDistanceLayout"
-            tools:ignore="UseCompoundDrawables"
-            android:background="?android:attr/selectableItemBackground">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/favorite_place_dial"
-                android:src="@drawable/ic_action_dial"
-                android:tint="@color/dialer"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="@dimen/small_text"
-                android:text="Small Text"
-                android:id="@+id/favoritesPhoneTextView"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_vertical"
             android:id="@+id/favoritesDistanceLayout"
-            android:layout_alignParentBottom="true"
+            android:layout_alignBottom="@+id/favoritesPlaceImageView"
+            android:layout_alignStart="@+id/favoritesVicinityTextView"
             tools:ignore="UseCompoundDrawables"
             android:background="?android:attr/selectableItemBackground">
 
@@ -152,8 +118,37 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/favoritesDialLayout"
+            android:layout_alignTop="@+id/favoritesDistanceLayout"
+            android:layout_toEndOf="@+id/favoritesDistanceLayout"
+            tools:ignore="UseCompoundDrawables"
+            android:background="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/favorite_place_dial"
+                android:src="@drawable/ic_action_dial"
+                android:tint="@color/dialer"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="@dimen/small_text"
+                android:text="Small Text"
+                android:id="@+id/favoritesPhoneTextView"/>
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</tools:LinearLayout>

@@ -12,6 +12,7 @@ import com.example.jbt.aroundme.db.AroundMeDBHelper;
 import com.example.jbt.aroundme.helpers.MapManipulation;
 import com.example.jbt.aroundme.helpers.Utility;
 import com.example.jbt.aroundme.R;
+import com.example.jbt.aroundme.ui_helpers.TransitionsHelper;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -30,6 +31,11 @@ public class MapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // set shared-place transition exit
+        TransitionsHelper.setMapActivityEnterTransition(this);
+
+
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_map, R.string.map_name);
 
         Intent intent = getIntent();
