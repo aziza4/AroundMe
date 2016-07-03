@@ -173,7 +173,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
 
         String types = request.getTypesAsString();
         if ( types != null && !types.isEmpty())
-            builder.appendQueryParameter(mKeywordKey, types);
+            builder.appendQueryParameter(mTypesKey, types);
 
         String keyword = request.getKeyword();
         if ( keyword != null && !keyword.isEmpty())
