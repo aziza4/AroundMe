@@ -49,14 +49,19 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
                     break;
                 }
 
+                boolean clearList = intent.getBooleanExtra(BroadcastHelper.EXTRA_NEARBY_CLEAR_LIST, false);
+
                 int placesSaved = intent.getIntExtra(BroadcastHelper.EXTRA_NEARBY_PLACES_SAVED, -1);
 
-                if (placesSaved < 0 )
-                    break; // no extra...
+                if (!clearList) {
 
-                if (placesSaved == 0) // must update the user on search's zero results
-                    Toast.makeText(mActivity, mActivity.getString(R.string.msg_zero_results),
-                            Toast.LENGTH_SHORT).show();
+                    if ( placesSaved < 0)
+                        break; // no extra...
+
+                    if ( placesSaved == 0) // must update the user on search's zero results
+                        Toast.makeText(mActivity, mActivity.getString(R.string.msg_zero_results),
+                                Toast.LENGTH_SHORT).show();
+                }
 
                 searchFragment.removeProgressBar();
                 searchFragment.refresh(mActivity); // update UI

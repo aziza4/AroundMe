@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
@@ -175,7 +176,7 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
         if ( types != null && !types.isEmpty())
             builder.appendQueryParameter(mTypesKey, types);
 
-        String keyword = request.getKeyword();
+        String keyword = request.getKeyword().replaceAll(" ", "+");
         if ( keyword != null && !keyword.isEmpty())
             builder.appendQueryParameter(mKeywordKey, keyword);
 

@@ -69,13 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
         // User Location
         mUserCurrentLocation = new UserCurrentLocation(this, new UserCurrentLocation.OnLocationReadyListener() {
-            @Override
-            public void onLocationReady() {
+            @Override public void onLocationReady() {
                 invalidateOptionsMenu();
             }
-
-            @Override
-            public void onPendingRequestHandled() {
+            @Override public void onPendingRequestHandled() {
                 invalidateOptionsMenu();
             }
         });
@@ -146,10 +143,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode != LOCATION_REQUEST_CODE )
-            return;
-
-        if (grantResults[0] != PackageManager.PERMISSION_GRANTED)
+        if (requestCode != LOCATION_REQUEST_CODE || grantResults[0] != PackageManager.PERMISSION_GRANTED)
             return;
 
         // runtime permission handling

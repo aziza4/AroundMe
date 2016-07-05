@@ -54,6 +54,7 @@ public class NearbyService extends IntentService {
             case ACTION_NEARBY_PLACES:
                 NearbyRequest nearbyRequest = intent.getParcelableExtra(EXTRA_NEARBY_REQUEST);
                 mDbHelper.searchDeleteAllPlaces();
+                BroadcastHelper.broadcastSearchPlacesClearPrevSearch(this);
 
                 if ( downloadNearbyPlacesWithPhotos(nearbyRequest))
                     downloadPlacesPhotoAndSaveToDB();

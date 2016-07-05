@@ -13,6 +13,7 @@ public class BroadcastHelper
     public static final String ACTION_NEARBY_NOTIFY = "com.example.jbt.aroundme.Services.action.ACTION_NEARBY_NOTIFY";
     public static final String EXTRA_NEARBY_PLACES_SAVED = "com.example.jbt.aroundme.Services.extra.nearbyplaces.places.saved";
     public static final String EXTRA_NEARBY_ERROR_MESSAGE = "com.example.jbt.aroundme.Services.extra.nearbyplaces.places.isError";
+    public static final String EXTRA_NEARBY_CLEAR_LIST = "com.example.jbt.aroundme.Services.extra.nearbyplaces.places.clearList";
 
     public static final String ACTION_FAVORITES_NOTIFY = "com.example.jbt.aroundme.Services.action.ACTION_FAVORITES_NOTIFY";
     public static final String EXTRA_FAVORITES_PLACE_SAVED = "com.example.jbt.aroundme.Services.extra.placedetails.saved";
@@ -29,6 +30,12 @@ public class BroadcastHelper
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
+    public static void broadcastSearchPlacesClearPrevSearch(Context context)
+    {
+        Intent intent = new Intent(ACTION_NEARBY_NOTIFY);
+        intent.putExtra(EXTRA_NEARBY_CLEAR_LIST, true);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
 
     public static void broadcastFavoritesPlaceSaved(Context context)
     {
