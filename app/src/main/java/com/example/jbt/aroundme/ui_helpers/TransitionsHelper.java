@@ -24,10 +24,6 @@ public class TransitionsHelper {
 
         Transition cardTransition = inflater.inflateTransition(R.transition.place_shared_element);
         activity.getWindow().setSharedElementExitTransition(cardTransition);
-
-//        Slide slideExitTransition = new Slide(Gravity.TOP);
-//        slideExitTransition.excludeTarget(R.id.toolbar, true);
-//        activity.getWindow().setExitTransition(slideExitTransition);
     }
 
 
@@ -41,10 +37,6 @@ public class TransitionsHelper {
 
         Transition transition = inflater.inflateTransition(R.transition.place_shared_element);
         activity.getWindow().setSharedElementEnterTransition(transition);
-
-//        Slide slideEnterTransition = new Slide(Gravity.BOTTOM);
-//        slideEnterTransition.excludeTarget(R.id.googleMapContainer, true);
-//        activity.getWindow().setExitTransition(slideEnterTransition);
     }
 
 
@@ -54,20 +46,15 @@ public class TransitionsHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             return null;
 
-        String toolbarTransName = activity.getString(R.string.toolbar_transition_name);
         String placeTransName = activity.getString(R.string.shared_place_transition_name);
         placeView.setTransitionName(placeTransName);
 
-        View toolbarView = activity.findViewById(R.id.toolbar);
-
         Pair placePair = Pair.create(placeView, placeTransName); //connect the view fab to the transitionName "fab"
-        Pair toolbarPair = Pair.create(toolbarView, toolbarTransName); // connect header (toolbar) to transitionName "holder1"
 
         ActivityOptions transitionActivityOptions =
                 ActivityOptions.makeSceneTransitionAnimation(
                         activity,
-                        placePair,
-                        toolbarPair);
+                        placePair);
 
         return transitionActivityOptions.toBundle();
     }

@@ -12,8 +12,7 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="4dp"
-    android:transitionName="@string/shared_place_transition_name">
+    card_view:cardCornerRadius="4dp">
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -162,6 +162,4 @@
 
 
     <string name="shared_place_transition_name" translatable="false">shared_place_transition</string>
-    <string name="toolbar_transition_name" translatable="false">toolbar_transition</string>
-
 </resources>
