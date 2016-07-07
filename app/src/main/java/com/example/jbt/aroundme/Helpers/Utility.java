@@ -18,8 +18,6 @@ import com.example.jbt.aroundme.data.Place;
 import com.example.jbt.aroundme.R;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Locale;
 
 

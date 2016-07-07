@@ -54,18 +54,6 @@ public class PlacePhoto implements Parcelable{
         }
     };
 
-    public int getHeight() {
-        return mHeight;
-    }
-
-    public int getWidth() {
-        return mWidth;
-    }
-
-    public String[] getHtmlAttributionArr() {
-        return mHtmlAttributionArr;
-    }
-
     public String getReference() {
         return mReference;
     }

@@ -34,10 +34,6 @@ public class DetailsResponse implements Parcelable {
         }
     };
 
-    public String getStatus() {
-        return mStatus;
-    }
-
     public Place getPlace() {
         return mPlace;
     }

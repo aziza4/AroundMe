@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class NearbyResponse implements Serializable {
 
     public static final String STATUS_OK = "OK";
-    public static final String STATUS_ZERO_RESULTS = "ZERO_RESULTS";
-    public static final String STATUS_OVER_QUERY_LIMIT = "OVER_QUERY_LIMIT";
-    public static final String STATUS_REQUEST_DENIED = "REQUEST_DENIED";
+    //private static final String STATUS_ZERO_RESULTS = "ZERO_RESULTS";
+    private static final String STATUS_OVER_QUERY_LIMIT = "OVER_QUERY_LIMIT";
+    private static final String STATUS_REQUEST_DENIED = "REQUEST_DENIED";
     public static final String STATUS_INVALID_REQUEST = "INVALID_REQUEST";
 
     private final String mStatus;
@@ -19,19 +19,12 @@ public class NearbyResponse implements Serializable {
     private final String mNextPageToken;
 
 
-    private final String[] mHtmlAttributions;
-
     public NearbyResponse(String status, ArrayList<Place> places, String nextPageToken, String[] htmlAttributions) {
 
         this.mStatus = status;
         this.mPlaces = places;
         this.mNextPageToken = nextPageToken;
-        this.mHtmlAttributions = htmlAttributions;
-    }
-
-    public boolean isOK()
-    {
-        return mStatus.equals(STATUS_OK) || mStatus.equals(STATUS_ZERO_RESULTS);
+        String[] mHtmlAttributions = htmlAttributions;
     }
 
     public boolean isError()
@@ -48,6 +41,4 @@ public class NearbyResponse implements Serializable {
     public String getNextPageToken() {
         return mNextPageToken;
     }
-
-    public String[] getHtmlAttributions() { return mHtmlAttributions; }
 }

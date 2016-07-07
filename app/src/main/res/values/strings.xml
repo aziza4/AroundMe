@@ -53,7 +53,7 @@
     <string name="sensor_network_ok_button">Network</string>
     <string name="sensor_stay_offline_button">Stay Offline</string>
 
-    <string name="delete_all_title">Delete All Movies</string>
+    <string name="delete_all_title">Delete All Places</string>
     <string name="delete_all_message">Are you sure?</string>
     <string name="delete_all_delete_button">Delete</string>
     <string name="delete_all_Cancel_button">Cancel</string>
