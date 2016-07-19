@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jbt.aroundme.activities_fragments.PlaceFragment">
+    tools:context="com.comli.shapira.aroundme.activities_fragments.PlaceFragment">
 
 <android.support.v7.widget.CardView
 
