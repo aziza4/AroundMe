@@ -22,19 +22,25 @@ import com.google.android.gms.maps.model.LatLng;
 public class UserCurrentLocation { // controls the availability of location via LocationProvider it manages.
 
     private final Activity mActivity;
+    private Location mLastLocation;
+    private String mLastProvider;
     private final OnLocationReadyListener mListener;
     private final SharedPrefHelper mSharedPrefHelper;
     private LocationInterface mLocationProvider;
-    private Location mLastLocation;
     private boolean mLocationReadyCalled;
     private String mPendingRequest;
     private UserCurrentLocationListener mUserCurrentLocListener;
     private boolean mStartup;
 
+    public static final String LAST_LOCATION_KEY = "last_location";
+    public static final String LAST_PROVIDER_KEY = "last_provider";
 
-    public UserCurrentLocation(Activity activity, OnLocationReadyListener listener)
+
+    public UserCurrentLocation(Activity activity, Location lastLocation, String lastProvider, OnLocationReadyListener listener)
     {
         mActivity = activity;
+        mLastLocation = lastLocation;
+        mLastProvider = lastProvider != null ? lastProvider : LocationManager.GPS_PROVIDER;
         mListener = listener;
         mLocationReadyCalled = false;
         mPendingRequest = null;
@@ -42,9 +48,18 @@ public class UserCurrentLocation { // controls the availability of location via 
 
         mStartup = true;
         mUserCurrentLocListener = new UserCurrentLocationListener();
-        startListening(LocationManager.GPS_PROVIDER); // first thing to do...
+        startListening(mLastProvider);
     }
 
+    public Location getLastLocation()
+    {
+        return mLastLocation;
+    }
+
+    public String getLastProvider()
+    {
+        return mLastProvider;
+    }
 
     public boolean ready()
     {

@@ -7,6 +7,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import com.comli.shapira.aroundme.R;
+import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 
 
 public class SettingsFragment extends PreferenceFragment
@@ -20,7 +21,10 @@ public class SettingsFragment extends PreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
+        sharedPrefHelper.changeLocale();
         addPreferencesFromResource(R.xml.pref_general);
+
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_lang_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_radius_key)));
@@ -56,6 +60,7 @@ public class SettingsFragment extends PreferenceFragment
 
                 if ( langSelected && langChanged )
                     restartSettingsActivity(); // lang change to take affect immediately !
+
             }
 
         } else {

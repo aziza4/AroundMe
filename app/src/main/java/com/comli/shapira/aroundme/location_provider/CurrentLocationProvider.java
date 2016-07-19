@@ -77,15 +77,13 @@ public class CurrentLocationProvider implements LocationInterface {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if( ! mGotLocation)
-                {
-                    mActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if( ! mGotLocation)
                             mListener.onLocationNotAvailable();
-                        }
-                    });
-                }
+                    }
+                });
             }
         };
 

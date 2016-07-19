@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.multidex.MultiDex;
@@ -68,7 +70,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         // User Location
-        mUserCurrentLocation = new UserCurrentLocation(this, new UserCurrentLocation.OnLocationReadyListener() {
+        Location lastLocation = savedInstanceState != null ?
+                (Location)savedInstanceState.getParcelable(UserCurrentLocation.LAST_LOCATION_KEY) : null;
+        String lastProvider = savedInstanceState != null ?
+                savedInstanceState.getString(UserCurrentLocation.LAST_PROVIDER_KEY) : null;
+        mUserCurrentLocation = new UserCurrentLocation(this, lastLocation, lastProvider,
+                new UserCurrentLocation.OnLocationReadyListener() {
             @Override public void onLocationReady() {
                 invalidateOptionsMenu();
             }
@@ -102,6 +109,14 @@ public class MainActivity extends AppCompatActivity {
 
         // MainMenuHelper
         mMainMenuHelper = new MainMenuHelper(this, mUserCurrentLocation, mPlacesAutoComplete);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        outState.putParcelable(UserCurrentLocation.LAST_LOCATION_KEY, mUserCurrentLocation.getLastLocation());
+        outState.putString(UserCurrentLocation.LAST_PROVIDER_KEY, mUserCurrentLocation.getLastProvider());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
