@@ -41,10 +41,6 @@ public class MainMenuHelper {
     public void onPrepareOptionsMenu(Menu menu) {
 
         boolean enabled = mUserCurrentLocation.ready();
-        Drawable myLocIcon = ResourcesCompat.getDrawable(mResources, R.drawable.ic_action_search_my_loc, null);
-        Drawable byKeywordIcon = ResourcesCompat.getDrawable(mResources, R.drawable.ic_action_search_by_keyword, null);
-        ImageHelper.setDrawableEnableDisableColor(myLocIcon, enabled);
-        ImageHelper.setDrawableEnableDisableColor(byKeywordIcon, enabled);
 
         MenuItem myLocation = menu.findItem(R.id.menu_search_my_loc);
         MenuItem mySearch = menu.findItem(R.id.menu_search_places);

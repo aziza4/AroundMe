@@ -11,13 +11,13 @@
 
     <item android:id="@+id/menu_search_my_loc"
         android:title="@string/menu_my_loc"
-        android:icon="@drawable/ic_action_search_my_loc"
+        android:icon="@drawable/search_my_loc_selector"
         app:showAsAction="always|collapseActionView"
         tools:ignore="AlwaysShowAction" />
 
     <item android:id="@+id/menu_search_by_keyword"
         android:title="@string/menu_search_by_keyword"
-        android:icon="@drawable/ic_action_search_by_keyword"
+        android:icon="@drawable/search_by_keyword_selector"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView"
         tools:ignore="AlwaysShowAction" />

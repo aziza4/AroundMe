@@ -37,13 +37,6 @@ public class ImageHelper {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
 
-    public static void setDrawableEnableDisableColor( Drawable icon, boolean enable)
-    {
-        if (enable)
-            icon.setColorFilter(null);
-        else
-            icon.setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
-    }
 
     public static void SetImageViewLogic(Context context, ImageView placeIV, Place place, boolean isPlaceHolder)
     {
