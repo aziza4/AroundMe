@@ -70,15 +70,18 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_layout);
         tabLayout.setupWithViewPager(viewPager);
 
+        // search
+        String keyword = "";
+        Intent searchIntent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(searchIntent.getAction()))
+            keyword = searchIntent.getStringExtra(SearchManager.QUERY);
+
         // User Location
         LastLocationInfo lastInfoLocation = savedInstanceState == null ? null :
                 (LastLocationInfo)savedInstanceState.getParcelable(UserCurrentLocation.LAST_LOC_INFO_KEY);
-        mUserCurrentLocation = new UserCurrentLocation(this, lastInfoLocation,
+        mUserCurrentLocation = new UserCurrentLocation(this, lastInfoLocation, keyword,
                 new UserCurrentLocation.OnLocationReadyListener() {
             @Override public void onLocationReady() {
-                invalidateOptionsMenu();
-            }
-            @Override public void onPendingRequestHandled() {
                 invalidateOptionsMenu();
             }
         });
@@ -99,13 +102,6 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(mPowerConnectionReceiver, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
         registerReceiver(mPowerConnectionReceiver, new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));
 
-        // search
-        Intent searchIntent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(searchIntent.getAction())) {
-            String keyword = searchIntent.getStringExtra(SearchManager.QUERY);
-            mUserCurrentLocation.getAndHandle(keyword);
-        }
-
         // MainMenuHelper
         mMainMenuHelper = new MainMenuHelper(this, mUserCurrentLocation, mPlacesAutoComplete);
     }
@@ -115,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
     {
         outState.putParcelable(UserCurrentLocation.LAST_LOC_INFO_KEY, mUserCurrentLocation.getLastLocationInfo());
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override

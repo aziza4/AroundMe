@@ -21,7 +21,8 @@ public class CurrentLocationProvider implements LocationInterface {
 
     private static final int MIN_TIME_MILLISECONDS = 1000;
     private static final int MIN_DISTANCE = 0;
-    private static final int LOCATION_TIMEOUT_MILLISECONDS = 3000;
+    private static final int NETWORK_TIMEOUT_MILLISECONDS = 2000;
+    private static final int GPS_TIMEOUT_MILLISECONDS = 2000;
 
     private final LocationManager mLocationManager;
     private LocationInterface.onLocationListener mListener;
@@ -88,7 +89,12 @@ public class CurrentLocationProvider implements LocationInterface {
         };
 
         Timer timer = new Timer("");
-        Date timeout = new Date(System.currentTimeMillis() + LOCATION_TIMEOUT_MILLISECONDS);
+        long timeoutMS = System.currentTimeMillis() +
+                (mProviderName == LocationManager.GPS_PROVIDER ?
+                        GPS_TIMEOUT_MILLISECONDS :
+                        NETWORK_TIMEOUT_MILLISECONDS);
+
+        Date timeout = new Date(timeoutMS);
         timer.schedule(task, timeout);
     }
 

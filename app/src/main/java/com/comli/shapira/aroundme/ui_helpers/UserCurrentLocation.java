@@ -29,21 +29,21 @@ public class UserCurrentLocation { // controls the availability of location via 
     private final SharedPrefHelper mSharedPrefHelper;
     private LocationInterface mLocationProvider;
     private boolean mLocationReadyCalled;
-    private String mPendingRequest;
     private UserCurrentLocationListener mUserCurrentLocListener;
     private boolean mStartup;
     private AlertDialog mAlertDialog;
+    private String mKeyword;
 
     public static final String LAST_LOC_INFO_KEY = "last_loc_info";
 
 
-    public UserCurrentLocation(Activity activity, LastLocationInfo lastLocationInfo,
+    public UserCurrentLocation(Activity activity, LastLocationInfo lastLocationInfo, String keyword,
                                OnLocationReadyListener listener)
     {
         mActivity = activity;
+        mKeyword = keyword;
         mListener = listener;
         mLocationReadyCalled = false;
-        mPendingRequest = null;
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
         mAlertDialog = null;
         mStartup = true;
@@ -68,25 +68,21 @@ public class UserCurrentLocation { // controls the availability of location via 
     }
 
 
-    public void getAndHandle(String keyword) { // all search request go through here
+    public void getAndHandle() { // all search request go through here
 
-        if ( !ready() ) {
-            mPendingRequest = keyword; // we can (later) process that once we have location available
-            mLocationProvider.start(); // ask for location updates
+        if ( !ready() )
             return;
-        }
 
         // if location is available then GO! - use our service to download from internet...
         Intent intent = new Intent(NearbyService.ACTION_NEARBY_PLACES, null, mActivity, NearbyService.class);
-        intent.putExtra(NearbyService.EXTRA_NEARBY_REQUEST, getNearbyRequest(keyword));
+        intent.putExtra(NearbyService.EXTRA_NEARBY_REQUEST, getNearbyRequest());
         mActivity.startService(intent);
 
         BroadcastHelper.broadcastSearchStarted(mActivity);  // start progress bar
-        mPendingRequest = null;
     }
 
 
-    private NearbyRequest getNearbyRequest(String keyword) // prepare request object with all query parameters
+    private NearbyRequest getNearbyRequest() // prepare request object with all query parameters
     {
         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
@@ -104,14 +100,13 @@ public class UserCurrentLocation { // controls the availability of location via 
                 mActivity.getString(R.string.nearby_language_val_iw) ;
 
         String rank = mActivity.getString(R.string.nearby_rank_val);
-        return new NearbyRequest(latLng, radius, types, keyword, language, rank);
+        return new NearbyRequest(latLng, radius, types, mKeyword, language, rank);
     }
 
 
 
     public interface OnLocationReadyListener {
         void onLocationReady();
-        void onPendingRequestHandled();
     }
 
 
@@ -134,28 +129,23 @@ public class UserCurrentLocation { // controls the availability of location via 
                 .setPositiveButton(gpsButton, // gps
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                mLocationProvider.stop();
                                 startListening(LocationManager.GPS_PROVIDER);
-                                dialog.dismiss();
-                                mAlertDialog = null;
+                                dismissDialog();
                             }
                         })
 
                 .setNeutralButton(stayOfflineButton, // cancel
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
-                                mAlertDialog = null;
+                                dismissDialog();
                             }
                         })
 
                 .setNegativeButton(networkButton,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) { // network
-                                mLocationProvider.stop();
                                 startListening(LocationManager.NETWORK_PROVIDER);
-                                dialog.dismiss();
-                                mAlertDialog = null;
+                                dismissDialog();
                             }
                         })
                 .create();
@@ -188,9 +178,9 @@ public class UserCurrentLocation { // controls the availability of location via 
                 mListener.onLocationReady(); // update activity to refresh menu icons
             }
 
-            if (mPendingRequest != null) {
-                getAndHandle(mPendingRequest); // we have pending request, now its time to handle it
-                mListener.onPendingRequestHandled(); // update activity to refresh menu icons
+            if ( !mKeyword.isEmpty()) {
+                getAndHandle();
+                mKeyword = "";
             }
         }
 
@@ -212,6 +202,9 @@ public class UserCurrentLocation { // controls the availability of location via 
 
     public void startListening(String providerName)
     {
+        if (mLocationProvider != null)
+            mLocationProvider.stop();
+
         mLocationProvider = new CurrentLocationProvider(mActivity, providerName);
         mLocationProvider.setOnLocationChangeListener(mUserCurrentLocListener);
         mLocationProvider.start();

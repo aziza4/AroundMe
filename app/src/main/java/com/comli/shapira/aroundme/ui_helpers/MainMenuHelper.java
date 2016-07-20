@@ -72,7 +72,7 @@ public class MainMenuHelper {
                 break;
 
             case R.id.menu_search_my_loc:
-                mUserCurrentLocation.getAndHandle("");
+                mUserCurrentLocation.getAndHandle();
                 break;
 
             case R.id.menu_search_places:
