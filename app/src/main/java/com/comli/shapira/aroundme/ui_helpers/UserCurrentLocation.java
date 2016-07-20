@@ -32,6 +32,7 @@ public class UserCurrentLocation { // controls the availability of location via 
     private String mPendingRequest;
     private UserCurrentLocationListener mUserCurrentLocListener;
     private boolean mStartup;
+    private AlertDialog mAlertDialog;
 
     public static final String LAST_LOC_INFO_KEY = "last_loc_info";
 
@@ -40,21 +41,24 @@ public class UserCurrentLocation { // controls the availability of location via 
                                OnLocationReadyListener listener)
     {
         mActivity = activity;
-        mLastLocation = lastLocationInfo != null ? lastLocationInfo.getLocation() : null;
-        mLastProvider = lastLocationInfo != null ? lastLocationInfo.getProvider() : LocationManager.GPS_PROVIDER;
         mListener = listener;
         mLocationReadyCalled = false;
         mPendingRequest = null;
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
-
+        mAlertDialog = null;
         mStartup = true;
         mUserCurrentLocListener = new UserCurrentLocationListener();
+        mLastLocation = lastLocationInfo == null ? null : lastLocationInfo.getLocation();
+        mLastProvider = lastLocationInfo == null ? LocationManager.GPS_PROVIDER : lastLocationInfo.getProvider();
         startListening(mLastProvider);
+
+        if (lastLocationInfo != null && lastLocationInfo.getAlertDialogOn())
+            showLocationOffDialog();
     }
 
     public LastLocationInfo getLastLocationInfo()
     {
-        return new LastLocationInfo(mLastProvider, mLastLocation);
+        return new LastLocationInfo(mLastProvider, mLastLocation, mAlertDialog != null);
     }
 
 
@@ -113,7 +117,7 @@ public class UserCurrentLocation { // controls the availability of location via 
 
     private void showLocationOffDialog() {
 
-        if (mSharedPrefHelper.isPermissionDeniedByUser())
+        if (mSharedPrefHelper.isPermissionDeniedByUser() || mAlertDialog != null)
             return;
 
         final String noSensorTitle = mActivity.getString(R.string.no_sensor_enabled);
@@ -122,7 +126,7 @@ public class UserCurrentLocation { // controls the availability of location via 
         final String networkButton = mActivity.getString(R.string.sensor_network_ok_button);
         final String stayOfflineButton = mActivity.getString(R.string.sensor_stay_offline_button);
 
-        new AlertDialog.Builder(mActivity)
+        mAlertDialog = new AlertDialog.Builder(mActivity)
                 .setCancelable(false)
                 .setTitle(noSensorTitle)
                 .setMessage(enableSensorMsg)
@@ -133,6 +137,7 @@ public class UserCurrentLocation { // controls the availability of location via 
                                 mLocationProvider.stop();
                                 startListening(LocationManager.GPS_PROVIDER);
                                 dialog.dismiss();
+                                mAlertDialog = null;
                             }
                         })
 
@@ -140,6 +145,7 @@ public class UserCurrentLocation { // controls the availability of location via 
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.dismiss();
+                                mAlertDialog = null;
                             }
                         })
 
@@ -149,10 +155,20 @@ public class UserCurrentLocation { // controls the availability of location via 
                                 mLocationProvider.stop();
                                 startListening(LocationManager.NETWORK_PROVIDER);
                                 dialog.dismiss();
+                                mAlertDialog = null;
                             }
                         })
-                .create()
-                .show();
+                .create();
+
+        mAlertDialog.show();
+    }
+
+    public void dismissDialog()
+    {
+        if (mAlertDialog!= null) {
+            mAlertDialog.dismiss();
+            mAlertDialog = null;
+        }
     }
 
 
@@ -162,6 +178,9 @@ public class UserCurrentLocation { // controls the availability of location via 
         public void onLocationChanged(Location location) {
 
             mLastLocation = location;
+
+            dismissDialog();
+
             mSharedPrefHelper.saveLastUserLocation(location);
 
             if (!mLocationReadyCalled) {

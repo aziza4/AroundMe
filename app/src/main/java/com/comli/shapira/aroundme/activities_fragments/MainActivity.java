@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        mUserCurrentLocation.dismissDialog();
         unregisterReceiver(mPowerConnectionReceiver); // stop alerting the user on app exit
         super.onDestroy();
     }
