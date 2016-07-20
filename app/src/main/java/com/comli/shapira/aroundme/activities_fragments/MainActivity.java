@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.comli.shapira.aroundme.adapters.TabsPagerAdapter;
+import com.comli.shapira.aroundme.data.LastLocationInfo;
 import com.comli.shapira.aroundme.helpers.BroadcastHelper;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 import com.comli.shapira.aroundme.helpers.Utility;
@@ -70,11 +71,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         // User Location
-        Location lastLocation = savedInstanceState != null ?
-                (Location)savedInstanceState.getParcelable(UserCurrentLocation.LAST_LOCATION_KEY) : null;
-        String lastProvider = savedInstanceState != null ?
-                savedInstanceState.getString(UserCurrentLocation.LAST_PROVIDER_KEY) : null;
-        mUserCurrentLocation = new UserCurrentLocation(this, lastLocation, lastProvider,
+        LastLocationInfo lastInfoLocation = savedInstanceState == null ? null :
+                (LastLocationInfo)savedInstanceState.getParcelable(UserCurrentLocation.LAST_LOC_INFO_KEY);
+        mUserCurrentLocation = new UserCurrentLocation(this, lastInfoLocation,
                 new UserCurrentLocation.OnLocationReadyListener() {
             @Override public void onLocationReady() {
                 invalidateOptionsMenu();
@@ -114,8 +113,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
-        outState.putParcelable(UserCurrentLocation.LAST_LOCATION_KEY, mUserCurrentLocation.getLastLocation());
-        outState.putString(UserCurrentLocation.LAST_PROVIDER_KEY, mUserCurrentLocation.getLastProvider());
+        outState.putParcelable(UserCurrentLocation.LAST_LOC_INFO_KEY, mUserCurrentLocation.getLastLocationInfo());
         super.onSaveInstanceState(outState);
     }
 

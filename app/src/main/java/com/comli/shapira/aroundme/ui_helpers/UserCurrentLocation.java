@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.AlertDialog;
 
+import com.comli.shapira.aroundme.data.LastLocationInfo;
 import com.comli.shapira.aroundme.data.NearbyRequest;
 import com.comli.shapira.aroundme.helpers.BroadcastHelper;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
@@ -32,15 +33,15 @@ public class UserCurrentLocation { // controls the availability of location via 
     private UserCurrentLocationListener mUserCurrentLocListener;
     private boolean mStartup;
 
-    public static final String LAST_LOCATION_KEY = "last_location";
-    public static final String LAST_PROVIDER_KEY = "last_provider";
+    public static final String LAST_LOC_INFO_KEY = "last_loc_info";
 
 
-    public UserCurrentLocation(Activity activity, Location lastLocation, String lastProvider, OnLocationReadyListener listener)
+    public UserCurrentLocation(Activity activity, LastLocationInfo lastLocationInfo,
+                               OnLocationReadyListener listener)
     {
         mActivity = activity;
-        mLastLocation = lastLocation;
-        mLastProvider = lastProvider != null ? lastProvider : LocationManager.GPS_PROVIDER;
+        mLastLocation = lastLocationInfo != null ? lastLocationInfo.getLocation() : null;
+        mLastProvider = lastLocationInfo != null ? lastLocationInfo.getProvider() : LocationManager.GPS_PROVIDER;
         mListener = listener;
         mLocationReadyCalled = false;
         mPendingRequest = null;
@@ -51,15 +52,11 @@ public class UserCurrentLocation { // controls the availability of location via 
         startListening(mLastProvider);
     }
 
-    public Location getLastLocation()
+    public LastLocationInfo getLastLocationInfo()
     {
-        return mLastLocation;
+        return new LastLocationInfo(mLastProvider, mLastLocation);
     }
 
-    public String getLastProvider()
-    {
-        return mLastProvider;
-    }
 
     public boolean ready()
     {
