@@ -3,6 +3,7 @@ package com.comli.shapira.aroundme.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import com.comli.shapira.aroundme.data.NearbyResponse;
 import com.comli.shapira.aroundme.helpers.BroadcastHelper;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.adapters.TabsPagerAdapter;
+import com.comli.shapira.aroundme.ui_helpers.UserCurrentLocation;
 
 // this is the (local) receiver that MainActivity holds to get and process the service various notifications
 public class NearbyNotificationReceiver extends BroadcastReceiver {
@@ -19,12 +21,15 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
     private final AppCompatActivity mActivity;
     private final TabsPagerAdapter mTabsPagerAdapter;
     private final ViewPager mViewPager;
+    private final UserCurrentLocation mUserCurrentLocation;
 
-    public NearbyNotificationReceiver(AppCompatActivity activity, TabsPagerAdapter tabsPagerAdapter, ViewPager viewPager)
+    public NearbyNotificationReceiver(AppCompatActivity activity, TabsPagerAdapter tabsPagerAdapter,
+                                      ViewPager viewPager, UserCurrentLocation userCurrentLocation)
     {
         mActivity = activity;
         mTabsPagerAdapter = tabsPagerAdapter;
         mViewPager = viewPager;
+        mUserCurrentLocation = userCurrentLocation;
     }
 
 
@@ -87,6 +92,15 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
                     searchFragment.removeProgressBar();
                     mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB); // verify user focus on favorites tab. only for add operation.
                 }
+                break;
+
+            case BroadcastHelper.ACTION_LOCATION_CHANGED_NOTIFY:
+                Location location = intent.getParcelableExtra(BroadcastHelper.EXTRA_LOCATION_CHANGED_DATA);
+                mUserCurrentLocation.onLocationChanged(location);
+                break;
+
+            case BroadcastHelper.ACTION_LOCATION_NOT_AVAILABLE_NOTIFY:
+                mUserCurrentLocation.onLocationNotAvailable();
                 break;
         }
     }

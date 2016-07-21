@@ -2,19 +2,20 @@
 package com.comli.shapira.aroundme.location_provider;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import com.comli.shapira.aroundme.activities_fragments.MainActivity;
-import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.content.ContextCompat;
+
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 
 public class CurrentLocationProvider implements LocationInterface {
@@ -27,70 +28,47 @@ public class CurrentLocationProvider implements LocationInterface {
     private final LocationManager mLocationManager;
     private LocationInterface.onLocationListener mListener;
     private ProviderListener mProviderListener;
-    private boolean mGotLocation;
-    private final String mProviderName;
-    private final Activity mActivity;
-    private final SharedPrefHelper mSharedPrefHelper;
+    private final Context mContext;
 
 
-    public CurrentLocationProvider(Activity activity, String providerName)
+    public CurrentLocationProvider(Context context)
     {
-        mActivity = activity;
-        mGotLocation = false;
-        mProviderName = providerName;
-        mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
-        mSharedPrefHelper = new SharedPrefHelper(mActivity);
+        mContext = context;
+        mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
 
-        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED ) {
-
-            mSharedPrefHelper.setPermissionDeniedByUser(true);
-            ActivityCompat.requestPermissions(
-                    mActivity,
-                    new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
-                    MainActivity.LOCATION_REQUEST_CODE);
-        }
-        else {
-            mSharedPrefHelper.setPermissionDeniedByUser(false);
-        }
     }
 
-
     @Override
-    public void start()
+    public void start(String providerName)
     {
-        if (mSharedPrefHelper.isPermissionDeniedByUser() || mListener == null)
+        if (mListener == null)
             return;
 
-        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED )
             return;
 
         mProviderListener = new ProviderListener();
 
         mLocationManager.requestLocationUpdates(
-                mProviderName,
+                providerName,
                 MIN_TIME_MILLISECONDS,
                 MIN_DISTANCE,
                 mProviderListener
         );
 
-        TimerTask task = new TimerTask() {
+        TimerTask task = new TimerTask()
+        {
             @Override
-            public void run() {
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if( ! mGotLocation)
-                            mListener.onLocationNotAvailable();
-                    }
-                });
+            public void run()
+            {
+                handler.sendEmptyMessage(0);
             }
         };
 
         Timer timer = new Timer("");
         long timeoutMS = System.currentTimeMillis() +
-                (mProviderName == LocationManager.GPS_PROVIDER ?
+                (providerName.equals(LocationManager.GPS_PROVIDER) ?
                         GPS_TIMEOUT_MILLISECONDS :
                         NETWORK_TIMEOUT_MILLISECONDS);
 
@@ -98,11 +76,20 @@ public class CurrentLocationProvider implements LocationInterface {
         timer.schedule(task, timeout);
     }
 
+    private final Handler handler = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg) {
+            mListener.onLocationNotAvailable();
+        }
+    };
+
+
 
     @Override
     public void stop() {
 
-        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED )
             return;
 
@@ -122,7 +109,6 @@ public class CurrentLocationProvider implements LocationInterface {
     {
         @Override
         public void onLocationChanged(Location location) {
-            mGotLocation = true;
             mListener.onLocationChanged(location);
         }
 

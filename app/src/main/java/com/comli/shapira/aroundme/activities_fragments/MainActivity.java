@@ -91,11 +91,15 @@ public class MainActivity extends AppCompatActivity {
 
         // register local notification receiver
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        NearbyNotificationReceiver receiver = new NearbyNotificationReceiver(this, tabsPagerAdapter, viewPager);
+        NearbyNotificationReceiver receiver = new NearbyNotificationReceiver(this, tabsPagerAdapter, viewPager, mUserCurrentLocation);
         IntentFilter nearby = new IntentFilter(BroadcastHelper.ACTION_NEARBY_NOTIFY);
         IntentFilter details = new IntentFilter(BroadcastHelper.ACTION_FAVORITES_NOTIFY);
+        IntentFilter locationChanged = new IntentFilter(BroadcastHelper.ACTION_LOCATION_CHANGED_NOTIFY);
+        IntentFilter locationNotAvailable = new IntentFilter(BroadcastHelper.ACTION_LOCATION_NOT_AVAILABLE_NOTIFY);
         localBroadcastManager.registerReceiver(receiver, nearby);
         localBroadcastManager.registerReceiver(receiver, details);
+        localBroadcastManager.registerReceiver(receiver, locationChanged);
+        localBroadcastManager.registerReceiver(receiver, locationNotAvailable);
 
         // register global broadcast receiver
         mPowerConnectionReceiver = new PowerConnectionReceiver();

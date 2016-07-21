@@ -13,29 +13,31 @@ import com.comli.shapira.aroundme.db.AroundMeDBHelper;
 import com.comli.shapira.aroundme.helpers.BroadcastHelper;
 import com.comli.shapira.aroundme.helpers.GooglePlacesNearbyHelper;
 import com.comli.shapira.aroundme.helpers.NetworkHelper;
+
 import java.net.URL;
 import java.util.ArrayList;
 
 
 public class NearbyService extends IntentService {
 
-    public static final String ACTION_NEARBY_PLACES = "com.example.jbt.aroundme.Services.action.ACTION_NEARBY_GET";
-    public static final String EXTRA_NEARBY_REQUEST = "com.example.jbt.aroundme.Services.extra.nearbyplaces.request";
+    public static final String ACTION_NEARBY_PLACES = "com.comli.shapira.aroundme.Services.action.ACTION_NEARBY_GET";
+    public static final String EXTRA_NEARBY_REQUEST = "com.comli.shapira.aroundme.Services.extra.nearbyplaces.request";
 
-    public static final String ACTION_PLACE_FAVORITES_SAVE = "com.example.jbt.aroundme.Services.action.ACTION_PLACE_FAVORITES_SAVE";
-    public static final String ACTION_PLACE_FAVORITES_REMOVE = "com.example.jbt.aroundme.Services.action.ACTION_PLACE_FAVORITES_REMOVE";
-    public static final String ACTION_PLACE_FAVORITES_REMOVE_ALL = "com.example.jbt.aroundme.Services.action.ACTION_PLACE_FAVORITES_REMOVE_ALL";
-    public static final String EXTRA_PLACE_FAVORITES_DATA = "com.example.jbt.aroundme.Services.extra.placedetails.request";
-    public static final String EXTRA_PLACE_FAVORITES_ACTION_SAVE = "com.example.jbt.aroundme.Services.extra.placedetails.action.save";
-    public static final String EXTRA_PLACE_FAVORITES_ACTION_REMOVE = "com.example.jbt.aroundme.Services.extra.placedetails.action.remove";
+    public static final String ACTION_PLACE_FAVORITES_SAVE = "com.comli.shapira.aroundme.Services.action.ACTION_PLACE_FAVORITES_SAVE";
+    public static final String ACTION_PLACE_FAVORITES_REMOVE = "com.comli.shapira.aroundme.Services.action.ACTION_PLACE_FAVORITES_REMOVE";
+    public static final String ACTION_PLACE_FAVORITES_REMOVE_ALL = "com.comli.shapira.aroundme.Services.action.ACTION_PLACE_FAVORITES_REMOVE_ALL";
+    public static final String EXTRA_PLACE_FAVORITES_DATA = "com.comli.shapira.aroundme.Services.extra.placedetails.request";
+    public static final String EXTRA_PLACE_FAVORITES_ACTION_SAVE = "com.comli.shapira.aroundme.Services.extra.placedetails.action.save";
+    public static final String EXTRA_PLACE_FAVORITES_ACTION_REMOVE = "com.ecomli.shapira.aroundme.Services.extra.placedetails.action.remove";
 
 
     private GooglePlacesNearbyHelper mNearbyHelper;
     private AroundMeDBHelper mDbHelper = new AroundMeDBHelper(this);
     private ArrayList<Place> mPlaces = new ArrayList<>();
 
-
-    public NearbyService() { super("NearbyService"); }
+    public NearbyService() {
+        super("NearbyService");
+    }
 
 
     @Override

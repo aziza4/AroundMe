@@ -1,21 +1,25 @@
 package com.comli.shapira.aroundme.ui_helpers;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 
+
+import com.comli.shapira.aroundme.activities_fragments.MainActivity;
 import com.comli.shapira.aroundme.data.LastLocationInfo;
 import com.comli.shapira.aroundme.data.NearbyRequest;
 import com.comli.shapira.aroundme.helpers.BroadcastHelper;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 import com.comli.shapira.aroundme.helpers.Utility;
-import com.comli.shapira.aroundme.location_provider.CurrentLocationProvider;
-import com.comli.shapira.aroundme.location_provider.LocationInterface;
 import com.comli.shapira.aroundme.R;
+import com.comli.shapira.aroundme.services.LocationProviderService;
 import com.comli.shapira.aroundme.services.NearbyService;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -27,10 +31,7 @@ public class UserCurrentLocation { // controls the availability of location via 
     private String mLastProvider;
     private final OnLocationReadyListener mListener;
     private final SharedPrefHelper mSharedPrefHelper;
-    private LocationInterface mLocationProvider;
     private boolean mLocationReadyCalled;
-    private UserCurrentLocationListener mUserCurrentLocListener;
-    private boolean mStartup;
     private AlertDialog mAlertDialog;
     private String mKeyword;
 
@@ -46,11 +47,9 @@ public class UserCurrentLocation { // controls the availability of location via 
         mLocationReadyCalled = false;
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
         mAlertDialog = null;
-        mStartup = true;
-        mUserCurrentLocListener = new UserCurrentLocationListener();
         mLastLocation = lastLocationInfo == null ? null : lastLocationInfo.getLocation();
         mLastProvider = lastLocationInfo == null ? LocationManager.GPS_PROVIDER : lastLocationInfo.getProvider();
-        startListening(mLastProvider);
+        startListening("");
 
         if (lastLocationInfo != null && lastLocationInfo.getAlertDialogOn())
             showLocationOffDialog();
@@ -130,7 +129,6 @@ public class UserCurrentLocation { // controls the availability of location via 
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 startListening(LocationManager.GPS_PROVIDER);
-                                dismissDialog();
                             }
                         })
 
@@ -141,11 +139,10 @@ public class UserCurrentLocation { // controls the availability of location via 
                             }
                         })
 
-                .setNegativeButton(networkButton,
+                .setNegativeButton(networkButton,  // network
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) { // network
+                            public void onClick(DialogInterface dialog, int whichButton) {
                                 startListening(LocationManager.NETWORK_PROVIDER);
-                                dismissDialog();
                             }
                         })
                 .create();
@@ -162,51 +159,58 @@ public class UserCurrentLocation { // controls the availability of location via 
     }
 
 
-    private class UserCurrentLocationListener implements LocationInterface.onLocationListener
+    public void startListening(String provider)
     {
-        @Override
-        public void onLocationChanged(Location location) {
+        if ( permissionDenied() )
+            return;
 
-            mLastLocation = location;
+        dismissDialog();
 
-            dismissDialog();
+        Intent intent = new Intent(LocationProviderService.ACTION_LOCATION_PROVIDER_RESTART, null, mActivity, LocationProviderService.class);
+        intent.putExtra(LocationProviderService.EXTRA_LOCATION_PROVIDER_NAME, provider);
+        mActivity.startService(intent);
+    }
 
-            mSharedPrefHelper.saveLastUserLocation(location);
 
-            if (!mLocationReadyCalled) {
-                mLocationReadyCalled = true;
-                mListener.onLocationReady(); // update activity to refresh menu icons
-            }
+    public boolean permissionDenied()
+    {
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED ) {
 
-            if ( !mKeyword.isEmpty()) {
-                getAndHandle();
-                mKeyword = "";
-            }
+            mSharedPrefHelper.setPermissionDeniedByUser(true);
+            ActivityCompat.requestPermissions(
+                    mActivity,
+                    new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                    MainActivity.LOCATION_REQUEST_CODE);
+            return true;
         }
 
-        @Override
-        public void onLocationNotAvailable() {
+        mSharedPrefHelper.setPermissionDeniedByUser(false);
+        return false;
+    }
 
-            if (mStartup) {
 
-                mStartup = false;
-                mUserCurrentLocListener = new UserCurrentLocationListener();
-                startListening(LocationManager.NETWORK_PROVIDER); // on startup only - if gps fails, try network...
-                return;
-            }
+    public void onLocationChanged(Location location) {
 
-            showLocationOffDialog(); // need the user intervention here...
+        mLastLocation = location;
+        mSharedPrefHelper.saveLastUserLocation(location);
+
+        dismissDialog();
+
+        if (!mLocationReadyCalled) {
+            mLocationReadyCalled = true;
+            mListener.onLocationReady(); // update activity to refresh menu icons
+        }
+
+        if ( !mKeyword.isEmpty()) {
+            getAndHandle();
+            mKeyword = "";
         }
     }
 
 
-    public void startListening(String providerName)
+    public void onLocationNotAvailable()
     {
-        if (mLocationProvider != null)
-            mLocationProvider.stop();
-
-        mLocationProvider = new CurrentLocationProvider(mActivity, providerName);
-        mLocationProvider.setOnLocationChangeListener(mUserCurrentLocListener);
-        mLocationProvider.start();
+        showLocationOffDialog(); // need the user intervention here...
     }
 }

@@ -5,7 +5,7 @@ import android.location.Location;
 
 public interface LocationInterface { // my standard interface. open for new LocationProvider implementations
 
-    void start();
+    void start(String providerName);
     void stop();
     void setOnLocationChangeListener(onLocationListener listener);
 
