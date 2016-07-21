@@ -28,8 +28,9 @@
         <item>@string/pref_types_label_bank_atm</item>
         <item>@string/pref_types_label_museum_gallery</item>
         <item>@string/pref_types_label_gas</item>
-        <item>@string/pref_types_label_bus_train_taxi</item>
         <item>@string/pref_types_label_doctor_hospital_pharmacy</item>
+        <item>@string/pref_types_label_bus_train_taxi</item>
+
 
     </string-array>
 

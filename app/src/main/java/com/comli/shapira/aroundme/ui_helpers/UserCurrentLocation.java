@@ -28,7 +28,6 @@ public class UserCurrentLocation { // controls the availability of location via 
 
     private final Activity mActivity;
     private Location mLastLocation;
-    private String mLastProvider;
     private final OnLocationReadyListener mListener;
     private final SharedPrefHelper mSharedPrefHelper;
     private boolean mLocationReadyCalled;
@@ -48,7 +47,6 @@ public class UserCurrentLocation { // controls the availability of location via 
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
         mAlertDialog = null;
         mLastLocation = lastLocationInfo == null ? null : lastLocationInfo.getLocation();
-        mLastProvider = lastLocationInfo == null ? LocationManager.GPS_PROVIDER : lastLocationInfo.getProvider();
         startListening("");
 
         if (lastLocationInfo != null && lastLocationInfo.getAlertDialogOn())
@@ -57,7 +55,7 @@ public class UserCurrentLocation { // controls the availability of location via 
 
     public LastLocationInfo getLastLocationInfo()
     {
-        return new LastLocationInfo(mLastProvider, mLastLocation, mAlertDialog != null);
+        return new LastLocationInfo(mLastLocation, mAlertDialog != null);
     }
 
 
@@ -106,56 +104,6 @@ public class UserCurrentLocation { // controls the availability of location via 
 
     public interface OnLocationReadyListener {
         void onLocationReady();
-    }
-
-
-    private void showLocationOffDialog() {
-
-        if (mSharedPrefHelper.isPermissionDeniedByUser() || mAlertDialog != null)
-            return;
-
-        final String noSensorTitle = mActivity.getString(R.string.no_sensor_enabled);
-        final String enableSensorMsg = mActivity.getString(R.string.sensor_enabled_message);
-        final String gpsButton = mActivity.getString(R.string.sensor_gps_ok_button);
-        final String networkButton = mActivity.getString(R.string.sensor_network_ok_button);
-        final String stayOfflineButton = mActivity.getString(R.string.sensor_stay_offline_button);
-
-        mAlertDialog = new AlertDialog.Builder(mActivity)
-                .setCancelable(false)
-                .setTitle(noSensorTitle)
-                .setMessage(enableSensorMsg)
-
-                .setPositiveButton(gpsButton, // gps
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                startListening(LocationManager.GPS_PROVIDER);
-                            }
-                        })
-
-                .setNeutralButton(stayOfflineButton, // cancel
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dismissDialog();
-                            }
-                        })
-
-                .setNegativeButton(networkButton,  // network
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                startListening(LocationManager.NETWORK_PROVIDER);
-                            }
-                        })
-                .create();
-
-        mAlertDialog.show();
-    }
-
-    public void dismissDialog()
-    {
-        if (mAlertDialog!= null) {
-            mAlertDialog.dismiss();
-            mAlertDialog = null;
-        }
     }
 
 
@@ -212,5 +160,55 @@ public class UserCurrentLocation { // controls the availability of location via 
     public void onLocationNotAvailable()
     {
         showLocationOffDialog(); // need the user intervention here...
+    }
+
+
+    private void showLocationOffDialog() {
+
+        if (mSharedPrefHelper.isPermissionDeniedByUser() || mAlertDialog != null)
+            return;
+
+        final String noSensorTitle = mActivity.getString(R.string.no_sensor_enabled);
+        final String enableSensorMsg = mActivity.getString(R.string.sensor_enabled_message);
+        final String gpsButton = mActivity.getString(R.string.sensor_gps_ok_button);
+        final String networkButton = mActivity.getString(R.string.sensor_network_ok_button);
+        final String stayOfflineButton = mActivity.getString(R.string.sensor_stay_offline_button);
+
+        mAlertDialog = new AlertDialog.Builder(mActivity)
+                .setCancelable(false)
+                .setTitle(noSensorTitle)
+                .setMessage(enableSensorMsg)
+
+                .setPositiveButton(gpsButton, // gps
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                startListening(LocationManager.GPS_PROVIDER);
+                            }
+                        })
+
+                .setNeutralButton(stayOfflineButton, // cancel
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dismissDialog();
+                            }
+                        })
+
+                .setNegativeButton(networkButton,  // network
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                startListening(LocationManager.NETWORK_PROVIDER);
+                            }
+                        })
+                .create();
+
+        mAlertDialog.show();
+    }
+
+    public void dismissDialog()
+    {
+        if (mAlertDialog!= null) {
+            mAlertDialog.dismiss();
+            mAlertDialog = null;
+        }
     }
 }

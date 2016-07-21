@@ -27,6 +27,7 @@ import com.comli.shapira.aroundme.helpers.Utility;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.receivers.NearbyNotificationReceiver;
 import com.comli.shapira.aroundme.receivers.PowerConnectionReceiver;
+import com.comli.shapira.aroundme.services.LocationProviderService;
 import com.comli.shapira.aroundme.ui_helpers.*;
 
 
