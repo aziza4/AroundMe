@@ -133,6 +133,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
+        sharedPrefHelper.onUserLeaveApplication();
+    }
+
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         mMainMenuHelper.onPrepareOptionsMenu(menu); // handle toolbar icons disable/enable states
         return true;

@@ -81,9 +81,11 @@ public class LocationProviderService extends Service implements LocationInterfac
 
         String provider = intent.getStringExtra(EXTRA_LOCATION_PROVIDER_NAME);
 
+
         if (provider.isEmpty())
             return Service.START_STICKY;
 
+        mConnectedToastAlreadyDisplayed = false;
         startProvider(provider);
         return Service.START_STICKY;
     }
@@ -91,6 +93,7 @@ public class LocationProviderService extends Service implements LocationInterfac
 
     private void startProvider(String provider)
     {
+        mProviderName = provider;
         mSharedPrefHelper.setLastUsedLocationProvider(provider); // save it for service restart
         mLocationProvider.stop();
         mLocationProvider.start(provider);

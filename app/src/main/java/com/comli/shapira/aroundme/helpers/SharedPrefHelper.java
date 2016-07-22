@@ -137,4 +137,18 @@ public class SharedPrefHelper {
         return mPrefs.getString(key, "");
     }
 
+
+    public void onUserLeaveApplication()
+    {
+        String lat_key = mContext.getString(R.string.shared_pref_last_location_lat);
+        String lng_key = mContext.getString(R.string.shared_pref_last_location_lng);
+        String last_provider_key = mContext.getString(R.string.shared_pref_last_used_loc_provider);
+
+        mPrefs.edit()
+                .remove(lat_key)
+                .remove(lng_key)
+                .remove(last_provider_key)
+        .apply();
+    }
+
 }
