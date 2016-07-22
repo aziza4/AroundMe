@@ -30,7 +30,7 @@ public class LocationServiceHelper {
 
 
     public LocationServiceHelper(AppCompatActivity activity, UserCurrentLocation userCurrentLocation,
-                                 LastLocationInfo lastLocationInfo, String keyword)
+                                 LastLocationInfo lastLocationInfo)
     {
         mActivity = activity;
         mSharedPrefHelper = new SharedPrefHelper(mActivity);

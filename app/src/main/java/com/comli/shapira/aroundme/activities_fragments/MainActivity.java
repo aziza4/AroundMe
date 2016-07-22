@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // LocationServiceHelper
-        mLocationServiceHelper = new LocationServiceHelper(this, mUserCurrentLocation, lastInfoLocation, keyword);
+        mLocationServiceHelper = new LocationServiceHelper(this, mUserCurrentLocation, lastInfoLocation);
 
         // Google's places' AutoComplete Widget
         mPlacesAutoComplete = new PlacesAutoComplete(this);
