@@ -43,7 +43,6 @@ public class SearchFragment extends Fragment {
 
         // downloading progressbar
         mProgressBar = (ProgressBar) v.findViewById(R.id.downloadProgressBar);
-        mProgressBar.setVisibility(View.INVISIBLE);
 
         // register receiver for both search-start and add-place-to-favorite actions
         mReceiver = new SearchFragBroadcastReceiver(mProgressBar);
@@ -66,6 +65,12 @@ public class SearchFragment extends Fragment {
                 .forceLoad(); // see: http://stackoverflow.com/questions/10524667/android-asynctaskloader-doesnt-start-loadinbackground
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mProgressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
