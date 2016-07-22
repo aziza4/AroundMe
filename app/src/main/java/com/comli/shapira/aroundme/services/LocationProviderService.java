@@ -7,6 +7,7 @@ import android.location.LocationManager;
 import android.os.IBinder;
 
 import com.comli.shapira.aroundme.helpers.BroadcastHelper;
+import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 import com.comli.shapira.aroundme.location_provider.CurrentLocationProvider;
 import com.comli.shapira.aroundme.location_provider.LocationInterface;
 
@@ -14,6 +15,7 @@ public class LocationProviderService extends Service implements LocationInterfac
 
     private LocationInterface mLocationProvider;
     private Location mLastLocation;
+    private SharedPrefHelper mSharedPrefHelper;
 
 
     public static final String ACTION_LOCATION_PROVIDER_RESTART = "com.comli.shapira.aroundme.Services.action.ACTION_LOCATION_PROVIDER_RESTART";
@@ -26,10 +28,14 @@ public class LocationProviderService extends Service implements LocationInterfac
     public void onCreate() {
         super.onCreate();
 
+        mSharedPrefHelper = new SharedPrefHelper(this);
+        String savedProvider = mSharedPrefHelper.getLastUsedLocationProvider();
+        String provider = savedProvider.isEmpty() ? LocationManager.NETWORK_PROVIDER : savedProvider;
+
         mLastLocation = null;
         mLocationProvider = new CurrentLocationProvider(this);
         mLocationProvider.setOnLocationChangeListener(this);
-        mLocationProvider.start(LocationManager.NETWORK_PROVIDER);
+        startProvider(provider);
     }
 
      @Override
@@ -67,8 +73,15 @@ public class LocationProviderService extends Service implements LocationInterfac
             return Service.START_STICKY;
 
         mLocationProvider.stop();
-        mLocationProvider.start(provider);
+        startProvider(provider);
         return Service.START_STICKY;
+    }
+
+
+    private void startProvider(String provider)
+    {
+        mSharedPrefHelper.setLastUsedLocationProvider(provider); // save it for service restart
+        mLocationProvider.start(provider);
     }
 
 

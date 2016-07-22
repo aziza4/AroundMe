@@ -29,13 +29,14 @@ public class CurrentLocationProvider implements LocationInterface {
     private LocationInterface.onLocationListener mListener;
     private ProviderListener mProviderListener;
     private final Context mContext;
+    private boolean mHasLocation;
 
 
     public CurrentLocationProvider(Context context)
     {
         mContext = context;
         mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-
+        mHasLocation = false;
     }
 
     @Override
@@ -62,7 +63,8 @@ public class CurrentLocationProvider implements LocationInterface {
             @Override
             public void run()
             {
-                handler.sendEmptyMessage(0);
+                if (! mHasLocation)
+                    handler.sendEmptyMessage(0);
             }
         };
 
@@ -80,10 +82,10 @@ public class CurrentLocationProvider implements LocationInterface {
     {
         @Override
         public void handleMessage(Message msg) {
+
             mListener.onLocationNotAvailable();
         }
     };
-
 
 
     @Override
@@ -109,6 +111,7 @@ public class CurrentLocationProvider implements LocationInterface {
     {
         @Override
         public void onLocationChanged(Location location) {
+            mHasLocation = true;
             mListener.onLocationChanged(location);
         }
 

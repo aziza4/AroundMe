@@ -100,15 +100,25 @@ public class SharedPrefHelper {
     public void setPermissionDeniedByUser(boolean isDenied) {
 
         String key = mContext.getString(R.string.shared_pref_loc_permission_denied_by_user);
-        mPrefs.edit()
-                .putBoolean(key, isDenied)
-                .apply();
+        mPrefs.edit().putBoolean(key, isDenied).apply();
     }
 
     public boolean isPermissionDeniedByUser() {
 
         String key = mContext.getString(R.string.shared_pref_loc_permission_denied_by_user);
         return mPrefs.getBoolean(key, false);
+    }
+
+    public void setLastUsedLocationProvider(String provider) {
+
+        String key = mContext.getString(R.string.shared_pref_last_used_loc_provider);
+        mPrefs.edit().putString(key, provider).apply();
+    }
+
+    public String getLastUsedLocationProvider()
+    {
+        String key = mContext.getString(R.string.shared_pref_last_used_loc_provider);
+        return mPrefs.getString(key, "");
     }
 
 }
