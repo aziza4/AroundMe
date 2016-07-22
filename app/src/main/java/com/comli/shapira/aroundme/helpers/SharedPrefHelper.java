@@ -86,7 +86,7 @@ public class SharedPrefHelper {
                 .apply();
     }
 
-    public LatLng getLastUserLocation()
+    public LatLng getLastUserLatLng()
     {
         String lat_key = mContext.getString(R.string.shared_pref_last_location_lat);
         String lng_key = mContext.getString(R.string.shared_pref_last_location_lng);
@@ -95,6 +95,22 @@ public class SharedPrefHelper {
         double lng_val = mPrefs.getFloat(lng_key, 0);
 
         return new LatLng(lat_val, lng_val);
+    }
+
+    public boolean lastUserLocationExist() {
+
+        String lat_key = mContext.getString(R.string.shared_pref_last_location_lat);
+        double lat_val = mPrefs.getFloat(lat_key, 0);
+        return lat_val != 0;
+    }
+
+    public Location getLastUserLocation() {
+
+        Location location = new Location("");
+        LatLng latLng = getLastUserLatLng();
+        location.setLatitude(latLng.latitude);
+        location.setLongitude(latLng.longitude);
+        return location;
     }
 
     public void setPermissionDeniedByUser(boolean isDenied) {

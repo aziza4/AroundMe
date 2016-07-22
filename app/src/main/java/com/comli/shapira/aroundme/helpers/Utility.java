@@ -110,7 +110,7 @@ public class Utility {
     public static String getDistanceMsg(Context context, Place place)
     {
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
-        LatLng userLoc = sharedPrefHelper.getLastUserLocation();
+        LatLng userLoc = sharedPrefHelper.getLastUserLatLng();
 
         if (userLoc.longitude == 0 && userLoc.latitude == 0) // first time app running
             return "";
@@ -143,7 +143,7 @@ public class Utility {
     public static Uri getDirectionsUri(Context context, Place place)
     {
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
-        LatLng userLoc = sharedPrefHelper.getLastUserLocation();
+        LatLng userLoc = sharedPrefHelper.getLastUserLatLng();
 
         String scheme = context.getString(R.string.https_scheme);
         String authority = context.getString(R.string.directions_authority);

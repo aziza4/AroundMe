@@ -36,7 +36,18 @@ public class UserCurrentLocation { // controls the availability of location via 
         mListener = listener;
         mLocationReadyCalled = false;
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
-        mLastLocation = lastLocationInfo == null ? null : lastLocationInfo.getLocation();
+        mLastLocation = null;
+
+        if (lastLocationInfo != null)
+            mLastLocation = lastLocationInfo.getLocation();
+        else if ( mSharedPrefHelper.lastUserLocationExist())
+            mLastLocation = mSharedPrefHelper.getLastUserLocation();
+        else mLastLocation = null;
+
+        if ( !mKeyword.isEmpty()) {
+            getAndHandle();
+            mKeyword = "";
+        }
     }
 
     public Location getLastLocation()
@@ -95,11 +106,6 @@ public class UserCurrentLocation { // controls the availability of location via 
         if (!mLocationReadyCalled) {
             mLocationReadyCalled = true;
             mListener.onLocationReady(); // update activity to refresh menu icons
-        }
-
-        if ( !mKeyword.isEmpty()) {
-            getAndHandle();
-            mKeyword = "";
         }
     }
 

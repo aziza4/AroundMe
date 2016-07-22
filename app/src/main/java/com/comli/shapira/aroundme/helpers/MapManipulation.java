@@ -49,7 +49,7 @@ public class MapManipulation {
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(mContext);
 
         // get place and user locations
-        LatLng userLoc = sharedPrefHelper.getLastUserLocation();
+        LatLng userLoc = sharedPrefHelper.getLastUserLatLng();
         LatLng placeLoc = place.getLoc();
 
         float distInKM = Utility.distanceInKM(userLoc, placeLoc);

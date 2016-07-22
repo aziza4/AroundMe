@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Utility.resetTitle(this, R.string.app_name);
 
-
         // Viewpager - 2 tabs: Search & Favorites
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPagerContainer);
         TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
