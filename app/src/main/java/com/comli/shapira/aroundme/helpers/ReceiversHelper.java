@@ -6,35 +6,44 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.comli.shapira.aroundme.receivers.ServicesBroadcastReceiver;
+import com.comli.shapira.aroundme.receivers.LocationProviderServiceReceiver;
+import com.comli.shapira.aroundme.receivers.NearbyServiceReceiver;
 import com.comli.shapira.aroundme.receivers.PowerConnectionReceiver;
 
 public class ReceiversHelper {
 
     private final AppCompatActivity mActivity;
-    private final ServicesBroadcastReceiver mReceiver;
+    private final LocalBroadcastManager mLocalBroadcastManager;
+    private final NearbyServiceReceiver mNearbyServiceReceiver;
     private final PowerConnectionReceiver mPowerConnectionReceiver;
+    private final LocationProviderServiceReceiver mLocationProviderServiceReceiver;
 
-    public ReceiversHelper(AppCompatActivity activity, ServicesBroadcastReceiver receiver, PowerConnectionReceiver powerConnectionReceiver)
+    public ReceiversHelper(AppCompatActivity activity,
+                           NearbyServiceReceiver nearbyServiceReceiver,
+                           LocationProviderServiceReceiver locationProviderServiceReceiver,
+                           PowerConnectionReceiver powerConnectionReceiver)
     {
         mActivity = activity;
-        mReceiver = receiver;
+        mNearbyServiceReceiver = nearbyServiceReceiver;
+        mLocationProviderServiceReceiver = locationProviderServiceReceiver;
         mPowerConnectionReceiver = powerConnectionReceiver;
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
+
     }
 
     public void registerLocalAndGlobalReceivers()
     {
-        // register local notification receiver
+        // register nearby service local receiver
         IntentFilter nearby = new IntentFilter(BroadcastHelper.ACTION_NEARBY_NOTIFY);
         IntentFilter details = new IntentFilter(BroadcastHelper.ACTION_FAVORITES_NOTIFY);
+        mLocalBroadcastManager.registerReceiver(mNearbyServiceReceiver, nearby);
+        mLocalBroadcastManager.registerReceiver(mNearbyServiceReceiver, details);
+
+        // register location-provider service local receiver
         IntentFilter locationChanged = new IntentFilter(BroadcastHelper.ACTION_LOCATION_CHANGED_NOTIFY);
         IntentFilter locationNotAvailable = new IntentFilter(BroadcastHelper.ACTION_LOCATION_NOT_AVAILABLE_NOTIFY);
-
-        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
-        localBroadcastManager.registerReceiver(mReceiver, nearby);
-        localBroadcastManager.registerReceiver(mReceiver, details);
-        localBroadcastManager.registerReceiver(mReceiver, locationChanged);
-        localBroadcastManager.registerReceiver(mReceiver, locationNotAvailable);
+        mLocalBroadcastManager.registerReceiver(mLocationProviderServiceReceiver, locationChanged);
+        mLocalBroadcastManager.registerReceiver(mLocationProviderServiceReceiver, locationNotAvailable);
 
         // register global power receiver
         mActivity.registerReceiver(mPowerConnectionReceiver, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
@@ -43,7 +52,11 @@ public class ReceiversHelper {
 
     public void unRegisterLocalAndGlobalReceivers()
     {
-        LocalBroadcastManager.getInstance(mActivity).unregisterReceiver(mReceiver);
+        // unregister local receivers
+        mLocalBroadcastManager.unregisterReceiver(mNearbyServiceReceiver);
+        mLocalBroadcastManager.unregisterReceiver(mLocationProviderServiceReceiver);
+
+        // unregister global receiver
         mActivity.unregisterReceiver(mPowerConnectionReceiver); // stop alerting the user on app exit
     }
 }

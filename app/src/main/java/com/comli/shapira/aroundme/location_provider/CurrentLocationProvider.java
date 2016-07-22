@@ -9,7 +9,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.content.ContextCompat;
 
 import java.util.Date;
@@ -30,6 +29,7 @@ public class CurrentLocationProvider implements LocationInterface {
     private ProviderListener mProviderListener;
     private final Context mContext;
     private boolean mHasLocation;
+    private final Handler mHandler = new Handler();
 
 
     public CurrentLocationProvider(Context context)
@@ -58,13 +58,18 @@ public class CurrentLocationProvider implements LocationInterface {
                 mProviderListener
         );
 
+
         TimerTask task = new TimerTask()
         {
             @Override
-            public void run()
-            {
-                if (! mHasLocation)
-                    handler.sendEmptyMessage(0);
+            public void run() {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (! mHasLocation)
+                            mListener.onLocationNotAvailable();
+                    }
+                });
             }
         };
 
@@ -77,16 +82,6 @@ public class CurrentLocationProvider implements LocationInterface {
         Date timeout = new Date(timeoutMS);
         timer.schedule(task, timeout);
     }
-
-    private final Handler handler = new Handler()
-    {
-        @Override
-        public void handleMessage(Message msg) {
-
-            mListener.onLocationNotAvailable();
-        }
-    };
-
 
     @Override
     public void stop() {

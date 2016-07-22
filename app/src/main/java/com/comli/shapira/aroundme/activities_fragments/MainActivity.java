@@ -22,7 +22,8 @@ import com.comli.shapira.aroundme.helpers.ReceiversHelper;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 import com.comli.shapira.aroundme.helpers.Utility;
 import com.comli.shapira.aroundme.R;
-import com.comli.shapira.aroundme.receivers.ServicesBroadcastReceiver;
+import com.comli.shapira.aroundme.receivers.LocationProviderServiceReceiver;
+import com.comli.shapira.aroundme.receivers.NearbyServiceReceiver;
 import com.comli.shapira.aroundme.receivers.PowerConnectionReceiver;
 import com.comli.shapira.aroundme.ui_helpers.*;
 
@@ -92,11 +93,12 @@ public class MainActivity extends AppCompatActivity {
         mPlacesAutoComplete = new PlacesAutoComplete(this);
 
         // create local notification receiver (register later on onResume)
-        ServicesBroadcastReceiver servicesLocalReceiver = new ServicesBroadcastReceiver(this, tabsPagerAdapter, viewPager, mLocationServiceHelper);
+        NearbyServiceReceiver nearbyServiceReceiver = new NearbyServiceReceiver(this, tabsPagerAdapter, viewPager);
+        LocationProviderServiceReceiver locationProviderServiceReceiver = new LocationProviderServiceReceiver(mLocationServiceHelper);
 
         // create global receiver (register later on onResume)
         PowerConnectionReceiver powerConnectionReceiver = new PowerConnectionReceiver();
-        mReceiversHelper = new ReceiversHelper(this, servicesLocalReceiver, powerConnectionReceiver);
+        mReceiversHelper = new ReceiversHelper(this, nearbyServiceReceiver, locationProviderServiceReceiver, powerConnectionReceiver);
 
         // MainMenuHelper
         mMainMenuHelper = new MainMenuHelper(this, mUserCurrentLocation, mPlacesAutoComplete);

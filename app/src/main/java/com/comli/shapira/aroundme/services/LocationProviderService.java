@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.IBinder;
+import android.widget.Toast;
 
+import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.helpers.BroadcastHelper;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 import com.comli.shapira.aroundme.location_provider.CurrentLocationProvider;
@@ -16,6 +18,9 @@ public class LocationProviderService extends Service implements LocationInterfac
     private LocationInterface mLocationProvider;
     private Location mLastLocation;
     private SharedPrefHelper mSharedPrefHelper;
+    private boolean mFirstTime;
+    private String mProviderName;
+    private boolean mConnectedToastAlreadyDisplayed;
 
 
     public static final String ACTION_LOCATION_PROVIDER_RESTART = "com.comli.shapira.aroundme.Services.action.ACTION_LOCATION_PROVIDER_RESTART";
@@ -28,13 +33,21 @@ public class LocationProviderService extends Service implements LocationInterfac
         super.onCreate();
 
         mSharedPrefHelper = new SharedPrefHelper(this);
-        String savedProvider = mSharedPrefHelper.getLastUsedLocationProvider();
-        String provider = savedProvider.isEmpty() ? LocationManager.GPS_PROVIDER : savedProvider;
+        mProviderName = mSharedPrefHelper.getLastUsedLocationProvider();
+        mFirstTime = false;
+        mConnectedToastAlreadyDisplayed = true; // display only on clean installation
 
+        if (mProviderName.isEmpty()) {
+            mProviderName = LocationManager.GPS_PROVIDER; // start with GPS, then try Network...
+            mFirstTime = true;
+            mConnectedToastAlreadyDisplayed = false;
+        }
+
+        mFirstTime = true;
         mLastLocation = null;
         mLocationProvider = new CurrentLocationProvider(this);
         mLocationProvider.setOnLocationChangeListener(this);
-        startProvider(provider);
+        startProvider(mProviderName);
     }
 
      @Override
@@ -88,12 +101,35 @@ public class LocationProviderService extends Service implements LocationInterfac
     public void onLocationChanged(Location location)
     {
         mLastLocation = location;
+        displayConnectingToast();
         BroadcastHelper.broadcastOnLocationChanged(this, location);
     }
 
     @Override
     public void onLocationNotAvailable()
     {
-        BroadcastHelper.broadcastOnLocationNotAvailable(this);
+        if (!mFirstTime) {
+            BroadcastHelper.broadcastOnLocationNotAvailable(this);
+            return;
+        }
+
+        mFirstTime = false;
+        mProviderName = LocationManager.NETWORK_PROVIDER;
+        startProvider(mProviderName);
+    }
+
+    private void displayConnectingToast()
+    {
+        if ( mConnectedToastAlreadyDisplayed )
+            return;
+
+        mConnectedToastAlreadyDisplayed = true;
+
+        String message = getString(R.string.sensor_connected_message);
+        String sensor = mProviderName.equals(LocationManager.GPS_PROVIDER) ?
+                getString(R.string.sensor_gps_ok_button) :
+                getString(R.string.sensor_network_ok_button);
+
+        Toast.makeText(this, message + " " + sensor, Toast.LENGTH_SHORT).show();
     }
 }

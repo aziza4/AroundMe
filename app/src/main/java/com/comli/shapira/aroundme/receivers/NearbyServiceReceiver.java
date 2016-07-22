@@ -3,7 +3,6 @@ package com.comli.shapira.aroundme.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -13,23 +12,20 @@ import com.comli.shapira.aroundme.data.NearbyResponse;
 import com.comli.shapira.aroundme.helpers.BroadcastHelper;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.adapters.TabsPagerAdapter;
-import com.comli.shapira.aroundme.helpers.LocationServiceHelper;
 
-// this is the (local) receiver that MainActivity holds to get and process the service various notifications
-public class ServicesBroadcastReceiver extends BroadcastReceiver {
+
+public class NearbyServiceReceiver extends BroadcastReceiver {
 
     private final AppCompatActivity mActivity;
     private final TabsPagerAdapter mTabsPagerAdapter;
     private final ViewPager mViewPager;
-    private final LocationServiceHelper mLocationServiceHelper;
 
-    public ServicesBroadcastReceiver(AppCompatActivity activity, TabsPagerAdapter tabsPagerAdapter,
-                                     ViewPager viewPager, LocationServiceHelper locationServiceHelper)
+    public NearbyServiceReceiver(AppCompatActivity activity, TabsPagerAdapter tabsPagerAdapter,
+                                 ViewPager viewPager)
     {
         mActivity = activity;
         mTabsPagerAdapter = tabsPagerAdapter;
         mViewPager = viewPager;
-        mLocationServiceHelper = locationServiceHelper;
     }
 
 
@@ -92,15 +88,6 @@ public class ServicesBroadcastReceiver extends BroadcastReceiver {
                     searchFragment.removeProgressBar();
                     mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB); // verify user focus on favorites tab. only for add operation.
                 }
-                break;
-
-            case BroadcastHelper.ACTION_LOCATION_CHANGED_NOTIFY:
-                Location location = intent.getParcelableExtra(BroadcastHelper.EXTRA_LOCATION_CHANGED_DATA);
-                mLocationServiceHelper.onLocationChanged(location);
-                break;
-
-            case BroadcastHelper.ACTION_LOCATION_NOT_AVAILABLE_NOTIFY:
-                mLocationServiceHelper.onLocationNotAvailable();
                 break;
         }
     }
