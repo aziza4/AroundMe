@@ -33,9 +33,11 @@ public class LocationProviderService extends Service implements LocationInterfac
         super.onCreate();
 
         mSharedPrefHelper = new SharedPrefHelper(this);
-        mProviderName = mSharedPrefHelper.getLastUsedLocationProvider();
+
+        mLastLocation = null;
         mFirstTime = false;
         mConnectedToastAlreadyDisplayed = true; // display only on clean installation
+        mProviderName = mSharedPrefHelper.getLastUsedLocationProvider();
 
         if (mProviderName.isEmpty()) {
             mProviderName = LocationManager.GPS_PROVIDER; // start with GPS, then try Network...
@@ -43,8 +45,6 @@ public class LocationProviderService extends Service implements LocationInterfac
             mConnectedToastAlreadyDisplayed = false;
         }
 
-        mFirstTime = true;
-        mLastLocation = null;
         mLocationProvider = new CurrentLocationProvider(this);
         mLocationProvider.setOnLocationChangeListener(this);
         startProvider(mProviderName);
