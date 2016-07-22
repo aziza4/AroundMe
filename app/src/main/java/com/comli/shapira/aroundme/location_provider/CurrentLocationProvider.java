@@ -21,9 +21,9 @@ import java.util.TimerTask;
 public class CurrentLocationProvider implements LocationInterface {
 
     private static final int MIN_TIME_MILLISECONDS = 1000;
-    private static final int MIN_DISTANCE = 0;
-    private static final int NETWORK_TIMEOUT_MILLISECONDS = 2000;
-    private static final int GPS_TIMEOUT_MILLISECONDS = 2000;
+    private static final int MIN_DISTANCE = 10;
+    private static final int NETWORK_TIMEOUT_MILLISECONDS = 3000;
+    private static final int GPS_TIMEOUT_MILLISECONDS = 5000;
 
     private final LocationManager mLocationManager;
     private LocationInterface.onLocationListener mListener;
