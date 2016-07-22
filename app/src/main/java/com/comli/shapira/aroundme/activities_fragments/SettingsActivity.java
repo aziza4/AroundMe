@@ -1,5 +1,6 @@
 package com.comli.shapira.aroundme.activities_fragments;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -18,5 +19,10 @@ public class SettingsActivity extends AppCompatActivity {
                 .beginTransaction()
                 .add(R.id.container, new SettingsFragment())
                 .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, MainActivity.class)); // force mainActivity restart to support lang change
     }
 }
