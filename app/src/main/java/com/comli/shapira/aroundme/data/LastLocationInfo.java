@@ -8,8 +8,8 @@ import android.os.Parcelable;
 
 public class LastLocationInfo implements Parcelable {
 
-    private Location mLocation;
-    private boolean mAlertDialogOn;
+    private final Location mLocation;
+    private final boolean mAlertDialogOn;
 
 
     public LastLocationInfo(Location location, boolean alertDialogOn) {
@@ -27,7 +27,7 @@ public class LastLocationInfo implements Parcelable {
 
 
 
-    protected LastLocationInfo(Parcel in) {
+    private LastLocationInfo(Parcel in) {
         mLocation = in.readParcelable(Location.class.getClassLoader());
         mAlertDialogOn = in.readByte() != 0;
     }

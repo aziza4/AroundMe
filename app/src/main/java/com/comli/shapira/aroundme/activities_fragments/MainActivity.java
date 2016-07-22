@@ -3,16 +3,12 @@ package com.comli.shapira.aroundme.activities_fragments;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.multidex.MultiDex;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,13 +17,13 @@ import android.view.MenuItem;
 
 import com.comli.shapira.aroundme.adapters.TabsPagerAdapter;
 import com.comli.shapira.aroundme.data.LastLocationInfo;
-import com.comli.shapira.aroundme.helpers.BroadcastHelper;
+import com.comli.shapira.aroundme.helpers.LocationServiceHelper;
+import com.comli.shapira.aroundme.helpers.ReceiversHelper;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 import com.comli.shapira.aroundme.helpers.Utility;
 import com.comli.shapira.aroundme.R;
-import com.comli.shapira.aroundme.receivers.NearbyNotificationReceiver;
+import com.comli.shapira.aroundme.receivers.ServicesBroadcastReceiver;
 import com.comli.shapira.aroundme.receivers.PowerConnectionReceiver;
-import com.comli.shapira.aroundme.services.LocationProviderService;
 import com.comli.shapira.aroundme.ui_helpers.*;
 
 
@@ -39,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private PlacesAutoComplete mPlacesAutoComplete;
     private MainMenuHelper mMainMenuHelper;
     private UserCurrentLocation mUserCurrentLocation;
-    private PowerConnectionReceiver mPowerConnectionReceiver;
+    private LocationServiceHelper mLocationServiceHelper;
+    private ReceiversHelper mReceiversHelper;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -87,25 +84,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // LocationServiceHelper
+        mLocationServiceHelper = new LocationServiceHelper(this, mUserCurrentLocation, lastInfoLocation, keyword);
+        mLocationServiceHelper.startService();
+
         // Google's places' AutoComplete Widget
         mPlacesAutoComplete = new PlacesAutoComplete(this);
 
-        // register local notification receiver
-        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        NearbyNotificationReceiver receiver = new NearbyNotificationReceiver(this, tabsPagerAdapter, viewPager, mUserCurrentLocation);
-        IntentFilter nearby = new IntentFilter(BroadcastHelper.ACTION_NEARBY_NOTIFY);
-        IntentFilter details = new IntentFilter(BroadcastHelper.ACTION_FAVORITES_NOTIFY);
-        IntentFilter locationChanged = new IntentFilter(BroadcastHelper.ACTION_LOCATION_CHANGED_NOTIFY);
-        IntentFilter locationNotAvailable = new IntentFilter(BroadcastHelper.ACTION_LOCATION_NOT_AVAILABLE_NOTIFY);
-        localBroadcastManager.registerReceiver(receiver, nearby);
-        localBroadcastManager.registerReceiver(receiver, details);
-        localBroadcastManager.registerReceiver(receiver, locationChanged);
-        localBroadcastManager.registerReceiver(receiver, locationNotAvailable);
+        // create local notification receiver (register later on onResume)
+        ServicesBroadcastReceiver servicesLocalReceiver = new ServicesBroadcastReceiver(this, tabsPagerAdapter, viewPager, mLocationServiceHelper);
 
-        // register global broadcast receiver
-        mPowerConnectionReceiver = new PowerConnectionReceiver();
-        registerReceiver(mPowerConnectionReceiver, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
-        registerReceiver(mPowerConnectionReceiver, new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));
+        // create global receiver (register later on onResume)
+        PowerConnectionReceiver powerConnectionReceiver = new PowerConnectionReceiver();
+        mReceiversHelper = new ReceiversHelper(this, servicesLocalReceiver, powerConnectionReceiver);
 
         // MainMenuHelper
         mMainMenuHelper = new MainMenuHelper(this, mUserCurrentLocation, mPlacesAutoComplete);
@@ -114,22 +105,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
-        outState.putParcelable(UserCurrentLocation.LAST_LOC_INFO_KEY, mUserCurrentLocation.getLastLocationInfo());
+        boolean isDialogOpen = mLocationServiceHelper.isAlertDialogOpen();
+        Location lastLocation = mUserCurrentLocation.getLastLocation();
+        LastLocationInfo info = new LastLocationInfo(lastLocation, isDialogOpen);
+
+        outState.putParcelable(UserCurrentLocation.LAST_LOC_INFO_KEY, info);
         super.onSaveInstanceState(outState);
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onResume() {
+        super.onResume();
+        mReceiversHelper.registerLocalAndGlobalReceivers();
+    }
+
+    @Override
+    protected void onPause() {
+        mReceiversHelper.unRegisterLocalAndGlobalReceivers();
+        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        mUserCurrentLocation.dismissDialog();
-        unregisterReceiver(mPowerConnectionReceiver); // stop alerting the user on app exit
+        mLocationServiceHelper.stopService();
         super.onDestroy();
     }
-
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -143,13 +143,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         mMainMenuHelper.onOptionsItemSelected(item); // workflow majority starts here...
         return true;
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -167,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             return;
 
         // runtime permission handling
-        mUserCurrentLocation.startListening(LocationManager.GPS_PROVIDER);
+        mLocationServiceHelper.onRuntimePermissionGrant();
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
         sharedPrefHelper.setPermissionDeniedByUser(false); // user granted permission
     }

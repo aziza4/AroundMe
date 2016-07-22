@@ -13,23 +13,23 @@ import com.comli.shapira.aroundme.data.NearbyResponse;
 import com.comli.shapira.aroundme.helpers.BroadcastHelper;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.adapters.TabsPagerAdapter;
-import com.comli.shapira.aroundme.ui_helpers.UserCurrentLocation;
+import com.comli.shapira.aroundme.helpers.LocationServiceHelper;
 
 // this is the (local) receiver that MainActivity holds to get and process the service various notifications
-public class NearbyNotificationReceiver extends BroadcastReceiver {
+public class ServicesBroadcastReceiver extends BroadcastReceiver {
 
     private final AppCompatActivity mActivity;
     private final TabsPagerAdapter mTabsPagerAdapter;
     private final ViewPager mViewPager;
-    private final UserCurrentLocation mUserCurrentLocation;
+    private final LocationServiceHelper mLocationServiceHelper;
 
-    public NearbyNotificationReceiver(AppCompatActivity activity, TabsPagerAdapter tabsPagerAdapter,
-                                      ViewPager viewPager, UserCurrentLocation userCurrentLocation)
+    public ServicesBroadcastReceiver(AppCompatActivity activity, TabsPagerAdapter tabsPagerAdapter,
+                                     ViewPager viewPager, LocationServiceHelper locationServiceHelper)
     {
         mActivity = activity;
         mTabsPagerAdapter = tabsPagerAdapter;
         mViewPager = viewPager;
-        mUserCurrentLocation = userCurrentLocation;
+        mLocationServiceHelper = locationServiceHelper;
     }
 
 
@@ -96,11 +96,11 @@ public class NearbyNotificationReceiver extends BroadcastReceiver {
 
             case BroadcastHelper.ACTION_LOCATION_CHANGED_NOTIFY:
                 Location location = intent.getParcelableExtra(BroadcastHelper.EXTRA_LOCATION_CHANGED_DATA);
-                mUserCurrentLocation.onLocationChanged(location);
+                mLocationServiceHelper.onLocationChanged(location);
                 break;
 
             case BroadcastHelper.ACTION_LOCATION_NOT_AVAILABLE_NOTIFY:
-                mUserCurrentLocation.onLocationNotAvailable();
+                mLocationServiceHelper.onLocationNotAvailable();
                 break;
         }
     }

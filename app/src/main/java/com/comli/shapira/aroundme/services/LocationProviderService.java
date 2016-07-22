@@ -53,7 +53,12 @@ public class LocationProviderService extends Service implements LocationInterfac
             return START_STICKY;
         }
 
-        if (intent.getAction() == null || !intent.getAction().equals(ACTION_LOCATION_PROVIDER_RESTART))
+        if (intent == null)
+            return START_STICKY;
+
+        String action = intent.getAction();
+
+        if (action == null || !action.equals(ACTION_LOCATION_PROVIDER_RESTART))
             return START_STICKY;
 
         String provider = intent.getStringExtra(EXTRA_LOCATION_PROVIDER_NAME);

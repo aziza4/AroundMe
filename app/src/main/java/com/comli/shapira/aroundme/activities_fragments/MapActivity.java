@@ -73,8 +73,12 @@ public class MapActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.getItemId() == R.id.menu_action_settings)
-            startActivity(new Intent(this, SettingsActivity.class));
+        switch (item.getItemId()) {
+
+            case R.id.menu_action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+        }
 
         return super.onOptionsItemSelected(item);
     }

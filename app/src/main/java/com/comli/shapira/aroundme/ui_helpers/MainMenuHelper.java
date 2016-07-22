@@ -6,9 +6,6 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -17,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.comli.shapira.aroundme.activities_fragments.SettingsActivity;
-import com.comli.shapira.aroundme.helpers.ImageHelper;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.services.NearbyService;
 
@@ -26,7 +22,6 @@ public class MainMenuHelper {
     private final AppCompatActivity mActivity;
     private final UserCurrentLocation mUserCurrentLocation;
     private final PlacesAutoComplete mPlacesAutoComplete;
-    private final Resources mResources;
 
 
     public MainMenuHelper(AppCompatActivity activity, UserCurrentLocation userCurrentLocation, PlacesAutoComplete placesAutoComplete) {
@@ -34,7 +29,6 @@ public class MainMenuHelper {
         mActivity = activity;
         mUserCurrentLocation = userCurrentLocation;
         mPlacesAutoComplete = placesAutoComplete;
-        mResources = mActivity.getResources();
     }
 
 
