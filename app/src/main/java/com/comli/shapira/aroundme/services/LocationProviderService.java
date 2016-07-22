@@ -94,7 +94,6 @@ public class LocationProviderService extends Service implements LocationInterfac
     private void startProvider(String provider)
     {
         mProviderName = provider;
-        mSharedPrefHelper.setLastUsedLocationProvider(provider); // save it for service restart
         mLocationProvider.stop();
         mLocationProvider.start(provider);
     }
@@ -127,6 +126,8 @@ public class LocationProviderService extends Service implements LocationInterfac
             return;
 
         mConnectedToastAlreadyDisplayed = true;
+
+        mSharedPrefHelper.setLastUsedLocationProvider(mProviderName); // save it for service restart
 
         String message = getString(R.string.sensor_connected_message);
         String sensor = mProviderName.equals(LocationManager.GPS_PROVIDER) ?
