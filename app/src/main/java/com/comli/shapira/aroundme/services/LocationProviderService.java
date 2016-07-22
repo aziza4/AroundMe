@@ -81,8 +81,8 @@ public class LocationProviderService extends Service implements LocationInterfac
 
         String provider = intent.getStringExtra(EXTRA_LOCATION_PROVIDER_NAME);
 
-
-        if (provider.isEmpty())
+        if (!provider.equals(LocationManager.GPS_PROVIDER) &&
+                !provider.equals(LocationManager.NETWORK_PROVIDER))
             return Service.START_STICKY;
 
         mConnectedToastAlreadyDisplayed = false;

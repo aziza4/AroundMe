@@ -25,7 +25,6 @@ public class LocationServiceHelper {
     private final UserCurrentLocation mUserCurrentLocation;
 
     private boolean mPermissionDenied;
-    private final boolean mOnCreateDueToApplicationLaunch;
     private final boolean mAlertDialogWasOnPriorToDeviceRotation;
 
 
@@ -38,9 +37,6 @@ public class LocationServiceHelper {
         mUserCurrentLocation = userCurrentLocation;
 
         boolean onCreateDueToDeviceRotation = lastLocationInfo != null;
-        boolean onCreateDueToSearchWidget = !keyword.isEmpty();
-
-        mOnCreateDueToApplicationLaunch = !onCreateDueToDeviceRotation && !onCreateDueToSearchWidget;
         mAlertDialogWasOnPriorToDeviceRotation = onCreateDueToDeviceRotation && lastLocationInfo.getAlertDialogOn();
         mPermissionDenied = permissionDenied();
     }
@@ -51,8 +47,7 @@ public class LocationServiceHelper {
         if ( mPermissionDenied )
             return;
 
-        if (mOnCreateDueToApplicationLaunch)
-            startListening("");
+        startListening("");
 
         if (mAlertDialogWasOnPriorToDeviceRotation)
             showLocationOffDialog();
@@ -128,6 +123,8 @@ public class LocationServiceHelper {
         if (mSharedPrefHelper.isPermissionDeniedByUser() || mAlertDialog != null)
             return;
 
+        dismissDialogIfOpen();
+
         final String noSensorTitle = mActivity.getString(R.string.no_sensor_enabled);
         final String enableSensorMsg = mActivity.getString(R.string.sensor_enabled_message);
         final String gpsButton = mActivity.getString(R.string.sensor_gps_ok_button);
@@ -165,7 +162,7 @@ public class LocationServiceHelper {
     }
 
 
-    private void dismissDialogIfOpen()
+    public void dismissDialogIfOpen()
     {
         if (mAlertDialog != null) {
 

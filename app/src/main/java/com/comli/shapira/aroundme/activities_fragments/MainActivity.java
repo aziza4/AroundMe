@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
         // LocationServiceHelper
         mLocationServiceHelper = new LocationServiceHelper(this, mUserCurrentLocation, lastInfoLocation, keyword);
-        mLocationServiceHelper.startService();
 
         // Google's places' AutoComplete Widget
         mPlacesAutoComplete = new PlacesAutoComplete(this);
@@ -118,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mReceiversHelper.registerLocalAndGlobalReceivers();
+        mLocationServiceHelper.startService();
     }
 
     @Override
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        mLocationServiceHelper.stopService();
+        mLocationServiceHelper.dismissDialogIfOpen();
         super.onDestroy();
     }
 
@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
         sharedPrefHelper.onUserLeaveApplication();
+        mLocationServiceHelper.stopService();
     }
 
     @Override
