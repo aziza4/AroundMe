@@ -1,9 +1,10 @@
 package com.comli.shapira.aroundme.ui_helpers;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
+import android.widget.Toast;
 
 
 import com.comli.shapira.aroundme.data.LastLocationInfo;
@@ -22,7 +23,8 @@ public class UserCurrentLocation { // controls the availability of location via 
     private Location mLastLocation;
     private final OnLocationReadyListener mListener;
     private final SharedPrefHelper mSharedPrefHelper;
-    private boolean mLocationReadyCalled;
+    private boolean mNeedToUpdateUi;
+    private boolean mNeedToDisplayToast;
     private String mKeyword;
 
     public static final String LAST_LOC_INFO_KEY = "last_loc_info";
@@ -34,15 +36,16 @@ public class UserCurrentLocation { // controls the availability of location via 
         mActivity = activity;
         mKeyword = keyword;
         mListener = listener;
-        mLocationReadyCalled = false;
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
-        mLastLocation = null;
 
         if (lastLocationInfo != null)
             mLastLocation = lastLocationInfo.getLocation();
-        else if ( mSharedPrefHelper.lastUserLocationExist())
+        else if (mSharedPrefHelper.lastUserLocationExist()) {
             mLastLocation = mSharedPrefHelper.getLastUserLocation();
-        else mLastLocation = null;
+        } else mLastLocation = null;
+
+        mNeedToUpdateUi = mLastLocation == null; // do not update on device rotation or MainActivity recreation
+        mNeedToDisplayToast = mNeedToUpdateUi;
 
         if ( !mKeyword.isEmpty()) {
             getAndHandle();
@@ -98,17 +101,34 @@ public class UserCurrentLocation { // controls the availability of location via 
     }
 
 
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(Location location, String providerName) {
 
         mLastLocation = location;
         mSharedPrefHelper.saveLastUserLocation(location);
 
-        if (!mLocationReadyCalled) {
-            mLocationReadyCalled = true;
+        if (mNeedToUpdateUi) {
             mListener.onLocationReady(); // update activity to refresh menu icons
+            mNeedToUpdateUi = false;
+        }
+
+        if (mNeedToDisplayToast && providerName != null) {
+            displayConnectingToast(providerName); // update the user
+            mNeedToDisplayToast = false;
         }
     }
 
+    private void displayConnectingToast(String providerName)
+    {
+        if (providerName == null)
+            return;
+
+        String message = mActivity.getString(R.string.sensor_connected_message);
+        String sensor = providerName.equals(LocationManager.GPS_PROVIDER) ?
+                mActivity.getString(R.string.sensor_gps_ok_button) :
+                mActivity.getString(R.string.sensor_network_ok_button);
+
+        Toast.makeText(mActivity, message + " " + sensor, Toast.LENGTH_SHORT).show();
+    }
 
     public interface OnLocationReadyListener {
         void onLocationReady();

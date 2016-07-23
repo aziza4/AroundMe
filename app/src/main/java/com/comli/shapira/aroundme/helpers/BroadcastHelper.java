@@ -26,7 +26,8 @@ public class BroadcastHelper
 
 
     public static final String ACTION_LOCATION_CHANGED_NOTIFY = "com.comli.shapira.aroundme.Services.action.ACTION_LOCATION_CHANGED_NOTIFY";
-    public static final String EXTRA_LOCATION_CHANGED_DATA = "com.comli.shapira.aroundme.Services.extra.location.data";
+    public static final String EXTRA_LOCATION_LOCATION_DATA = "com.comli.shapira.aroundme.Services.extra.location.data";
+    public static final String EXTRA_LOCATION_PROVIDER_NAME = "com.comli.shapira.aroundme.Services.extra.provider.name";
 
     public static final String ACTION_LOCATION_NOT_AVAILABLE_NOTIFY = "com.comli.shapira.aroundme.Services.action.ACTION_LOCATION_NOT_AVAILABLE_NOTIFY";
 
@@ -91,10 +92,11 @@ public class BroadcastHelper
     }
 
 
-    public static void broadcastOnLocationChanged(Context context, Location location)
+    public static void broadcastOnLocationChanged(Context context, Location location, String providerName)
     {
         Intent intent = new Intent(ACTION_LOCATION_CHANGED_NOTIFY);
-        intent.putExtra(EXTRA_LOCATION_CHANGED_DATA, location);
+        intent.putExtra(EXTRA_LOCATION_LOCATION_DATA, location);
+        intent.putExtra(EXTRA_LOCATION_PROVIDER_NAME, providerName);
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 

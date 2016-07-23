@@ -5,12 +5,12 @@ import android.location.Location;
 
 public interface LocationInterface { // my standard interface. open for new LocationProvider implementations
 
-    void start(String providerName);
+    void start();
     void stop();
     void setOnLocationChangeListener(onLocationListener listener);
 
     interface onLocationListener {
-        void onLocationChanged(Location location);
-        void onLocationNotAvailable();
+        void onLocationChanged(String provider, Location location);
+        void onLocationNotAvailable(String provider);
     }
 }

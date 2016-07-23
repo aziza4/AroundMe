@@ -31,7 +31,7 @@ public class ReceiversHelper {
 
     }
 
-    public void registerLocalAndGlobalReceivers()
+    public void registerLocalReceivers()
     {
         // register nearby service local receiver
         IntentFilter nearby = new IntentFilter(BroadcastHelper.ACTION_NEARBY_NOTIFY);
@@ -44,19 +44,27 @@ public class ReceiversHelper {
         IntentFilter locationNotAvailable = new IntentFilter(BroadcastHelper.ACTION_LOCATION_NOT_AVAILABLE_NOTIFY);
         mLocalBroadcastManager.registerReceiver(mLocationProviderServiceReceiver, locationChanged);
         mLocalBroadcastManager.registerReceiver(mLocationProviderServiceReceiver, locationNotAvailable);
+    }
 
+
+    public void unRegisterLocalReceivers()
+    {
+        // unregister local receivers
+        mLocalBroadcastManager.unregisterReceiver(mNearbyServiceReceiver);
+        mLocalBroadcastManager.unregisterReceiver(mLocationProviderServiceReceiver);
+    }
+
+    public void registerGlobalReceivers()
+    {
         // register global power receiver
         mActivity.registerReceiver(mPowerConnectionReceiver, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
         mActivity.registerReceiver(mPowerConnectionReceiver, new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));
     }
 
-    public void unRegisterLocalAndGlobalReceivers()
+    public void unRegisterGlobalReceivers()
     {
-        // unregister local receivers
-        mLocalBroadcastManager.unregisterReceiver(mNearbyServiceReceiver);
-        mLocalBroadcastManager.unregisterReceiver(mLocationProviderServiceReceiver);
-
         // unregister global receiver
         mActivity.unregisterReceiver(mPowerConnectionReceiver); // stop alerting the user on app exit
     }
+
 }

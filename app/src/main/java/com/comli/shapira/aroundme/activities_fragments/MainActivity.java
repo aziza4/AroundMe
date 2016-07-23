@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         // create global receiver (register later on onResume)
         PowerConnectionReceiver powerConnectionReceiver = new PowerConnectionReceiver();
         mReceiversHelper = new ReceiversHelper(this, nearbyServiceReceiver, locationProviderServiceReceiver, powerConnectionReceiver);
+        mReceiversHelper.registerGlobalReceivers();
 
         // MainMenuHelper
         mMainMenuHelper = new MainMenuHelper(this, mUserCurrentLocation, mPlacesAutoComplete);
@@ -116,19 +117,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mReceiversHelper.registerLocalAndGlobalReceivers();
+        mReceiversHelper.registerLocalReceivers();
         mLocationServiceHelper.startService();
     }
 
     @Override
     protected void onPause() {
-        mReceiversHelper.unRegisterLocalAndGlobalReceivers();
+        mReceiversHelper.unRegisterLocalReceivers();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         mLocationServiceHelper.dismissDialogIfOpen();
+        mReceiversHelper.unRegisterGlobalReceivers();
         super.onDestroy();
     }
 

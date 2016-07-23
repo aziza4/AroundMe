@@ -29,8 +29,9 @@ public class LocationProviderServiceReceiver extends BroadcastReceiver {
         switch (action)
         {
             case BroadcastHelper.ACTION_LOCATION_CHANGED_NOTIFY:
-                Location location = intent.getParcelableExtra(BroadcastHelper.EXTRA_LOCATION_CHANGED_DATA);
-                mLocationServiceHelper.onLocationChanged(location);
+                Location location = intent.getParcelableExtra(BroadcastHelper.EXTRA_LOCATION_LOCATION_DATA);
+                String providerName = intent.getStringExtra(BroadcastHelper.EXTRA_LOCATION_PROVIDER_NAME);
+                mLocationServiceHelper.onLocationChanged(location, providerName);
                 break;
 
             case BroadcastHelper.ACTION_LOCATION_NOT_AVAILABLE_NOTIFY:

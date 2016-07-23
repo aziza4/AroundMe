@@ -105,10 +105,10 @@ public class LocationServiceHelper {
     }
 
 
-    public void onLocationChanged(Location location)
+    public void onLocationChanged(Location location, String providerName)
     {
         dismissDialogIfOpen();
-        mUserCurrentLocation.onLocationChanged(location);
+        mUserCurrentLocation.onLocationChanged(location, providerName);
     }
 
 
@@ -143,6 +143,13 @@ public class LocationServiceHelper {
                             }
                         })
 
+                .setNegativeButton(networkButton,  // network
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                startListening(LocationManager.NETWORK_PROVIDER);
+                            }
+                        })
+
                 .setNeutralButton(stayOfflineButton, // cancel
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -150,12 +157,6 @@ public class LocationServiceHelper {
                             }
                         })
 
-                .setNegativeButton(networkButton,  // network
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                startListening(LocationManager.NETWORK_PROVIDER);
-                            }
-                        })
                 .create();
 
         mAlertDialog.show();

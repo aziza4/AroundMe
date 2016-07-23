@@ -19,28 +19,30 @@ import java.util.TimerTask;
 
 public class CurrentLocationProvider implements LocationInterface {
 
-    private static final int MIN_TIME_MILLISECONDS = 1000;
-    private static final int MIN_DISTANCE = 10;
-    private static final int NETWORK_TIMEOUT_MILLISECONDS = 2000;
-    private static final int GPS_TIMEOUT_MILLISECONDS = 3000;
+    private static final int MIN_TIME_MILLISECONDS = 3000;
+    private static final int MIN_DISTANCE = 0;
 
     private final LocationManager mLocationManager;
     private LocationInterface.onLocationListener mListener;
     private ProviderListener mProviderListener;
     private final Context mContext;
+    private final String mProviderName;
+    private final long mTimeout;
     private boolean mHasLocation;
     private final Handler mHandler = new Handler();
 
 
-    public CurrentLocationProvider(Context context)
+    public CurrentLocationProvider(Context context, String providerName, long timeout)
     {
         mContext = context;
+        mProviderName = providerName;
+        mTimeout = timeout;
         mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         mHasLocation = false;
     }
 
     @Override
-    public void start(String providerName)
+    public void start()
     {
         if (mListener == null)
             return;
@@ -52,7 +54,7 @@ public class CurrentLocationProvider implements LocationInterface {
         mProviderListener = new ProviderListener();
 
         mLocationManager.requestLocationUpdates(
-                providerName,
+                mProviderName,
                 MIN_TIME_MILLISECONDS,
                 MIN_DISTANCE,
                 mProviderListener
@@ -67,19 +69,14 @@ public class CurrentLocationProvider implements LocationInterface {
                     @Override
                     public void run() {
                         if (! mHasLocation)
-                            mListener.onLocationNotAvailable();
+                            mListener.onLocationNotAvailable(mProviderName);
                     }
                 });
             }
         };
 
         Timer timer = new Timer("");
-        long timeoutMS = System.currentTimeMillis() +
-                (providerName.equals(LocationManager.GPS_PROVIDER) ?
-                        GPS_TIMEOUT_MILLISECONDS :
-                        NETWORK_TIMEOUT_MILLISECONDS);
-
-        Date timeout = new Date(timeoutMS);
+        Date timeout = new Date(System.currentTimeMillis() + mTimeout);
         timer.schedule(task, timeout);
     }
 
@@ -107,7 +104,7 @@ public class CurrentLocationProvider implements LocationInterface {
         @Override
         public void onLocationChanged(Location location) {
             mHasLocation = true;
-            mListener.onLocationChanged(location);
+            mListener.onLocationChanged(mProviderName, location);
         }
 
         @Override public void onStatusChanged(String s, int i, Bundle bundle) {}
