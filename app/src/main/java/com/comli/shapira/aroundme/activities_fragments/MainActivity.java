@@ -74,18 +74,14 @@ public class MainActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(searchIntent.getAction()))
             keyword = searchIntent.getStringExtra(SearchManager.QUERY);
 
-        // User Location
-        LastLocationInfo lastInfoLocation = savedInstanceState == null ? null :
-                (LastLocationInfo)savedInstanceState.getParcelable(UserCurrentLocation.LAST_LOC_INFO_KEY);
-        mUserCurrentLocation = new UserCurrentLocation(this, lastInfoLocation, keyword,
-                new UserCurrentLocation.OnLocationReadyListener() {
-            @Override public void onLocationReady() {
-                invalidateOptionsMenu();
-            }
-        });
-
         // LocationServiceHelper
-        mLocationServiceHelper = new LocationServiceHelper(this, mUserCurrentLocation, lastInfoLocation);
+        LastLocationInfo lastInfoLocation = savedInstanceState == null ? null :
+                (LastLocationInfo)savedInstanceState.getParcelable(LocationServiceHelper.LAST_LOC_INFO_KEY);
+        mLocationServiceHelper = new LocationServiceHelper(this, lastInfoLocation, new LocationServiceHelper.OnLocationReadyListener() {
+            @Override public void onLocationReady() { invalidateOptionsMenu(); } });
+
+        // UserCurrentLocation
+        mUserCurrentLocation = new UserCurrentLocation(this, mLocationServiceHelper, keyword);
 
         // Google's places' AutoComplete Widget
         mPlacesAutoComplete = new PlacesAutoComplete(this);
@@ -100,17 +96,17 @@ public class MainActivity extends AppCompatActivity {
         mReceiversHelper.registerGlobalReceivers();
 
         // MainMenuHelper
-        mMainMenuHelper = new MainMenuHelper(this, mUserCurrentLocation, mPlacesAutoComplete);
+        mMainMenuHelper = new MainMenuHelper(this, mLocationServiceHelper, mUserCurrentLocation, mPlacesAutoComplete);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
         boolean isDialogOpen = mLocationServiceHelper.isAlertDialogOpen();
-        Location lastLocation = mUserCurrentLocation.getLastLocation();
+        Location lastLocation = mLocationServiceHelper.getLastLocation();
         LastLocationInfo info = new LastLocationInfo(lastLocation, isDialogOpen);
 
-        outState.putParcelable(UserCurrentLocation.LAST_LOC_INFO_KEY, info);
+        outState.putParcelable(LocationServiceHelper.LAST_LOC_INFO_KEY, info);
         super.onSaveInstanceState(outState);
     }
 

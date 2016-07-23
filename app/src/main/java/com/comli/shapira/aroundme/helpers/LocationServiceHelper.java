@@ -9,33 +9,44 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.activities_fragments.MainActivity;
 import com.comli.shapira.aroundme.data.LastLocationInfo;
 import com.comli.shapira.aroundme.services.LocationProviderService;
-import com.comli.shapira.aroundme.ui_helpers.UserCurrentLocation;
 
 
 public class LocationServiceHelper {
 
     private final AppCompatActivity mActivity;
+    private final OnLocationReadyListener mListener;
     private AlertDialog mAlertDialog;
     private final SharedPrefHelper mSharedPrefHelper;
-    private final UserCurrentLocation mUserCurrentLocation;
+    private Location mLastLocation;
+    private boolean mNeedToUpdateUi;
+    private boolean mNeedToDisplayToast;
 
     private boolean mPermissionDenied;
     private final boolean mAlertDialogWasOnPriorToDeviceRotation;
 
 
+    public static final String LAST_LOC_INFO_KEY = "last_loc_info";
 
-    public LocationServiceHelper(AppCompatActivity activity, UserCurrentLocation userCurrentLocation,
-                                 LastLocationInfo lastLocationInfo)
+    public LocationServiceHelper(AppCompatActivity activity, LastLocationInfo lastLocationInfo, OnLocationReadyListener listener)
     {
         mActivity = activity;
+        mListener = listener;
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
-        mUserCurrentLocation = userCurrentLocation;
 
+        if (lastLocationInfo != null)
+            mLastLocation = lastLocationInfo.getLocation();
+        else if (mSharedPrefHelper.lastUserLocationExist()) {
+            mLastLocation = mSharedPrefHelper.getLastUserLocation();
+        } else mLastLocation = null;
+
+        mNeedToUpdateUi = mLastLocation == null; // do not update on device rotation or MainActivity recreation
+        mNeedToDisplayToast = mNeedToUpdateUi;
         boolean onCreateDueToDeviceRotation = lastLocationInfo != null;
         mAlertDialogWasOnPriorToDeviceRotation = onCreateDueToDeviceRotation && lastLocationInfo.getAlertDialogOn();
         mPermissionDenied = permissionDenied();
@@ -86,7 +97,6 @@ public class LocationServiceHelper {
         mActivity.startService(intent);
     }
 
-
     private boolean permissionDenied()
     {
         if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -104,11 +114,41 @@ public class LocationServiceHelper {
         return false;
     }
 
-
-    public void onLocationChanged(Location location, String providerName)
+    public boolean ready() { return mLastLocation != null; }
+    public Location getLastLocation()
     {
+        return mLastLocation;
+    }
+
+    public void onLocationChanged(Location location, String providerName) {
+
+        mLastLocation = location;
+        mSharedPrefHelper.saveLastUserLocation(location);
         dismissDialogIfOpen();
-        mUserCurrentLocation.onLocationChanged(location, providerName);
+
+        if (mNeedToUpdateUi) {
+            mListener.onLocationReady(); // update activity to refresh menu icons
+            mNeedToUpdateUi = false;
+        }
+
+        if (mNeedToDisplayToast && providerName != null) {
+
+            displayConnectingToast(providerName); // update the user
+            mNeedToDisplayToast = false;
+        }
+    }
+
+    private void displayConnectingToast(String providerName)
+    {
+        if (providerName == null)
+            return;
+
+        String message = mActivity.getString(R.string.sensor_connected_message);
+        String sensor = providerName.equals(LocationManager.GPS_PROVIDER) ?
+                mActivity.getString(R.string.sensor_gps_ok_button) :
+                mActivity.getString(R.string.sensor_network_ok_button);
+
+        Toast.makeText(mActivity, message + " " + sensor, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -170,5 +210,10 @@ public class LocationServiceHelper {
             mAlertDialog.dismiss();
             mAlertDialog = null;
         }
+    }
+
+
+    public interface OnLocationReadyListener {
+        void onLocationReady();
     }
 }

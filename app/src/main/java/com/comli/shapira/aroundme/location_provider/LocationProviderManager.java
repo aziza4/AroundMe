@@ -20,7 +20,7 @@ public class LocationProviderManager {
     private final static int RES_OK = 1;
     private final static int RES_NA = 2;
 
-    private static final long GPS_TIMEOUT = 7000;
+    private static final long GPS_TIMEOUT = 10000;
     private static final long NETWORK_TIMEOUT = 5000;
     private static final int RUNTIME_TIMEOUT = 3000;
 
@@ -157,7 +157,6 @@ public class LocationProviderManager {
         public long timeout;
         public int result;
         public Location location;
-        public boolean okSecondTime;
 
         public Provider(String name, long timeout) {
             this.loc = null;
@@ -165,7 +164,6 @@ public class LocationProviderManager {
             this.timeout = timeout;
             this.result = RES_NONE;
             this.location = null;
-            this.okSecondTime = false;
         }
     }
 }

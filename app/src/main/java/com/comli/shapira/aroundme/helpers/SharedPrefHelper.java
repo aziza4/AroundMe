@@ -100,8 +100,12 @@ public class SharedPrefHelper {
     public boolean lastUserLocationExist() {
 
         String lat_key = mContext.getString(R.string.shared_pref_last_location_lat);
+        String lng_key = mContext.getString(R.string.shared_pref_last_location_lng);
+
         double lat_val = mPrefs.getFloat(lat_key, 0);
-        return lat_val != 0;
+        double lng_val = mPrefs.getFloat(lng_key, 0);
+
+        return lat_val != 0 && lng_val !=0;
     }
 
     public Location getLastUserLocation() {
@@ -134,6 +138,6 @@ public class SharedPrefHelper {
         mPrefs.edit()
                 .remove(lat_key)
                 .remove(lng_key)
-        .apply();
+                .apply();
     }
 }

@@ -15,18 +15,24 @@ import android.view.MenuItem;
 
 import com.comli.shapira.aroundme.activities_fragments.SettingsActivity;
 import com.comli.shapira.aroundme.R;
+import com.comli.shapira.aroundme.helpers.LocationServiceHelper;
 import com.comli.shapira.aroundme.services.NearbyService;
 
 public class MainMenuHelper {
 
     private final AppCompatActivity mActivity;
-    private final UserCurrentLocation mUserCurrentLocation;
+    private LocationServiceHelper mLocationServiceHelper;
     private final PlacesAutoComplete mPlacesAutoComplete;
+    private final UserCurrentLocation mUserCurrentLocation;
 
 
-    public MainMenuHelper(AppCompatActivity activity, UserCurrentLocation userCurrentLocation, PlacesAutoComplete placesAutoComplete) {
+    public MainMenuHelper(AppCompatActivity activity,
+                          LocationServiceHelper locationServiceHelper,
+                          UserCurrentLocation userCurrentLocation,
+                          PlacesAutoComplete placesAutoComplete) {
 
         mActivity = activity;
+        mLocationServiceHelper = locationServiceHelper;
         mUserCurrentLocation = userCurrentLocation;
         mPlacesAutoComplete = placesAutoComplete;
     }
@@ -34,7 +40,7 @@ public class MainMenuHelper {
 
     public void onPrepareOptionsMenu(Menu menu) {
 
-        boolean enabled = mUserCurrentLocation.ready();
+        boolean enabled = mLocationServiceHelper.ready();
 
         MenuItem myLocation = menu.findItem(R.id.menu_search_my_loc);
         MenuItem mySearch = menu.findItem(R.id.menu_search_places);
