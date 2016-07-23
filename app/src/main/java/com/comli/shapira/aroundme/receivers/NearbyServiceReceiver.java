@@ -64,7 +64,7 @@ public class NearbyServiceReceiver extends BroadcastReceiver {
                                 Toast.LENGTH_SHORT).show();
                 }
 
-                searchFragment.removeProgressBar();
+                //searchFragment.removeProgressBar();
                 searchFragment.refresh(mActivity); // update UI
                 mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB); // verify user focus on search tab
                 break;

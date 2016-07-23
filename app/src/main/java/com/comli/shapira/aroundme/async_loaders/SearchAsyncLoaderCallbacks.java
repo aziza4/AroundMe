@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.comli.shapira.aroundme.activities_fragments.SearchFragment;
 import com.comli.shapira.aroundme.adapters.SearchRecyclerAdapter;
 import com.comli.shapira.aroundme.data.Place;
 import com.comli.shapira.aroundme.db.AroundMeDBHelper;
@@ -19,11 +20,13 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
     private final Context mContext;
     private final SearchRecyclerAdapter mSearchAdapter;
     private final AroundMeDBHelper mDbHelper;
+    private final SearchFragment mSearchFragment;
 
 
-    public SearchAsyncLoaderCallbacks(Context context, SearchRecyclerAdapter adapter)
+    public SearchAsyncLoaderCallbacks(Context context, SearchFragment searchFragment, SearchRecyclerAdapter adapter)
     {
         mContext = context;
+        mSearchFragment = searchFragment;
         mSearchAdapter = adapter;
         mDbHelper = new AroundMeDBHelper(mContext);
     }
@@ -42,6 +45,7 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
         mSearchAdapter.setData(data);
+        mSearchFragment.removeProgressBar();
     }
 
     @Override

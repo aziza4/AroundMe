@@ -30,8 +30,8 @@ public class NearbyResponse implements Serializable {
     public boolean isError()
     {
         return mStatus.equals(STATUS_OVER_QUERY_LIMIT) ||
-                mStatus.equals(STATUS_REQUEST_DENIED) ||
-                mStatus.equals(STATUS_INVALID_REQUEST);
+                mStatus.equals(STATUS_REQUEST_DENIED) /* ||
+                mStatus.equals(STATUS_INVALID_REQUEST) */;
     }
 
     public String getStatus() { return mStatus; }
