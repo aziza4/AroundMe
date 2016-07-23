@@ -160,6 +160,8 @@
     <string name="shared_pref_last_location_lat" translatable="false">last_loc_lat</string>
     <string name="shared_pref_last_location_lng" translatable="false">last_loc_lng</string>
     <string name="shared_pref_loc_permission_denied_by_user" translatable="false">loc_permission_denied</string>
+    <string name="shared_pref_lang_changed" translatable="false">lang_changed</string>
+    <string name="shared_pref_search_keyword" translatable="false">search_keyword</string>
 
 
     <string name="shared_place_transition_name" translatable="false">shared_place_transition</string>

@@ -33,11 +33,16 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG = "AroundMe";
     public static final int LOCATION_REQUEST_CODE = 1;
 
+
     private PlacesAutoComplete mPlacesAutoComplete;
     private MainMenuHelper mMainMenuHelper;
     private UserCurrentLocation mUserCurrentLocation;
     private LocationServiceHelper mLocationServiceHelper;
     private ReceiversHelper mReceiversHelper;
+
+    private SharedPrefHelper mSharedPrefHelper;
+    private boolean mLangChanged;
+    private String mSearchKeyWord;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -49,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        mSharedPrefHelper = new SharedPrefHelper(this);
+        mLangChanged = mSharedPrefHelper.isLangChanged();
+        mSharedPrefHelper.setLangChanged(false);
 
         // set shared-place transition exit
         TransitionsHelper.setMainActivityExitTransition(this);
@@ -69,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         // search
-        String keyword = "";
-        Intent searchIntent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(searchIntent.getAction()))
-            keyword = searchIntent.getStringExtra(SearchManager.QUERY);
+        mSearchKeyWord = "";
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction()))
+            mSearchKeyWord = intent.getStringExtra(SearchManager.QUERY);
 
         // LocationServiceHelper
         LastLocationInfo lastInfoLocation = savedInstanceState == null ? null :
@@ -81,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             @Override public void onLocationReady() { invalidateOptionsMenu(); } });
 
         // UserCurrentLocation
-        mUserCurrentLocation = new UserCurrentLocation(this, mLocationServiceHelper, keyword);
+        mUserCurrentLocation = new UserCurrentLocation(this, mLocationServiceHelper);
 
         // Google's places' AutoComplete Widget
         mPlacesAutoComplete = new PlacesAutoComplete(this);
@@ -115,6 +124,20 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         mReceiversHelper.registerLocalReceivers();
         mLocationServiceHelper.startService();
+
+        if (mLangChanged)
+        {
+            String keyword = mSharedPrefHelper.getSearchKeyword();
+            mUserCurrentLocation.searchCurrentLocation(keyword); // renew prev search upon language change
+            mSharedPrefHelper.setSearchKeyword("");
+            mLangChanged = false;
+
+        } else if (!mSearchKeyWord.isEmpty())
+        {
+            mUserCurrentLocation.searchCurrentLocation(mSearchKeyWord); // search with new search keyword
+            mSharedPrefHelper.setSearchKeyword(mSearchKeyWord);
+            mSearchKeyWord = "";
+        }
     }
 
     @Override
@@ -133,8 +156,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
-        sharedPrefHelper.onUserLeaveApplication();
+        mSharedPrefHelper.onUserLeaveApplication();
         mLocationServiceHelper.stopService();
     }
 
@@ -173,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
 
         // runtime permission handling
         mLocationServiceHelper.onRuntimePermissionGrant();
-        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
-        sharedPrefHelper.setPermissionDeniedByUser(false); // user granted permission
+        mSharedPrefHelper.setPermissionDeniedByUser(false); // user granted permission
     }
 }

@@ -33,7 +33,8 @@ public class LocationServiceHelper {
 
     public static final String LAST_LOC_INFO_KEY = "last_loc_info";
 
-    public LocationServiceHelper(AppCompatActivity activity, LastLocationInfo lastLocationInfo, OnLocationReadyListener listener)
+    public LocationServiceHelper(AppCompatActivity activity, LastLocationInfo lastLocationInfo,
+                                 OnLocationReadyListener listener)
     {
         mActivity = activity;
         mListener = listener;
@@ -41,9 +42,9 @@ public class LocationServiceHelper {
 
         if (lastLocationInfo != null)
             mLastLocation = lastLocationInfo.getLocation();
-        else if (mSharedPrefHelper.lastUserLocationExist()) {
+        else if (mSharedPrefHelper.lastUserLocationExist())
             mLastLocation = mSharedPrefHelper.getLastUserLocation();
-        } else mLastLocation = null;
+        else mLastLocation = null;
 
         mNeedToUpdateUi = mLastLocation == null; // do not update on device rotation or MainActivity recreation
         mNeedToDisplayToast = mNeedToUpdateUi;

@@ -58,8 +58,13 @@ public class SettingsFragment extends PreferenceFragment
                 boolean langSelected = preference.getKey().equals(getString(R.string.pref_lang_key));
                 boolean langChanged = !((ListPreference) preference).getValue().equals(newValue);
 
-                if ( langSelected && langChanged )
+                if ( langSelected && langChanged ) {
+
+                    SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
+                    sharedPrefHelper.setLangChanged(true);
+
                     restartSettingsActivity(); // lang change to take affect immediately !
+                }
 
             }
 

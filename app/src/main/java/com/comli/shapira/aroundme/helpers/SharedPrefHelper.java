@@ -129,15 +129,42 @@ public class SharedPrefHelper {
         return mPrefs.getBoolean(key, false);
     }
 
+    public void setLangChanged(boolean langChanged) {
+
+        String key = mContext.getString(R.string.shared_pref_lang_changed);
+        mPrefs.edit().putBoolean(key, langChanged).apply();
+    }
+
+    public boolean isLangChanged() {
+
+        String key = mContext.getString(R.string.shared_pref_lang_changed);
+        return mPrefs.getBoolean(key, false);
+    }
+
+    public void setSearchKeyword(String keyword) {
+
+        String key = mContext.getString(R.string.shared_pref_search_keyword);
+        mPrefs.edit().putString(key, keyword).apply();
+    }
+
+    public String getSearchKeyword() {
+
+        String key = mContext.getString(R.string.shared_pref_search_keyword);
+        return mPrefs.getString(key, "");
+    }
 
     public void onUserLeaveApplication()
     {
         String lat_key = mContext.getString(R.string.shared_pref_last_location_lat);
         String lng_key = mContext.getString(R.string.shared_pref_last_location_lng);
+        String lang_changed_key = mContext.getString(R.string.shared_pref_lang_changed);
+        String permission_key = mContext.getString(R.string.shared_pref_loc_permission_denied_by_user);
 
         mPrefs.edit()
                 .remove(lat_key)
                 .remove(lng_key)
+                .remove(lang_changed_key)
+                .remove(permission_key)
                 .apply();
     }
 }

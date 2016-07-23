@@ -21,7 +21,7 @@ import com.comli.shapira.aroundme.services.NearbyService;
 public class MainMenuHelper {
 
     private final AppCompatActivity mActivity;
-    private LocationServiceHelper mLocationServiceHelper;
+    private final LocationServiceHelper mLocationServiceHelper;
     private final PlacesAutoComplete mPlacesAutoComplete;
     private final UserCurrentLocation mUserCurrentLocation;
 
@@ -72,7 +72,7 @@ public class MainMenuHelper {
                 break;
 
             case R.id.menu_search_my_loc:
-                mUserCurrentLocation.getAndHandle();
+                mUserCurrentLocation.searchCurrentLocation("");
                 break;
 
             case R.id.menu_search_places:

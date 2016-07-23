@@ -22,41 +22,38 @@ public class UserCurrentLocation { // controls the availability of location via 
 
 
     private final SharedPrefHelper mSharedPrefHelper;
-    private LocationServiceHelper mLocationServiceHelper;
+    private final LocationServiceHelper mLocationServiceHelper;
     private String mKeyword;
 
 
-    public UserCurrentLocation(Activity activity, LocationServiceHelper locationServiceHelper, String keyword)
+    public UserCurrentLocation(Activity activity, LocationServiceHelper locationServiceHelper)
     {
         mActivity = activity;
         mLocationServiceHelper = locationServiceHelper;
         mLastLocation = null;
-        mKeyword = keyword;
+        mKeyword = "";
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
-
-        if ( !mKeyword.isEmpty()) {
-            getAndHandle();
-            mKeyword = "";
-        }
     }
 
-    public void getAndHandle() {
+    public void searchCurrentLocation(String keyword) {
 
         mLastLocation = mLocationServiceHelper.getLastLocation();
 
         if ( mLastLocation == null )
             return;
 
+        mKeyword = keyword;
+
         // if location is available then GO! - use our service to download from internet...
         Intent intent = new Intent(NearbyService.ACTION_NEARBY_PLACES, null, mActivity, NearbyService.class);
-        intent.putExtra(NearbyService.EXTRA_NEARBY_REQUEST, getNearbyRequest());
+        intent.putExtra(NearbyService.EXTRA_NEARBY_REQUEST, getRequest());
         mActivity.startService(intent);
 
         BroadcastHelper.broadcastSearchStarted(mActivity);  // start progress bar
     }
 
 
-    private NearbyRequest getNearbyRequest() // prepare request object with all query parameters
+    private NearbyRequest getRequest() // prepare request object with all query parameters
     {
         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
