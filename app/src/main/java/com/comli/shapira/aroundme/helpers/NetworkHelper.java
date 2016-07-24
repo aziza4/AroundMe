@@ -31,8 +31,6 @@ public class NetworkHelper {
 
         try {
 
-            Log.e(MainActivity.LOG_TAG, "URL: " + mUrl.toString());
-
             con = (HttpsURLConnection) mUrl.openConnection();
 
             int resCode = con.getResponseCode();

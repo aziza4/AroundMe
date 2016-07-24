@@ -42,6 +42,27 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     private static final String DETAILS_COL_INTL_PHONE = "intl_phone";
     private static final String DETAILS_COL_URL = "url";
 
+
+
+    private int id_index;
+    private int id_name;
+    private int id_lat;
+    private int id_lng;
+    private int id_icon;
+    private int id_photo_ref;
+    private int id_photo;
+    private int id_place_id;
+    private int id_rating;
+    private int id_reference;
+    private int id_scope;
+    private int id_types;
+    private int id_vicinity;
+    private int id_address;
+    private int id_phone;
+    private int id_intl_phone;
+    private int id_url;
+
+
     public AroundMeDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -232,9 +253,28 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
 
     private ArrayList<Place> getArrayList(String tableName)
     {
-        ArrayList<Place> places = new ArrayList<>();
 
+
+        ArrayList<Place> places = new ArrayList<>();
         Cursor c = getPlacesCursor(tableName);
+
+        id_index = c.getColumnIndex(SEARCH_COL_ID);
+        id_name = c.getColumnIndex(SEARCH_COL_NAME);
+        id_lat = c.getColumnIndex(SEARCH_COL_LOC_LAT);
+        id_lng = c.getColumnIndex(SEARCH_COL_LOC_LNG);
+        id_icon = c.getColumnIndex(SEARCH_COL_ICON);
+        id_photo_ref = c.getColumnIndex(SEARCH_COL_PHOTO_REF);
+        id_photo = c.getColumnIndex(SEARCH_COL_PHOTO);
+        id_place_id = c.getColumnIndex(SEARCH_COL_PLACE_ID);
+        id_rating = c.getColumnIndex(SEARCH_COL_RATING);
+        id_reference = c.getColumnIndex(SEARCH_COL_REFERENCE);
+        id_scope = c.getColumnIndex(SEARCH_COL_SCOPE);
+        id_types = c.getColumnIndex(SEARCH_COL_TYPES);
+        id_vicinity = c.getColumnIndex(SEARCH_COL_VICINITY);
+        id_address = c.getColumnIndex(DETAILS_COL_ADDRESS);
+        id_phone = c.getColumnIndex(DETAILS_COL_PHONE);
+        id_intl_phone = c.getColumnIndex(DETAILS_COL_INTL_PHONE);
+        id_url = c.getColumnIndex(DETAILS_COL_URL);
 
         try {
 
@@ -252,24 +292,6 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
 
     private Place extractPlaceFromCursor(Cursor c)
     {
-        final int id_index = c.getColumnIndex(SEARCH_COL_ID);
-        final int id_name = c.getColumnIndex(SEARCH_COL_NAME);
-        final int id_lat = c.getColumnIndex(SEARCH_COL_LOC_LAT);
-        final int id_lng = c.getColumnIndex(SEARCH_COL_LOC_LNG);
-        final int id_icon = c.getColumnIndex(SEARCH_COL_ICON);
-        final int id_photo_ref = c.getColumnIndex(SEARCH_COL_PHOTO_REF);
-        final int id_photo = c.getColumnIndex(SEARCH_COL_PHOTO);
-        final int id_place_id = c.getColumnIndex(SEARCH_COL_PLACE_ID);
-        final int id_rating = c.getColumnIndex(SEARCH_COL_RATING);
-        final int id_reference = c.getColumnIndex(SEARCH_COL_REFERENCE);
-        final int id_scope = c.getColumnIndex(SEARCH_COL_SCOPE);
-        final int id_types = c.getColumnIndex(SEARCH_COL_TYPES);
-        final int id_vicinity = c.getColumnIndex(SEARCH_COL_VICINITY);
-        final int id_address = c.getColumnIndex(DETAILS_COL_ADDRESS);
-        final int id_phone = c.getColumnIndex(DETAILS_COL_PHONE);
-        final int id_intl_phone = c.getColumnIndex(DETAILS_COL_INTL_PHONE);
-        final int id_url = c.getColumnIndex(DETAILS_COL_URL);
-
         long _id = c.getInt(id_index);
         String name = c.getString(id_name);
         float lat = c.getFloat(id_lat);

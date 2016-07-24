@@ -131,8 +131,6 @@ public class NearbyService extends IntentService {
 
             status = response.getStatus();
 
-            Log.e(MainActivity.LOG_TAG, "response: " + response.getPlaces().size() + "  mPlaces: " + mPlaces.size());
-
             if (response.isError()) {
                 BroadcastHelper.broadcastSearchError(this, status);
                 return false;

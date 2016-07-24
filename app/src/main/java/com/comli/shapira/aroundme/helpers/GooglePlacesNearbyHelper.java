@@ -349,8 +349,6 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
             // status
             status = placeObj.has(mStatusKey) ? placeObj.getString(mStatusKey) : null;
 
-            Log.e(MainActivity.LOG_TAG, "Status: " + status );
-
             if (status != null && status.equals(NearbyResponse.STATUS_OK))
             {
                 // next page token
