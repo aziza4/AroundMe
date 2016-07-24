@@ -43,26 +43,6 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     private static final String DETAILS_COL_URL = "url";
 
 
-
-    private int id_index;
-    private int id_name;
-    private int id_lat;
-    private int id_lng;
-    private int id_icon;
-    private int id_photo_ref;
-    private int id_photo;
-    private int id_place_id;
-    private int id_rating;
-    private int id_reference;
-    private int id_scope;
-    private int id_types;
-    private int id_vicinity;
-    private int id_address;
-    private int id_phone;
-    private int id_intl_phone;
-    private int id_url;
-
-
     public AroundMeDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -235,11 +215,12 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
                 SEARCH_COL_ID + "=" + id + ";";
 
         Cursor c = db.rawQuery(query, null);
+        Columns cols = new Columns(c);
 
         try {
 
             if( c.moveToFirst() )
-                place = extractPlaceFromCursor(c);
+                place = extractPlaceFromCursor(c, cols);
 
         } finally {
 
@@ -253,33 +234,14 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
 
     private ArrayList<Place> getArrayList(String tableName)
     {
-
-
         ArrayList<Place> places = new ArrayList<>();
         Cursor c = getPlacesCursor(tableName);
-
-        id_index = c.getColumnIndex(SEARCH_COL_ID);
-        id_name = c.getColumnIndex(SEARCH_COL_NAME);
-        id_lat = c.getColumnIndex(SEARCH_COL_LOC_LAT);
-        id_lng = c.getColumnIndex(SEARCH_COL_LOC_LNG);
-        id_icon = c.getColumnIndex(SEARCH_COL_ICON);
-        id_photo_ref = c.getColumnIndex(SEARCH_COL_PHOTO_REF);
-        id_photo = c.getColumnIndex(SEARCH_COL_PHOTO);
-        id_place_id = c.getColumnIndex(SEARCH_COL_PLACE_ID);
-        id_rating = c.getColumnIndex(SEARCH_COL_RATING);
-        id_reference = c.getColumnIndex(SEARCH_COL_REFERENCE);
-        id_scope = c.getColumnIndex(SEARCH_COL_SCOPE);
-        id_types = c.getColumnIndex(SEARCH_COL_TYPES);
-        id_vicinity = c.getColumnIndex(SEARCH_COL_VICINITY);
-        id_address = c.getColumnIndex(DETAILS_COL_ADDRESS);
-        id_phone = c.getColumnIndex(DETAILS_COL_PHONE);
-        id_intl_phone = c.getColumnIndex(DETAILS_COL_INTL_PHONE);
-        id_url = c.getColumnIndex(DETAILS_COL_URL);
+        Columns cols = new Columns(c);
 
         try {
 
             while (c.moveToNext())
-                places.add(extractPlaceFromCursor(c));
+                places.add(extractPlaceFromCursor(c, cols));
 
         } finally {
 
@@ -290,31 +252,75 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     }
 
 
-    private Place extractPlaceFromCursor(Cursor c)
+    private Place extractPlaceFromCursor(Cursor c, Columns cols)
     {
-        long _id = c.getInt(id_index);
-        String name = c.getString(id_name);
-        float lat = c.getFloat(id_lat);
-        float lng = c.getFloat(id_lng);
-        String icon = c.getString(id_icon);
-        String photoRef = c.getString(id_photo_ref);
-        Bitmap bitmap = ImageHelper.convertByteArrayToBitmap(c.getBlob(id_photo));
-        String placeId = c.getString(id_place_id);
-        float rating = c.getFloat(id_rating);
-        String reference = c.getString(id_reference);
-        String scope = c.getString(id_scope);
-        String types = c.getString(id_types);
-        String vicinity = c.getString(id_vicinity);
-        String address = c.getString(id_address);
-        String phone = c.getString(id_phone);
-        String intlPhone = c.getString(id_intl_phone);
-        String url = c.getString(id_url);
+        long _id = c.getInt(cols.id_index);
+        String name = c.getString(cols.id_name);
+        float lat = c.getFloat(cols.id_lat);
+        float lng = c.getFloat(cols.id_lng);
+        String icon = c.getString(cols.id_icon);
+        String photoRef = c.getString(cols.id_photo_ref);
+        Bitmap bitmap = ImageHelper.convertByteArrayToBitmap(c.getBlob(cols.id_photo));
+        String placeId = c.getString(cols.id_place_id);
+        float rating = c.getFloat(cols.id_rating);
+        String reference = c.getString(cols.id_reference);
+        String scope = c.getString(cols.id_scope);
+        String types = c.getString(cols.id_types);
+        String vicinity = c.getString(cols.id_vicinity);
+        String address = c.getString(cols.id_address);
+        String phone = c.getString(cols.id_phone);
+        String intlPhone = c.getString(cols.id_intl_phone);
+        String url = c.getString(cols.id_url);
 
         return new Place(
                 _id, lat, lng, icon, name,
                 photoRef, bitmap, placeId, rating,
                 reference, scope, types, vicinity,
                 address, phone, intlPhone, url);
+    }
+
+
+
+    private class Columns {
+
+        private final int id_index;
+        private final int id_name;
+        private final int id_lat;
+        private final int id_lng;
+        private final int id_icon;
+        private final int id_photo_ref;
+        private final int id_photo;
+        private final int id_place_id;
+        private final int id_rating;
+        private final int id_reference;
+        private final int id_scope;
+        private final int id_types;
+        private final int id_vicinity;
+        private final int id_address;
+        private final int id_phone;
+        private final int id_intl_phone;
+        private final int id_url;
+
+        public Columns(Cursor c)
+        {
+            id_index = c.getColumnIndex(SEARCH_COL_ID);
+            id_name = c.getColumnIndex(SEARCH_COL_NAME);
+            id_lat = c.getColumnIndex(SEARCH_COL_LOC_LAT);
+            id_lng = c.getColumnIndex(SEARCH_COL_LOC_LNG);
+            id_icon = c.getColumnIndex(SEARCH_COL_ICON);
+            id_photo_ref = c.getColumnIndex(SEARCH_COL_PHOTO_REF);
+            id_photo = c.getColumnIndex(SEARCH_COL_PHOTO);
+            id_place_id = c.getColumnIndex(SEARCH_COL_PLACE_ID);
+            id_rating = c.getColumnIndex(SEARCH_COL_RATING);
+            id_reference = c.getColumnIndex(SEARCH_COL_REFERENCE);
+            id_scope = c.getColumnIndex(SEARCH_COL_SCOPE);
+            id_types = c.getColumnIndex(SEARCH_COL_TYPES);
+            id_vicinity = c.getColumnIndex(SEARCH_COL_VICINITY);
+            id_address = c.getColumnIndex(DETAILS_COL_ADDRESS);
+            id_phone = c.getColumnIndex(DETAILS_COL_PHONE);
+            id_intl_phone = c.getColumnIndex(DETAILS_COL_INTL_PHONE);
+            id_url = c.getColumnIndex(DETAILS_COL_URL);
+        }
     }
 }
 
