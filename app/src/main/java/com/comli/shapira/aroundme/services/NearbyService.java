@@ -31,6 +31,8 @@ public class NearbyService extends IntentService {
     public static final String EXTRA_PLACE_FAVORITES_DATA = "com.comli.shapira.aroundme.Services.extra.placedetails.request";
     public static final String EXTRA_PLACE_FAVORITES_ACTION_SAVE = "com.comli.shapira.aroundme.Services.extra.placedetails.action.save";
     public static final String EXTRA_PLACE_FAVORITES_ACTION_REMOVE = "com.ecomli.shapira.aroundme.Services.extra.placedetails.action.remove";
+    public static final String ACTION_AUTOCOMPLETE_GET_DETAILS = "com.comli.shapira.aroundme.Services.action.ACTION_AUTOCOMPLETE_GET_DETAILS";
+    public static final String EXTRA_PLACE_AUTOCOMPLETE_DATA = "com.comli.shapira.aroundme.Services.extra.placedetails.autocomplete.request";
 
 
     private GooglePlacesNearbyHelper mNearbyHelper;
@@ -81,6 +83,11 @@ public class NearbyService extends IntentService {
             case ACTION_PLACE_FAVORITES_REMOVE_ALL:
                     deleteAllFromFavorites();
                 break;
+
+            case ACTION_AUTOCOMPLETE_GET_DETAILS:
+                DetailsRequest request = intent.getParcelableExtra(EXTRA_PLACE_AUTOCOMPLETE_DATA);
+                downloadPlaceDetailsAndReplaceSearchResults(request);
+                break;
         }
     }
 
@@ -112,6 +119,23 @@ public class NearbyService extends IntentService {
 
         BroadcastHelper.broadcastFavoritesPlaceSaved(this);
     }
+
+    private void downloadPlaceDetailsAndReplaceSearchResults(DetailsRequest request)
+    {
+        URL url = mNearbyHelper.getDetailsUrl(request.getPlace());
+        NetworkHelper networkHelper = new NetworkHelper(url);
+        String jsonString = networkHelper.getJsonString();
+        DetailsResponse res = mNearbyHelper.GetPlaceDetails(request, jsonString);
+        Place place = res.getPlace();
+
+        // replace 'search' result with this single result
+        mDbHelper.searchDeleteAllPlaces();
+        ArrayList<Place> places = new ArrayList<>();
+        places.add(place);
+        mDbHelper.searchBulkInsert(places);
+        BroadcastHelper.broadcastSearchPlacesSaved(this, places);
+    }
+
 
 
     private boolean downloadNearbyPlacesWithPhotos(NearbyRequest request)

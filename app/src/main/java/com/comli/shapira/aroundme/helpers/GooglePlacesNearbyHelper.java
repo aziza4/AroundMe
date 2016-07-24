@@ -319,7 +319,28 @@ public class GooglePlacesNearbyHelper { // encapsulates GooglePlaces website spe
                     String intlPhone = resultObj.has(mIntlPhoneKey) ? resultObj.getString(mIntlPhoneKey) : null;
                     String url = resultObj.has(mUrlKey) ? resultObj.getString(mUrlKey) : null;
 
-                    place.setAdditionalDetails(address, phone, intlPhone, url);
+                    PlacePhoto photo = null;
+                    if (resultObj.has(mPhotosKey)) {
+                        JSONArray photosArr = resultObj.getJSONArray(mPhotosKey);
+                        JSONObject photoObj = (JSONObject) photosArr.get(0); // api states only at most one photo available
+                        if (photoObj != null) {
+                            int height = photoObj.has(mPhotoHeightKey) ? photoObj.getInt(mPhotoHeightKey) : 0;
+                            int width = photoObj.has(mPhotoWidthKey) ? photoObj.getInt(mPhotoWidthKey) : 0;
+                            String pReference = photoObj.has(mPhotoReferenceKey) ? photoObj.getString(mPhotoReferenceKey) : "";
+
+                            String[] attArr = new String[0];
+                            if (photoObj.has(mPhotoHtmlAttributionsKey)) {
+                                JSONArray htmlAttArr = photoObj.getJSONArray(mPhotoHtmlAttributionsKey);
+                                attArr = new String[htmlAttArr.length()];
+                                for (int k = 0; k < htmlAttArr.length(); k++)
+                                    attArr[k] = htmlAttArr.getString(k);
+                            }
+
+                            photo = new PlacePhoto(height, width, attArr, pReference, null);
+                        }
+                    }
+
+                    place.setAdditionalDetails(address, phone, intlPhone, url, photo);
                 }
 
             } else {

@@ -17,7 +17,6 @@ public class Place implements Parcelable {
     private final LatLng mLoc;
     private final String mIcon;
     private final String mName;
-    private final PlacePhoto mPhoto;
     private final String mPlaceId;
     private final double mRating;
     private final String mReference;
@@ -29,6 +28,7 @@ public class Place implements Parcelable {
     private String mPhone;
     private String mIntlPhone;
     private String mUrl;
+    private PlacePhoto mPhoto;
 
     public Place(com.google.android.gms.location.places.Place googlePlace)
     {
@@ -211,15 +211,16 @@ public class Place implements Parcelable {
     }
 
 
-    public void setAdditionalDetails(String address, String phone, String intlPhone, String url)
+    public void setAdditionalDetails(String address, String phone, String intlPhone, String url, PlacePhoto photo)
     {
-        this.mAddress = address;
-        this.mPhone = phone;
-        this.mIntlPhone = intlPhone;
-        this.mUrl = url;
+        mAddress = address;
+        mPhone = phone;
+        mIntlPhone = intlPhone;
+        mUrl = url;
+
+        if (mPhoto == null)
+            mPhoto = photo;
     }
-
-
 
 
     @Override
