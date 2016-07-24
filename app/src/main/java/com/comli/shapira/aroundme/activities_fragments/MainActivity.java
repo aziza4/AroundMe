@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         mUserCurrentLocation = new UserCurrentLocation(this, mLocationServiceHelper);
 
         // Google's places' AutoComplete Widget
-        mPlacesAutoComplete = new PlacesAutoComplete(this, mLocationServiceHelper);
+        mPlacesAutoComplete = new PlacesAutoComplete(this);
 
         // create local notification receiver (register later on onResume)
         NearbyServiceReceiver nearbyServiceReceiver = new NearbyServiceReceiver(this, tabsPagerAdapter, viewPager);
