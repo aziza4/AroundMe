@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import com.comli.shapira.aroundme.data.Place;
 import com.comli.shapira.aroundme.R;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.Locale;
 
@@ -177,4 +179,28 @@ public class Utility {
                 .appendQueryParameter(endAddressKey, endAddressVal)
                 .build();
     }
+
+    public static LatLngBounds toBounds(LatLng center, double radius) {
+        LatLng southwest = SphericalUtil.computeOffset(center, radius * Math.sqrt(2.0), 225);
+        LatLng northeast = SphericalUtil.computeOffset(center, radius * Math.sqrt(2.0), 45);
+        return new LatLngBounds(southwest, northeast);
+    }
+
+    public static LatLngBounds getBoundOfCurrentLocation(Context context, Location location)
+    {
+        if ( location == null )
+            return null;
+
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
+
+        LatLng center = new LatLng(location.getLatitude(), location.getLongitude());
+
+        int radius = sharedPrefHelper.getRadius();
+        if (! sharedPrefHelper.isMeters())
+            radius = Utility.feetToMeters(radius);
+
+        return toBounds(center, radius);
+    }
+
+
 }

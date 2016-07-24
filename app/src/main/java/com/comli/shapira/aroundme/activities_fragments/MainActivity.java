@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         mUserCurrentLocation = new UserCurrentLocation(this, mLocationServiceHelper);
 
         // Google's places' AutoComplete Widget
-        mPlacesAutoComplete = new PlacesAutoComplete(this);
+        mPlacesAutoComplete = new PlacesAutoComplete(this, mLocationServiceHelper);
 
         // create local notification receiver (register later on onResume)
         NearbyServiceReceiver nearbyServiceReceiver = new NearbyServiceReceiver(this, tabsPagerAdapter, viewPager);
@@ -120,10 +120,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         mReceiversHelper.registerLocalReceivers();
         mLocationServiceHelper.startService();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         if (mLangChanged) // renew previous search upon language change
         {
@@ -142,9 +147,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onStop() {
         mReceiversHelper.unRegisterLocalReceivers();
-        super.onPause();
+        super.onStop();
     }
 
     @Override
