@@ -125,16 +125,17 @@ public class MainActivity extends AppCompatActivity {
         mReceiversHelper.registerLocalReceivers();
         mLocationServiceHelper.startService();
 
-        if (mLangChanged)
+        if (mLangChanged) // renew previous search upon language change
         {
             String keyword = mSharedPrefHelper.getSearchKeyword();
-            mUserCurrentLocation.searchCurrentLocation(keyword); // renew prev search upon language change
+            mUserCurrentLocation.searchCurrentLocation(keyword);
             mSharedPrefHelper.setSearchKeyword("");
             mLangChanged = false;
+        }
 
-        } else if (!mSearchKeyWord.isEmpty())
+        if (!mSearchKeyWord.isEmpty())  // search with new search keyword
         {
-            mUserCurrentLocation.searchCurrentLocation(mSearchKeyWord); // search with new search keyword
+            mUserCurrentLocation.searchCurrentLocation(mSearchKeyWord);
             mSharedPrefHelper.setSearchKeyword(mSearchKeyWord);
             mSearchKeyWord = "";
         }

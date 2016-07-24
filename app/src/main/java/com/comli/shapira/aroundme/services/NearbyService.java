@@ -131,7 +131,7 @@ public class NearbyService extends IntentService {
 
             status = response.getStatus();
 
-            Log.e(MainActivity.LOG_TAG, "Size: " + mPlaces.size());
+            Log.e(MainActivity.LOG_TAG, "response: " + response.getPlaces().size() + "  mPlaces: " + mPlaces.size());
 
             if (response.isError()) {
                 BroadcastHelper.broadcastSearchError(this, status);
@@ -144,6 +144,7 @@ public class NearbyService extends IntentService {
 
         } while (pageToken != null);
 
+        Log.e(MainActivity.LOG_TAG, "mPlaces: " + mPlaces.size());
         return mPlaces.size() > 0;
     }
 

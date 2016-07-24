@@ -215,11 +215,17 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
 
         Cursor c = db.rawQuery(query, null);
 
-        if( c.moveToFirst() )
-            place = extractPlaceFromCursor(c);
+        try {
 
-        c.close();
-        db.close();
+            if( c.moveToFirst() )
+                place = extractPlaceFromCursor(c);
+
+        } finally {
+
+            c.close();
+            db.close();
+        }
+
         return place;
     }
 
@@ -230,10 +236,16 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
 
         Cursor c = getPlacesCursor(tableName);
 
-        while(c.moveToNext())
-            places.add(extractPlaceFromCursor(c));
+        try {
 
-        c.close();
+            while (c.moveToNext())
+                places.add(extractPlaceFromCursor(c));
+
+        } finally {
+
+            c.close();
+        }
+
         return places;
     }
 
