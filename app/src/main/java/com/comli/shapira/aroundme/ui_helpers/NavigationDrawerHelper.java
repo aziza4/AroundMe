@@ -85,7 +85,9 @@ public class NavigationDrawerHelper implements NavigationView.OnNavigationItemSe
                 return true;
 
             case R.id.nav_menu_settings:
-                mActivity.startActivity(new Intent(mActivity, SettingsActivity.class));
+                Intent intent = new Intent(mActivity, SettingsActivity.class);
+                //intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                mActivity.startActivity(intent);
                 return true;
 
             default:

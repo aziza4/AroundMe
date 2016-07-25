@@ -76,7 +76,7 @@
 
     <string name="pref_lang_key" translatable="false">lang</string>
     <string name="pref_lang_english" translatable="false">en</string>
-    <string name="pref_lang_hebrew" translatable="false">he</string>
+    <string name="pref_lang_hebrew" translatable="false">iw</string>
     <string name="pref_lang_def" translatable="false">en</string>
     <string name="pref_units_key" translatable="false">units</string>
     <string name="pref_units_meters" translatable="false">meters</string>
@@ -165,6 +165,8 @@
     <string name="shared_pref_loc_permission_denied_by_user" translatable="false">loc_permission_denied</string>
     <string name="shared_pref_lang_changed" translatable="false">lang_changed</string>
     <string name="shared_pref_search_keyword" translatable="false">search_keyword</string>
+    <string name="shared_pref_first_app_run" translatable="false">first_app_run</string>
+    <string name="shared_pref_first_app_run_" translatable="false">first_app_run</string>
 
 
     <string name="shared_place_transition_name" translatable="false">shared_place_transition</string>

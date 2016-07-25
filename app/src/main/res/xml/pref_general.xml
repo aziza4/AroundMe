@@ -8,7 +8,6 @@
         <ListPreference
             android:title="@string/pref_lang_label"
             android:key="@string/pref_lang_key"
-            android:defaultValue="@string/pref_lang_def"
             android:entryValues="@array/pref_lang_values"
             android:entries="@array/pref_lang_options" />
 

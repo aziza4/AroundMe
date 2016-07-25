@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.location.Location;
+import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 import com.comli.shapira.aroundme.R;
 import com.google.android.gms.maps.model.LatLng;
@@ -28,9 +29,21 @@ public class SharedPrefHelper {
     @SuppressWarnings("deprecation")
     public void changeLocale() {
 
-        String key = mContext.getString(R.string.pref_lang_key);
-        String def = mContext.getString(R.string.pref_lang_def);
-        String lang = mPrefs.getString(key, def);
+
+        String first_app_run_key = mContext.getString(R.string.shared_pref_first_app_run);
+        boolean firstAppRun = mPrefs.getBoolean(first_app_run_key, true);
+
+        String lang_key = mContext.getString(R.string.pref_lang_key);
+        String lang_def = mContext.getString(R.string.pref_lang_def);
+        String lang = mPrefs.getString(lang_key, lang_def);
+
+        if (firstAppRun) {
+            lang = Locale.getDefault().getLanguage();
+            mPrefs.edit()
+                    .putBoolean(first_app_run_key, false)
+                    .putString(lang_key, lang)
+                    .apply();
+        }
 
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
@@ -40,6 +53,23 @@ public class SharedPrefHelper {
         Resources resources = mContext.getResources();
         resources.updateConfiguration(configuration, mContext.getResources().getDisplayMetrics());
     }
+
+    public void setFirstTimeLanguageSummary(ListPreference langPref)
+    {
+        if (langPref.getSummary() != null)
+            return;
+
+        String lang = Locale.getDefault().getLanguage();
+        CharSequence[] entries = langPref.getEntries();
+        CharSequence[] values = langPref.getEntryValues();
+
+        for (int i=0; i< values.length; i++)
+            if ( lang.equals(values[i]) ) {
+                langPref.setSummary(entries[i]);
+                return;
+            }
+    }
+
 
     public String getSelectedLanguage() {
         String key = mContext.getString(R.string.pref_lang_key);

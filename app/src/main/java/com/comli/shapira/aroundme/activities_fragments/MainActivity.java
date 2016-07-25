@@ -176,9 +176,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         mSharedPrefHelper.onUserLeaveApplication();
         mLocationServiceHelper.stopService();
+        super.onBackPressed();
     }
 
     @Override

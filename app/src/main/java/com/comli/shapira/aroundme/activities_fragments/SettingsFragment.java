@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 
+import java.util.Locale;
+
 
 public class SettingsFragment extends PreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -24,6 +26,9 @@ public class SettingsFragment extends PreferenceFragment
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
         sharedPrefHelper.changeLocale();
         addPreferencesFromResource(R.xml.pref_general);
+
+        ListPreference langPref = (ListPreference) findPreference(getString(R.string.pref_lang_key));
+        sharedPrefHelper.setFirstTimeLanguageSummary(langPref);
 
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_lang_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
@@ -76,7 +81,7 @@ public class SettingsFragment extends PreferenceFragment
     private void restartSettingsActivity() // this works, while getActivity().recreate() fails...
     {
         Intent intent = getActivity().getIntent();
-        getActivity().finish();
         startActivity(intent);
+        getActivity().finish();
     }
 }
