@@ -9,8 +9,6 @@ import android.preference.PreferenceManager;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 
-import java.util.Locale;
-
 
 public class SettingsFragment extends PreferenceFragment
         implements Preference.OnPreferenceChangeListener {
