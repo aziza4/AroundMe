@@ -121,6 +121,7 @@ public class LocationServiceHelper {
         return mLastLocation;
     }
 
+
     public void onLocationChanged(Location location, String providerName) {
 
         mLastLocation = location;

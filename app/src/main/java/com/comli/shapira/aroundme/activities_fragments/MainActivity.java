@@ -91,7 +91,11 @@ public class MainActivity extends AppCompatActivity {
         LastLocationInfo lastInfoLocation = savedInstanceState == null ? null :
                 (LastLocationInfo)savedInstanceState.getParcelable(LocationServiceHelper.LAST_LOC_INFO_KEY);
         mLocationServiceHelper = new LocationServiceHelper(this, lastInfoLocation, new LocationServiceHelper.OnLocationReadyListener() {
-            @Override public void onLocationReady() { invalidateOptionsMenu(); } });
+            @Override public void onLocationReady() {
+                invalidateOptionsMenu();
+                mUserCurrentLocation.searchCurrentLocation(""); // on app startup and location ready -> start search
+            }
+        });
 
         // UserCurrentLocation
         mUserCurrentLocation = new UserCurrentLocation(this, mLocationServiceHelper);
