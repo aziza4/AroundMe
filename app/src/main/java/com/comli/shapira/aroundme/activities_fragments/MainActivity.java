@@ -7,9 +7,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.multidex.MultiDex;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private UserCurrentLocation mUserCurrentLocation;
     private LocationServiceHelper mLocationServiceHelper;
     private ReceiversHelper mReceiversHelper;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
 
     private SharedPrefHelper mSharedPrefHelper;
     private boolean mLangChanged;
@@ -92,6 +96,16 @@ public class MainActivity extends AppCompatActivity {
         // UserCurrentLocation
         mUserCurrentLocation = new UserCurrentLocation(this, mLocationServiceHelper);
 
+        // Drawer
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(this,
+                drawerLayout, R.string.drawer_open, R.string.drawer_close);
+        drawerLayout.addDrawerListener(mActionBarDrawerToggle);
+        mActionBarDrawerToggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationDrawerHelper navigationDrawerHelper = new NavigationDrawerHelper(this, mUserCurrentLocation, viewPager);
+        navigationView.setNavigationItemSelectedListener(navigationDrawerHelper);
+
         // Google's places' AutoComplete Widget
         mPlacesAutoComplete = new PlacesAutoComplete(this);
 
@@ -122,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         mReceiversHelper.registerLocalReceivers();
         mLocationServiceHelper.startService();
     }
@@ -180,6 +195,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (mActionBarDrawerToggle.onOptionsItemSelected(item))
+            return true;
+
         mMainMenuHelper.onOptionsItemSelected(item); // workflow majority starts here...
         return true;
     }

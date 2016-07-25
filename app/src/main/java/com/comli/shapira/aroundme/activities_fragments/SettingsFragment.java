@@ -28,7 +28,6 @@ public class SettingsFragment extends PreferenceFragment
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_lang_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_radius_key)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_types_key)));
     }
 
 
@@ -56,18 +55,13 @@ public class SettingsFragment extends PreferenceFragment
                 preference.setSummary(listPreference.getEntries()[index]);
 
                 boolean langSelected = preference.getKey().equals(getString(R.string.pref_lang_key));
-                boolean typesSelected = preference.getKey().equals(getString(R.string.pref_types_key));
                 boolean valueChanged = !((ListPreference) preference).getValue().equals(newValue);
 
-                if ( valueChanged ) {
-
-                    if (langSelected || typesSelected) {
-                        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
-                        sharedPrefHelper.setLangChanged(true);
-                    }
-
-                    if (langSelected)
-                        restartSettingsActivity(); // lang change to take affect immediately !
+                if ( langSelected && valueChanged )
+                {
+                    SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
+                    sharedPrefHelper.setLangChanged(true);
+                    restartSettingsActivity(); // lang change to take affect immediately !
                 }
             }
 

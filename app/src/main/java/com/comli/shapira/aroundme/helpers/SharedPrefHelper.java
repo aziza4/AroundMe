@@ -75,6 +75,13 @@ public class SharedPrefHelper {
     }
 
 
+    public void setSelectedTypes(String value) {
+
+        String key = mContext.getString(R.string.pref_types_key);
+        mPrefs.edit().putString(key, value).apply();
+    }
+
+
     public void saveLastUserLocation(Location location)
     {
         String lat_key = mContext.getString(R.string.shared_pref_last_location_lat);

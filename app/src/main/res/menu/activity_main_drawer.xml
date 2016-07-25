@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_menu_all"
+            android:title="@string/pref_types_label_all"
+            android:icon="@drawable/ic_action_cancel_96" />
+
+        <item android:id="@+id/nav_menu_restaurants"
+            android:title="@string/pref_types_label_restaurant_cafe_bar_nightclub"
+            android:icon="@drawable/ic_action_restaurant_96"/>
+
+        <item android:id="@+id/nav_menu_parking"
+            android:title="@string/pref_types_label_parking"
+            android:icon="@drawable/ic_action_paid_parking_96"/>
+
+        <item android:id="@+id/nav_menu_banks"
+            android:title="@string/pref_types_label_bank_atm"
+            android:icon="@drawable/ic_action_bank_96"/>
+
+        <item android:id="@+id/nav_menu_museums"
+            android:title="@string/pref_types_label_museum_gallery"
+            android:icon="@drawable/ic_action_museum_96"/>
+
+        <item android:id="@+id/nav_menu_gas"
+            android:title="@string/pref_types_label_gas"
+            android:icon="@drawable/ic_action_gas_station_96"/>
+
+        <item android:id="@+id/nav_menu_doctors"
+            android:title="@string/pref_types_label_doctor_hospital_pharmacy"
+            android:icon="@drawable/ic_action_doctors_bag_96"/>
+
+        <item android:id="@+id/nav_menu_bus"
+            android:title="@string/pref_types_label_bus_train_taxi"
+            android:icon="@drawable/ic_action_bus_96"/>
+
+    </group>
+
+    <item android:title="@string/more_text">
+        <menu>
+            <item android:id="@+id/nav_menu_delete_favorites"
+                android:title="@string/menu_item_delete_Favorites"
+                android:icon="@drawable/ic_action_delete_96"/>
+
+            <item android:id="@+id/nav_menu_settings"
+                android:title="@string/action_settings"
+                android:icon="@drawable/ic_action_settings_96"/>
+        </menu>
+    </item>
+
+</menu>

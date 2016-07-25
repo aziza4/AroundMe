@@ -3,9 +3,7 @@ package com.comli.shapira.aroundme.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.Log;
 
-import com.comli.shapira.aroundme.activities_fragments.MainActivity;
 import com.comli.shapira.aroundme.data.DetailsRequest;
 import com.comli.shapira.aroundme.data.DetailsResponse;
 import com.comli.shapira.aroundme.data.NearbyRequest;
@@ -166,7 +164,6 @@ public class NearbyService extends IntentService {
 
         } while (pageToken != null);
 
-        Log.e(MainActivity.LOG_TAG, "mPlaces: " + mPlaces.size());
         return mPlaces.size() > 0;
     }
 

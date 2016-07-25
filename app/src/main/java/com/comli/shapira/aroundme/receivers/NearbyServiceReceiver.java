@@ -88,6 +88,10 @@ public class NearbyServiceReceiver extends BroadcastReceiver {
                     searchFragment.removeProgressBar();
                     mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB); // verify user focus on favorites tab. only for add operation.
                 }
+
+                if (detailsRemovedAll > 0)
+                    mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
+
                 break;
         }
     }

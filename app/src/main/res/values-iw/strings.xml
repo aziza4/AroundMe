@@ -34,15 +34,14 @@
     <string name="pref_units_label_meters">מטרים</string>
     <string name="pref_units_label_feet">רגל</string>
     <string name="pref_radius_label">רדיוס</string>
-    <string name="pref_types_label">קטגוריות</string>
     <string name="pref_types_label_all">הכל</string>
-    <string name="pref_types_label_restaurant_cafe_bar_nightclub">מסעדות, בתי קפה, מועדוני לילה, בארים</string>
+    <string name="pref_types_label_restaurant_cafe_bar_nightclub">מסעדות, בתי קפה, בארים</string>
     <string name="pref_types_label_museum_gallery">מוזיאונים, גלריות</string>
     <string name="pref_types_label_parking">חניונים</string>
     <string name="pref_types_label_bank_atm">בנקים, כספומטים</string>
     <string name="pref_types_label_gas">תחנות דלק</string>
-    <string name="pref_types_label_bus_train_taxi">תחנות אוטובוס, תחנות רכבת, מוניות</string>
-    <string name="pref_types_label_doctor_hospital_pharmacy">בתי חולים, רופאים, בתי מרקחת</string>
+    <string name="pref_types_label_bus_train_taxi">אוטובוסים, רכבות, מוניות</string>
+    <string name="pref_types_label_doctor_hospital_pharmacy">בתי חולים, בתי מרקחת, רופאים</string>
 
     <string name="formatted_away_from_me_msg">ממני</string>
     <string name="formatted_away_from_me_km">ק\"מ</string>
@@ -67,5 +66,10 @@
     <string name="pref_search_category_title">פרמטרי חיפוש</string>
 
     <string name="server_error_message">בעיית תקשורת - אנא נסה מאוחר יותר.</string>
+
+    <string name="drawer_open">פתח מגירת ניווט</string>
+    <string name="drawer_close">סגור מגירת ניווט</string>
+    <string name="more_text">עוד…</string>
+
 
 </resources>
