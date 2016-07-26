@@ -19,7 +19,7 @@ import java.util.TimerTask;
 
 public class CurrentLocationProvider implements LocationInterface {
 
-    private static final int MIN_TIME_MILLISECONDS = 3000;
+    private static final int MIN_TIME_MILLISECONDS = 1000;
     private static final int MIN_DISTANCE = 0;
 
     private final LocationManager mLocationManager;
