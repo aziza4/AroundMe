@@ -70,8 +70,8 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="more_text">More…</string>
 
-    <string name="geofence_transition_entered">You arrived to </string>
-    <string name="geofence_transition_exited">You left </string>
+    <string name="geofence_transition_entered">You arrived to&#032;</string>
+    <string name="geofence_transition_exited">You left&#032;</string>
     <string name="geofence_transition_notification_text">Click notification to return to app</string>
     <string name="geofence_action_open">Open Settings</string>
 

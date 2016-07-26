@@ -72,7 +72,7 @@
     <string name="more_text">עוד…</string>
 
     <string name="geofence_transition_entered">הגעת ל</string>
-    <string name="geofence_transition_exited">עזבת את </string>
+    <string name="geofence_transition_exited">עזבת את&#160;</string>
     <string name="geofence_transition_notification_text">גע על מנת לפתוח האפליקציה</string>
     <string name="geofence_action_open">פתח הגדרות</string>
 

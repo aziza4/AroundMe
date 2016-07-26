@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.comli.shapira.aroundme.activities_fragments.FavoritesFragment;
 import com.comli.shapira.aroundme.activities_fragments.SearchFragment;
 import com.comli.shapira.aroundme.data.NearbyResponse;
+import com.comli.shapira.aroundme.geoFencing.GeofenceAppHelper;
 import com.comli.shapira.aroundme.helpers.BroadcastHelper;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.adapters.TabsPagerAdapter;
@@ -19,13 +20,15 @@ public class NearbyServiceReceiver extends BroadcastReceiver {
     private final AppCompatActivity mActivity;
     private final TabsPagerAdapter mTabsPagerAdapter;
     private final ViewPager mViewPager;
+    private final GeofenceAppHelper mGeofenceAppHelper;
 
     public NearbyServiceReceiver(AppCompatActivity activity, TabsPagerAdapter tabsPagerAdapter,
-                                 ViewPager viewPager)
+                                 ViewPager viewPager, GeofenceAppHelper geofenceAppHelper)
     {
         mActivity = activity;
         mTabsPagerAdapter = tabsPagerAdapter;
         mViewPager = viewPager;
+        mGeofenceAppHelper = geofenceAppHelper;
     }
 
 
@@ -83,6 +86,8 @@ public class NearbyServiceReceiver extends BroadcastReceiver {
                         .getRegisteredFragment(TabsPagerAdapter.FAVORITES_TAB);
 
                 favoritesFragment.refresh(mActivity); // update UI
+
+                mGeofenceAppHelper.refresh();
 
                 if (detailsSaved > 0) { // saved done
                     searchFragment.removeProgressBar();

@@ -13,7 +13,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDnTOAuzpUlLxbtctr2Pn59ATGqC4_HxWE" />
@@ -22,23 +21,24 @@
             android:name=".activities_fragments.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
+
+                <data
                     android:host="shapira.comli.com"
-                    android:pathPrefix="/AroundMe" />
+                    android:pathPrefix="/AroundMe"
+                    android:scheme="http" />
             </intent-filter>
 
             <meta-data
@@ -53,20 +53,18 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="www.shapira.comli.com"
                     android:pathPrefix="/FlyBryce"
                     android:scheme="http" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".activities_fragments.SettingsActivity"
             android:label="@string/settings_name"
             android:parentActivityName=".activities_fragments.MainActivity"
             android:theme="@style/SettingsTheme" />
-
         <activity
             android:name=".activities_fragments.MapActivity"
             android:label="@string/map_name"
@@ -79,9 +77,14 @@
 
         <service
             android:name=".services.LocationProviderService"
-            android:exported="false"/>
+            android:exported="false" />
 
-        <service android:name=".geoFencing.GeofenceTransitionsIntentService"
+        <service
+            android:name=".geoFencing.GeofenceTransitionsIntentService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.GeofenceService"
             android:exported="false"/>
 
     </application>

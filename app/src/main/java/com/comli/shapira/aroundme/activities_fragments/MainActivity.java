@@ -20,6 +20,7 @@ import android.view.MenuItem;
 
 import com.comli.shapira.aroundme.adapters.TabsPagerAdapter;
 import com.comli.shapira.aroundme.data.LastLocationInfo;
+import com.comli.shapira.aroundme.geoFencing.GeofenceAppHelper;
 import com.comli.shapira.aroundme.helpers.LocationServiceHelper;
 import com.comli.shapira.aroundme.helpers.ReceiversHelper;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private MainMenuHelper mMainMenuHelper;
     private UserCurrentLocation mUserCurrentLocation;
     private LocationServiceHelper mLocationServiceHelper;
+    private GeofenceAppHelper mGeofenceAppHelper;
     private ReceiversHelper mReceiversHelper;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
 
@@ -97,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // GeofenceAppHelper
+        mGeofenceAppHelper = new GeofenceAppHelper(this);
+
         // UserCurrentLocation
         mUserCurrentLocation = new UserCurrentLocation(this, mLocationServiceHelper);
 
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         mPlacesAutoComplete = new PlacesAutoComplete(this);
 
         // create local notification receiver (register later on onResume)
-        NearbyServiceReceiver nearbyServiceReceiver = new NearbyServiceReceiver(this, tabsPagerAdapter, viewPager);
+        NearbyServiceReceiver nearbyServiceReceiver = new NearbyServiceReceiver(this, tabsPagerAdapter, viewPager, mGeofenceAppHelper);
         LocationProviderServiceReceiver locationProviderServiceReceiver = new LocationProviderServiceReceiver(mLocationServiceHelper);
 
         // create global receiver (register later on onResume)
@@ -143,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
         mReceiversHelper.registerLocalReceivers();
         mLocationServiceHelper.startService();
+        mGeofenceAppHelper.startService();
     }
 
     @Override
@@ -182,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         mSharedPrefHelper.onUserLeaveApplication();
         mLocationServiceHelper.stopService();
+        mGeofenceAppHelper.stopService();
         super.onBackPressed();
     }
 
