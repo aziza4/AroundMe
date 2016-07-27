@@ -100,9 +100,10 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center_vertical"
                 android:id="@+id/favoritesDistanceLayout"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/favoritesVicinityTextView"
                 android:layout_alignLeft="@+id/favoritesVicinityTextView"
                 android:layout_alignStart="@+id/favoritesVicinityTextView"
+                android:layout_marginTop="@dimen/elements_vertical_margin"
                 tools:ignore="UseCompoundDrawables"
                 android:background="?android:attr/selectableItemBackground">
 
@@ -130,9 +131,12 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center_vertical"
                 android:id="@+id/favoritesDialLayout"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/favoritesVicinityTextView"
                 android:layout_toRightOf="@+id/favoritesDistanceLayout"
                 android:layout_toEndOf="@+id/favoritesDistanceLayout"
+                android:layout_marginTop="@dimen/elements_vertical_margin"
+                android:layout_marginLeft="@dimen/elements_vertical_margin"
+                android:layout_marginStart="@dimen/elements_vertical_margin"
                 tools:ignore="UseCompoundDrawables"
                 android:background="?android:attr/selectableItemBackground">
 

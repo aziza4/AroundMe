@@ -78,12 +78,6 @@ public class GoogleGeofencingApiHelper implements ResultCallback<Status> {
             // Convert places to geofences
             mGeofenceList = populateGeofenceList(places);
 
-            String msg = "Geofences added:\n================\n";
-            for (Geofence fence: mGeofenceList)
-                    msg += fence.toString() + "\n";
-            msg += "\n\n";
-            Log.e(MainActivity.LOG_TAG, msg);
-
             // Add new geofences
             LocationServices.GeofencingApi.addGeofences(
                     mGoogleApiClientHelper.getGoogleApiClient(),

@@ -123,13 +123,15 @@ public class Utility {
 
         if (sharedPrefHelper.isMeters()) { // metric system
             String kmString = context.getString(R.string.formatted_away_from_me_km);
-            return String.format(Locale.ENGLISH, "%.1f %s %s", distanceInKM, kmString, formatString);
+            //return String.format(Locale.ENGLISH, "%.1f %s %s", distanceInKM, kmString, formatString);
+            return String.format(Locale.ENGLISH, "%.1f %s", distanceInKM, kmString);
         }
 
         // english system
         float distanceInMiles = kmToMiles(distanceInKM);
         String milesString = context.getString(R.string.formatted_away_from_me_miles);
-        return String.format(Locale.ENGLISH, "%.1f %s %s", distanceInMiles, milesString, formatString);
+        //return String.format(Locale.ENGLISH, "%.1f %s %s", distanceInMiles, milesString, formatString);
+        return String.format(Locale.ENGLISH, "%.1f %s", distanceInMiles, milesString);
     }
 
 
