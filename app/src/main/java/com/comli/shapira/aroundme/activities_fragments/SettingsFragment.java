@@ -16,7 +16,6 @@ import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 
 public class SettingsFragment extends PreferenceFragment {
 
-    private SharedPrefHelper mSharedPrefHelper;
     private GeofenceAppHelper mGeofenceAppHelper;
 
     public SettingsFragment() {}
@@ -26,10 +25,6 @@ public class SettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mGeofenceAppHelper = new GeofenceAppHelper(getActivity());
-
-        mSharedPrefHelper = new SharedPrefHelper(getActivity());
-        mSharedPrefHelper.changeLocale();
         addPreferencesFromResource(R.xml.pref_general);
 
         PreferenceManager pm = getPreferenceManager();
@@ -40,17 +35,22 @@ public class SettingsFragment extends PreferenceFragment {
         bindEditTextPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_radius_key)));
         bindCheckBoxPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_show_notification_key)));
         bindCheckBoxPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_show_notification_sound_key)));
+
+        mGeofenceAppHelper = new GeofenceAppHelper(getActivity());
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
 
         ListPreference langPref = (ListPreference) findPreference(getString(R.string.pref_lang_key));
-        mSharedPrefHelper.setFirstTimeLanguageSummary(langPref);
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
+        sharedPrefHelper.setFirstTimeLanguageSummary(langPref);
 
         loopOverAllPreferencesToSetSummary();
     }
+
 
     private void bindListPreferenceSummaryToValue(Preference preference)
     {
@@ -94,6 +94,7 @@ public class SettingsFragment extends PreferenceFragment {
         });
     }
 
+
     private void bindEditTextPreferenceSummaryToValue(Preference preference) {
 
         preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -119,6 +120,7 @@ public class SettingsFragment extends PreferenceFragment {
         });
     }
 
+
     private void bindCheckBoxPreferenceSummaryToValue(Preference preference) {
 
         preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -129,6 +131,7 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
     }
+
 
     private void refreshGeofences()
     {
@@ -168,5 +171,4 @@ public class SettingsFragment extends PreferenceFragment {
             p.setSummary(entry);
         }
     }
-
 }
