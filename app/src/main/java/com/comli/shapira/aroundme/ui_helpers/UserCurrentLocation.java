@@ -6,7 +6,6 @@ import android.location.Location;
 
 
 import com.comli.shapira.aroundme.data.NearbyRequest;
-import com.comli.shapira.aroundme.helpers.BroadcastHelper;
 import com.comli.shapira.aroundme.helpers.LocationServiceHelper;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 import com.comli.shapira.aroundme.helpers.Utility;
@@ -48,8 +47,6 @@ public class UserCurrentLocation { // controls the availability of location via 
         Intent intent = new Intent(NearbyService.ACTION_NEARBY_PLACES, null, mActivity, NearbyService.class);
         intent.putExtra(NearbyService.EXTRA_NEARBY_REQUEST, getRequest());
         mActivity.startService(intent);
-
-        BroadcastHelper.broadcastSearchStarted(mActivity);  // start progress bar
     }
 
 

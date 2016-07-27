@@ -21,10 +21,6 @@ public class BroadcastHelper
     public static final String EXTRA_FAVORITES_PLACE_REMOVED = "com.comli.shapira.aroundme.Services.extra.placedetails.removed";
     public static final String EXTRA_FAVORITES_PLACE_REMOVED_ALL = "com.comli.shapira.aroundme.Services.extra.placedetails.removedall";
 
-    public static final String ACTION_SEARCH_OP_STARTED = "com.comli.shapira.aroundme.Services.action.ACTION_SEARCH_OP_STARTED";
-    public static final String ACTION_ADD_FAVORITE_OP_STARTED = "com.comli.shapira.aroundme.Services.action.ACTION_ADD_FAVORITE_OP_STARTED";
-
-
     public static final String ACTION_LOCATION_CHANGED_NOTIFY = "com.comli.shapira.aroundme.Services.action.ACTION_LOCATION_CHANGED_NOTIFY";
     public static final String EXTRA_LOCATION_LOCATION_DATA = "com.comli.shapira.aroundme.Services.extra.location.data";
     public static final String EXTRA_LOCATION_PROVIDER_NAME = "com.comli.shapira.aroundme.Services.extra.provider.name";
@@ -69,18 +65,6 @@ public class BroadcastHelper
     {
         Intent intent = new Intent(ACTION_FAVORITES_NOTIFY);
         intent.putExtra(extra, 1);
-        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-    }
-
-    public static void broadcastSearchStarted(Context context)
-    {
-        Intent intent = new Intent(ACTION_SEARCH_OP_STARTED);
-        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-    }
-
-    public static void broadcastAddFavoriteStarted(Context context)
-    {
-        Intent intent = new Intent(ACTION_ADD_FAVORITE_OP_STARTED);
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 

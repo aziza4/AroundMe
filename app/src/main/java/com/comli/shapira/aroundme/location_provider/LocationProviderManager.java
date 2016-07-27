@@ -20,7 +20,7 @@ public class LocationProviderManager {
     private final static int RES_OK = 1;
     private final static int RES_NA = 2;
 
-    private static final long GPS_TIMEOUT = 10000;
+    private static final long GPS_TIMEOUT = 20000;
     private static final long NETWORK_TIMEOUT = 5000;
     private static final int RUNTIME_TIMEOUT = 3000;
 

@@ -10,7 +10,6 @@ import android.view.MenuItem;
 
 import com.comli.shapira.aroundme.data.DetailsRequest;
 import com.comli.shapira.aroundme.data.Place;
-import com.comli.shapira.aroundme.helpers.BroadcastHelper;
 import com.comli.shapira.aroundme.helpers.Utility;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.services.NearbyService;
@@ -57,8 +56,6 @@ public class SearchActionModeCallbacks implements ActionMode.Callback {
                 intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, new DetailsRequest(mPlace));
                 intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_SAVE, true);
                 mActivity.startService(intent);
-
-                BroadcastHelper.broadcastAddFavoriteStarted(mActivity); // start progress bar
 
                 mode.finish();
                 return true;

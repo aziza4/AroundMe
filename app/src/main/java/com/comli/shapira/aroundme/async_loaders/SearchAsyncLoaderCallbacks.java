@@ -34,6 +34,9 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
 
     @Override
     public android.support.v4.content.Loader<ArrayList<Place>> onCreateLoader(int id, Bundle args) {
+
+        mSearchFragment.addProgressBar();
+
         return new AsyncTaskLoader<ArrayList<Place>>(mContext) {
             @Override
             public ArrayList<Place> loadInBackground() {
@@ -45,7 +48,8 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
         mSearchAdapter.setData(data);
-        mSearchFragment.removeProgressBar();
+        if (!data.isEmpty())
+            mSearchFragment.removeProgressBar();
     }
 
     @Override
