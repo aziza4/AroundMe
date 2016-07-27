@@ -63,9 +63,9 @@ public class NavigationDrawerHelper implements NavigationView.OnNavigationItemSe
                 selectedTypes = mActivity.getString(R.string.pref_types_bank_atm);
                 break;
 
-            case R.id.nav_menu_museums:
-                selectedTypes = mActivity.getString(R.string.pref_types_museum_gallery);
-                break;
+//            case R.id.nav_menu_museums:
+//                selectedTypes = mActivity.getString(R.string.pref_types_museum_gallery);
+//                break;
 
             case R.id.nav_menu_gas:
                 selectedTypes = mActivity.getString(R.string.pref_types_gas);

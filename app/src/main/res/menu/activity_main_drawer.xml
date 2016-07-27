@@ -18,9 +18,9 @@
             android:title="@string/pref_types_label_bank_atm"
             android:icon="@drawable/ic_action_bank_96"/>
 
-        <item android:id="@+id/nav_menu_museums"
-            android:title="@string/pref_types_label_museum_gallery"
-            android:icon="@drawable/ic_action_museum_96"/>
+        <!--<item android:id="@+id/nav_menu_museums"-->
+            <!--android:title="@string/pref_types_label_museum_gallery"-->
+            <!--android:icon="@drawable/ic_action_museum_96"/>-->
 
         <item android:id="@+id/nav_menu_gas"
             android:title="@string/pref_types_label_gas"

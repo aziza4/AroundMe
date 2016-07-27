@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.geoFencing.GeofenceAppHelper;
@@ -32,17 +34,19 @@ public class SettingsFragment extends PreferenceFragment {
         ListPreference langPref = (ListPreference) findPreference(getString(R.string.pref_lang_key));
         sharedPrefHelper.setFirstTimeLanguageSummary(langPref);
 
-        bindListPreferenceSummaryToValue(findPreference(getString(R.string.pref_lang_key)));
-        bindListPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
-        bindListPreferenceSummaryToValue(findPreference(getString(R.string.pref_geofences_type_key)));
+        loopOverAllPreferencesToSetSummary();
 
-        bindEditTextPreferenceSummaryToValue(findPreference(getString(R.string.pref_radius_key)));
-        bindEditTextPreferenceSummaryToValue(findPreference(getString(R.string.pref_geofences_radius_key)));
+        PreferenceManager pm = getPreferenceManager();
+        bindListPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_lang_key)));
+        bindListPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_units_key)));
+        bindListPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_type_key)));
 
-        bindCheckBoxPreferenceSummaryToValue(findPreference(getString(R.string.pref_geofences_show_notification_key)));
-        bindCheckBoxPreferenceSummaryToValue(findPreference(getString(R.string.pref_geofences_show_notification_sound_key)));
+        bindEditTextPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_radius_key)));
+        bindEditTextPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_radius_key)));
+
+        bindCheckBoxPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_show_notification_key)));
+        bindCheckBoxPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_show_notification_sound_key)));
     }
-
 
     private void bindListPreferenceSummaryToValue(Preference preference)
     {
@@ -97,9 +101,9 @@ public class SettingsFragment extends PreferenceFragment {
                 String newValue = o.toString();
                 boolean valueChanged = ! oldValue.equals(newValue);
 
-                if (valueChanged) {
+                editPreference.setSummary(newValue);
 
-                    editPreference.setSummary(newValue);
+                if (valueChanged) {
 
                     boolean geofenceRadiusSelected = editPreference.getKey().equals(getString(R.string.pref_geofences_radius_key));
                     if (geofenceRadiusSelected)
@@ -126,4 +130,39 @@ public class SettingsFragment extends PreferenceFragment {
     {
         mGeofenceAppHelper.refresh();
     }
+
+
+
+    private void loopOverAllPreferencesToSetSummary()
+    {
+        int prefCategoryCount = getPreferenceScreen().getPreferenceCount();
+        for(int i = 0; i < prefCategoryCount; i++) {
+            Preference p = getPreferenceScreen().getPreference(i);
+            if (p instanceof PreferenceCategory) {
+                PreferenceCategory prefCategory = (PreferenceCategory)p;
+                int prefsCount = prefCategory.getPreferenceCount();
+                for (int j=0; j < prefsCount; j++) {
+                    Preference pref = prefCategory.getPreference(j);
+                    initializeSummary(pref);
+                }
+            }
+        }
+    }
+
+    private void initializeSummary(Preference p)
+    {
+        if(p instanceof ListPreference) {
+            ListPreference listPref = (ListPreference)p;
+            CharSequence entry = listPref.getEntry();
+            p.setSummary(entry);
+            return;
+        }
+
+        if(p instanceof EditTextPreference) {
+            EditTextPreference editTextPref = (EditTextPreference)p;
+            CharSequence entry = editTextPref.getText();
+            p.setSummary(entry);
+        }
+    }
+
 }

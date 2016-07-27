@@ -119,7 +119,7 @@ public class Utility {
 
         float distanceInKM = Utility.distanceInKM(userLoc, placeLoc);
 
-        String formatString = context.getString(R.string.formatted_away_from_me_msg);
+        //String formatString = context.getString(R.string.formatted_away_from_me_msg);
 
         if (sharedPrefHelper.isMeters()) { // metric system
             String kmString = context.getString(R.string.formatted_away_from_me_km);
