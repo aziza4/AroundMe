@@ -16,6 +16,7 @@ import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 
 public class SettingsFragment extends PreferenceFragment {
 
+    private SharedPrefHelper mSharedPrefHelper;
     private GeofenceAppHelper mGeofenceAppHelper;
 
     public SettingsFragment() {}
@@ -27,25 +28,28 @@ public class SettingsFragment extends PreferenceFragment {
 
         mGeofenceAppHelper = new GeofenceAppHelper(getActivity());
 
-        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
-        sharedPrefHelper.changeLocale();
+        mSharedPrefHelper = new SharedPrefHelper(getActivity());
+        mSharedPrefHelper.changeLocale();
         addPreferencesFromResource(R.xml.pref_general);
-
-        ListPreference langPref = (ListPreference) findPreference(getString(R.string.pref_lang_key));
-        sharedPrefHelper.setFirstTimeLanguageSummary(langPref);
-
-        loopOverAllPreferencesToSetSummary();
 
         PreferenceManager pm = getPreferenceManager();
         bindListPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_lang_key)));
         bindListPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_units_key)));
         bindListPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_type_key)));
-
         bindEditTextPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_radius_key)));
         bindEditTextPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_radius_key)));
-
         bindCheckBoxPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_show_notification_key)));
         bindCheckBoxPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_show_notification_sound_key)));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ListPreference langPref = (ListPreference) findPreference(getString(R.string.pref_lang_key));
+        mSharedPrefHelper.setFirstTimeLanguageSummary(langPref);
+
+        loopOverAllPreferencesToSetSummary();
     }
 
     private void bindListPreferenceSummaryToValue(Preference preference)

@@ -17,7 +17,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.container, new SettingsFragment())
+                .replace(R.id.container, new SettingsFragment())
                 .addToBackStack(null)
                 .commit();
     }
