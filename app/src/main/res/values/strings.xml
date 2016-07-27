@@ -115,7 +115,7 @@
     <string name="pref_types_bus_train_taxi" translatable="false">bus_station|train_station|taxi_stand</string>
     <string name="pref_types_doctor_hospital_pharmacy" translatable="false">hospital|doctor|pharmacy</string>
     <string name="pref_geofences_radius_key" translatable="false">geofences_radius</string>
-    <string name="pref_geofences_radius_def" translatable="false">30</string>
+    <string name="pref_geofences_radius_def" translatable="false">100</string>
     <string name="pref_geofences_show_notification_key" translatable="false">notification</string>
     <string name="pref_geofences_show_notification_def" translatable="false">true</string>
     <string name="pref_geofences_show_notification_sound_key" translatable="false">sound</string>

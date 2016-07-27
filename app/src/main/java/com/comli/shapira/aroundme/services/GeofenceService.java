@@ -58,8 +58,10 @@ public class GeofenceService extends Service implements GoogleApiClientHelper.On
 
     @Override
     public void onConnected() {
-        mIsConnected = true;
-        mGoogleGeofencingApiHelper.refresh();
+        if ( !mIsConnected ) {
+            mIsConnected = true;
+            mGoogleGeofencingApiHelper.refresh();
+        }
     }
 }
 

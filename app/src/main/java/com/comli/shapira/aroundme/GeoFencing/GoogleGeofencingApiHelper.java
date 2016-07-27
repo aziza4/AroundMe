@@ -66,15 +66,23 @@ public class GoogleGeofencingApiHelper implements ResultCallback<Status> {
 
         try {
 
+            PendingIntent intent = getGeofencePendingIntent();
+
             // Remove existing geofences
             LocationServices.GeofencingApi.removeGeofences(
                     mGoogleApiClientHelper.getGoogleApiClient(),
                     // This is the same pending intent that was used in addGeofences().
-                    getGeofencePendingIntent()
+                    intent
             ).setResultCallback(this); // Result processed in onResult().
 
             // Convert places to geofences
             mGeofenceList = populateGeofenceList(places);
+
+            String msg = "Geofences added:\n================\n";
+            for (Geofence fence: mGeofenceList)
+                    msg += fence.toString() + "\n";
+            msg += "\n\n";
+            Log.e(MainActivity.LOG_TAG, msg);
 
             // Add new geofences
             LocationServices.GeofencingApi.addGeofences(
@@ -84,7 +92,7 @@ public class GoogleGeofencingApiHelper implements ResultCallback<Status> {
                     // A pending intent that that is reused when calling removeGeofences(). This
                     // pending intent is used to generate an intent when a matched geofence
                     // transition is observed.
-                    getGeofencePendingIntent()
+                    intent
             ).setResultCallback(this); // Result processed in onResult().
 
         } catch (SecurityException ex) {
