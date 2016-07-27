@@ -9,8 +9,6 @@ import com.comli.shapira.aroundme.geoFencing.GoogleGeofencingApiHelper;
 
 public class GeofenceService extends Service implements GoogleApiClientHelper.OnConnectionReadyListener {
 
-    public static final String ACTION_GEOFENCE_START_WATCHING = "com.comli.shapira.aroundme.Services.action.ACTION_GEOFENCE_START_WATCHING";
-    private static final String ACTION_GEOFENCE_STOP_WATCHING = "com.comli.shapira.aroundme.Services.action.ACTION_GEOFENCE_STOP_WATCHING";
     public static final String ACTION_GEOFENCE_REFRESH_WATCHING = "com.comli.shapira.aroundme.Services.action.ACTION_GEOFENCE_REFRESH_WATCHING";
 
     private GoogleApiClientHelper mGoogleApiClientHelper;
@@ -52,20 +50,8 @@ public class GeofenceService extends Service implements GoogleApiClientHelper.On
 
         String action = intent.getAction();
 
-        switch (action) {
-
-            case ACTION_GEOFENCE_START_WATCHING:
-                mGoogleGeofencingApiHelper.add();
-                break;
-
-            case ACTION_GEOFENCE_STOP_WATCHING:
-                mGoogleGeofencingApiHelper.remove();
-                break;
-
-            case ACTION_GEOFENCE_REFRESH_WATCHING:
-                mGoogleGeofencingApiHelper.replace();
-                break;
-        }
+        if (action != null && action.equals(ACTION_GEOFENCE_REFRESH_WATCHING))
+            mGoogleGeofencingApiHelper.refresh();
 
         return Service.START_STICKY;
     }
@@ -73,7 +59,7 @@ public class GeofenceService extends Service implements GoogleApiClientHelper.On
     @Override
     public void onConnected() {
         mIsConnected = true;
-        mGoogleGeofencingApiHelper.add();
+        mGoogleGeofencingApiHelper.refresh();
     }
 }
 

@@ -93,9 +93,8 @@ public class SharedPrefHelper {
     public int getRadius() {
         String key = mContext.getString(R.string.pref_radius_key);
         String def = mContext.getString(R.string.pref_radius_def);
-        String val_string = mPrefs.getString(key, "");
-        return Integer.parseInt( val_string.equals("") ? def: val_string);
-//      return mPrefs.getInt(key, Integer.parseInt(def)); --> not working! see: http://stackoverflow.com/questions/3721358/preferenceactivity-save-value-as-integer
+        String val_string = mPrefs.getString(key, def);
+        return Integer.parseInt( val_string);
     }
 
     public String getSelectedTypes() {
@@ -203,5 +202,34 @@ public class SharedPrefHelper {
                 .remove(lang_changed_key)
                 .remove(permission_key)
                 .apply();
+    }
+
+    public int getGeofencesRadius()
+    {
+        String key = mContext.getString(R.string.pref_geofences_radius_key);
+        String def = mContext.getString(R.string.pref_geofences_radius_def);
+        String val_string = mPrefs.getString(key, def);
+        return Integer.parseInt( val_string);
+    }
+
+    public boolean isSoundOn() {
+
+        String key = mContext.getString(R.string.pref_geofences_show_notification_sound_key);
+        boolean def = Boolean.parseBoolean(mContext.getString(R.string.pref_geofences_show_notification_sound_def));
+        return mPrefs.getBoolean(key, def);
+    }
+
+    public boolean isNotificationOn() {
+
+        String key = mContext.getString(R.string.pref_geofences_show_notification_key);
+        boolean def = Boolean.parseBoolean(mContext.getString(R.string.pref_geofences_show_notification_def));
+        return mPrefs.getBoolean(key, def);
+    }
+
+    public String getTransitionType() {
+
+        String key = mContext.getString(R.string.pref_geofences_type_key);
+        String def = mContext.getString(R.string.pref_geofences_type_def);
+        return mPrefs.getString(key, def);
     }
 }

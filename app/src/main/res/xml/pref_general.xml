@@ -34,4 +34,39 @@
 
     </PreferenceCategory>
 
+
+    <PreferenceCategory android:title="@string/pref_geofences_category_title">
+
+        <CheckBoxPreference
+            android:key="@string/pref_geofences_show_notification_key"
+            android:title="@string/pref_geofences_notification_label"
+            android:summaryOn="@string/pref_geofences_notification_on_label"
+            android:summaryOff="@string/pref_geofences_notification_off_label"
+            android:defaultValue="@string/pref_geofences_show_notification_def"/>
+
+        <CheckBoxPreference
+            android:title="@string/pref_geofences_notification_sound_label"
+            android:key="@string/pref_geofences_show_notification_sound_key"
+            android:summaryOn="@string/pref_geofences_notification_sound_on_label"
+            android:summaryOff="@string/pref_geofences_notification_sound_off_label"
+            android:defaultValue="@string/pref_geofences_show_notification_sound_def"/>
+
+        <EditTextPreference
+            android:title="@string/pref_geofences_radius_label"
+            android:key="@string/pref_geofences_radius_key"
+            android:defaultValue="@string/pref_geofences_radius_def"
+            android:inputType="number"
+            android:singleLine="true"
+            android:summary="@string/pref_geofences_radius_def"/>
+
+        <ListPreference
+            android:title="@string/pref_geofences_type_label"
+            android:key="@string/pref_geofences_type_key"
+            android:defaultValue="@string/pref_geofences_type_def"
+            android:entryValues="@array/pref_geofences_type_values"
+            android:entries="@array/pref_geofences_type_options"
+            android:summary="@string/pref_geofences_type_label_both"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

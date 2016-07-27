@@ -27,6 +27,10 @@
 
     <string name="msg_zero_results">אין תוצאות</string>
 
+    <string name="pref_general_category_title">הגדרות כלליות</string>
+    <string name="pref_search_category_title">מאפייני חיפוש</string>
+    <string name="pref_geofences_category_title">קרבה למועדפים</string>
+
     <string name="pref_lang_label">שפת ממשק</string>
     <string name="pref_lang_label_english">אנגלית</string>
     <string name="pref_lang_label_hebrew">עברית</string>
@@ -62,9 +66,6 @@
     <string name="receiver_power_connected">מחובר למקור מתח</string>
     <string name="receiver_power_disconnected">התנתק ממקור מתח</string>
 
-    <string name="pref_general_category_title">הגדרות כלליות</string>
-    <string name="pref_search_category_title">פרמטרי חיפוש</string>
-
     <string name="server_error_message">בעיית תקשורת - אנא נסה מאוחר יותר.</string>
 
     <string name="drawer_open">פתח מגירת ניווט</string>
@@ -75,5 +76,16 @@
     <string name="geofence_transition_exited">עזבת את&#160;</string>
     <string name="geofence_transition_notification_text">גע על מנת לפתוח האפליקציה</string>
     <string name="geofence_action_open">פתח הגדרות</string>
+    <string name="pref_geofences_notification_off_label">התראות מושתקות</string>
+    <string name="pref_geofences_notification_label">הצג התראות</string>
+    <string name="pref_geofences_notification_sound_label">צליל התראות</string>
+    <string name="pref_geofences_notification_on_label">התראות מופעלות</string>
+    <string name="pref_geofences_notification_sound_off_label">מושתק</string>
+    <string name="pref_geofences_notification_sound_on_label">מופעל</string>
+    <string name="pref_geofences_radius_label">רדיוס קרבה</string>
+    <string name="pref_geofences_type_label">סוג קרבה</string>
+    <string name="pref_geofences_type_label_both">שניהם</string>
+    <string name="pref_geofences_type_label_enter">כניסה</string>
+    <string name="pref_geofences_type_label_leave">יציאה</string>
 
 </resources>

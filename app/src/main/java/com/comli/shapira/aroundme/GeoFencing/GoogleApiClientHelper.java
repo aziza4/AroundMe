@@ -57,9 +57,9 @@ public class GoogleApiClientHelper implements GoogleApiClient.ConnectionCallback
             mGoogleApiClient.disconnect();
     }
 
-    public boolean isConnected()
+    public boolean isDisconnected()
     {
-        return mGoogleApiClient.isConnected();
+        return !mGoogleApiClient.isConnected();
     }
 
     @Override

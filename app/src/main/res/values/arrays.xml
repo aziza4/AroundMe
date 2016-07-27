@@ -21,4 +21,16 @@
         <item>@string/pref_units_feet</item>
     </string-array>
 
+    <string-array name="pref_geofences_type_options">
+        <item>@string/pref_geofences_type_label_enter</item>
+        <item>@string/pref_geofences_type_label_leave</item>
+        <item>@string/pref_geofences_type_label_both</item>
+    </string-array>
+
+    <string-array name="pref_geofences_type_values">
+        <item>@string/pref_geofences_type_enter</item>
+        <item>@string/pref_geofences_type_leave</item>
+        <item>@string/pref_geofences_type_both</item>
+    </string-array>
+
 </resources>

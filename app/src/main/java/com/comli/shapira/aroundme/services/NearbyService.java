@@ -126,7 +126,7 @@ public class NearbyService extends IntentService {
         DetailsResponse res = mNearbyHelper.GetPlaceDetails(request, jsonString);
         Place place = res.getPlace();
 
-        // replace 'search' result with this single result
+        // refresh 'search' result with this single result
         mDbHelper.searchDeleteAllPlaces();
         ArrayList<Place> places = new ArrayList<>();
         places.add(place);

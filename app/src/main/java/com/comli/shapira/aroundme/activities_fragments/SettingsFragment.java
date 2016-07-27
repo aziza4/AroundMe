@@ -2,17 +2,19 @@ package com.comli.shapira.aroundme.activities_fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
+
 import com.comli.shapira.aroundme.R;
+import com.comli.shapira.aroundme.geoFencing.GeofenceAppHelper;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 
 
-public class SettingsFragment extends PreferenceFragment
-        implements Preference.OnPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragment {
 
+    private GeofenceAppHelper mGeofenceAppHelper;
 
     public SettingsFragment() {}
 
@@ -21,6 +23,8 @@ public class SettingsFragment extends PreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mGeofenceAppHelper = new GeofenceAppHelper(getActivity());
+
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
         sharedPrefHelper.changeLocale();
         addPreferencesFromResource(R.xml.pref_general);
@@ -28,58 +32,98 @@ public class SettingsFragment extends PreferenceFragment
         ListPreference langPref = (ListPreference) findPreference(getString(R.string.pref_lang_key));
         sharedPrefHelper.setFirstTimeLanguageSummary(langPref);
 
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_lang_key)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_radius_key)));
+        bindListPreferenceSummaryToValue(findPreference(getString(R.string.pref_lang_key)));
+        bindListPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
+        bindListPreferenceSummaryToValue(findPreference(getString(R.string.pref_geofences_type_key)));
+
+        bindEditTextPreferenceSummaryToValue(findPreference(getString(R.string.pref_radius_key)));
+        bindEditTextPreferenceSummaryToValue(findPreference(getString(R.string.pref_geofences_radius_key)));
+
+        bindCheckBoxPreferenceSummaryToValue(findPreference(getString(R.string.pref_geofences_show_notification_key)));
+        bindCheckBoxPreferenceSummaryToValue(findPreference(getString(R.string.pref_geofences_show_notification_sound_key)));
     }
 
 
-    private void bindPreferenceSummaryToValue(Preference preference) {
-        preference.setOnPreferenceChangeListener(this);
+    private void bindListPreferenceSummaryToValue(Preference preference)
+    {
+        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
 
-        onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
-    }
+                ListPreference listPreference = (ListPreference) preference;
+                String newValue = o.toString();
+                String oldValue = listPreference.getValue();
 
+                int index = listPreference.findIndexOfValue(newValue);
 
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (index < 0)
+                    return true;
 
-        String valueStr = newValue.toString();
-
-        if (preference instanceof ListPreference)
-        {
-            ListPreference listPreference = (ListPreference) preference;
-            int index = listPreference.findIndexOfValue(valueStr);
-
-            if (index >= 0) {
                 preference.setSummary(listPreference.getEntries()[index]);
 
-                boolean langSelected = preference.getKey().equals(getString(R.string.pref_lang_key));
-                boolean valueChanged = !((ListPreference) preference).getValue().equals(newValue);
+                boolean geofenceTypeSelected = listPreference.getKey().equals(getString(R.string.pref_geofences_type_key));
+                if (geofenceTypeSelected) {
+                    refreshGeofences();
+                    return true;
+                }
+
+                boolean langSelected = listPreference.getKey().equals(getString(R.string.pref_lang_key));
+                boolean valueChanged = ! oldValue.equals(newValue);
 
                 if ( langSelected && valueChanged )
                 {
                     SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
                     sharedPrefHelper.setLangChanged(true);
-                    restartSettingsActivity(); // lang change to take affect immediately !
+
+                    // restart activity --> lang change to take affect immediately !
+                    Intent intent = getActivity().getIntent();
+                    startActivity(intent);
+                    getActivity().finish();
                 }
+
+                return true;
             }
-
-        } else {
-
-            preference.setSummary(valueStr);
-        }
-
-        return true;
+        });
     }
 
-    private void restartSettingsActivity() // this works, while getActivity().recreate() fails...
+    private void bindEditTextPreferenceSummaryToValue(Preference preference) {
+
+        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+
+                EditTextPreference editPreference = (EditTextPreference) preference;
+                String oldValue = editPreference.getText();
+                String newValue = o.toString();
+                boolean valueChanged = ! oldValue.equals(newValue);
+
+                if (valueChanged) {
+
+                    editPreference.setSummary(newValue);
+
+                    boolean geofenceRadiusSelected = editPreference.getKey().equals(getString(R.string.pref_geofences_radius_key));
+                    if (geofenceRadiusSelected)
+                        refreshGeofences();
+                }
+
+                return true;
+            }
+        });
+    }
+
+    private void bindCheckBoxPreferenceSummaryToValue(Preference preference) {
+
+        preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                refreshGeofences();
+                return true;
+            }
+        });
+    }
+
+    private void refreshGeofences()
     {
-        Intent intent = getActivity().getIntent();
-        startActivity(intent);
-        getActivity().finish();
+        mGeofenceAppHelper.refresh();
     }
 }

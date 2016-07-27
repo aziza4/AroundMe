@@ -26,6 +26,11 @@
 
     <string name="msg_zero_results">Zero results found</string>
 
+
+    <string name="pref_general_category_title">GENERAL</string>
+    <string name="pref_search_category_title">SEARCH</string>
+    <string name="pref_geofences_category_title">FAVORITES PROXIMITY</string>
+
     <string name="pref_lang_label">UI Language</string>
     <string name="pref_lang_label_english">English</string>
     <string name="pref_lang_label_hebrew">Hebrew</string>
@@ -41,6 +46,18 @@
     <string name="pref_types_label_gas">Gas stations</string>
     <string name="pref_types_label_bus_train_taxi">Bus, Train, Taxi</string>
     <string name="pref_types_label_doctor_hospital_pharmacy">Hospital, Pharmacies, Doctors</string>
+    <string name="pref_geofences_radius_label">Proximity Radius</string>
+    <string name="pref_geofences_notification_label">Show Notifications</string>
+    <string name="pref_geofences_notification_on_label">Notifications are On</string>
+    <string name="pref_geofences_notification_off_label">Notifications are Off</string>
+    <string name="pref_geofences_notification_sound_label">Notifications Sound</string>
+    <string name="pref_geofences_notification_sound_on_label">On</string>
+    <string name="pref_geofences_notification_sound_off_label">Muted</string>
+    <string name="pref_geofences_type_label">Proximity Type</string>
+    <string name="pref_geofences_type_label_enter">Enter</string>
+    <string name="pref_geofences_type_label_leave">Leave</string>
+    <string name="pref_geofences_type_label_both">Both</string>
+
 
     <string name="formatted_away_from_me_msg">away</string>
     <string name="formatted_away_from_me_km">km</string>
@@ -60,9 +77,6 @@
 
     <string name="receiver_power_connected">Connected to power source</string>
     <string name="receiver_power_disconnected">Disconnected from power source</string>
-
-    <string name="pref_general_category_title">GENERAL</string>
-    <string name="pref_search_category_title">SEARCH</string>
 
     <string name="server_error_message">Server error - Please try later</string>
 
@@ -100,6 +114,17 @@
     <string name="pref_types_gas" translatable="false">gas_station</string>
     <string name="pref_types_bus_train_taxi" translatable="false">bus_station|train_station|taxi_stand</string>
     <string name="pref_types_doctor_hospital_pharmacy" translatable="false">hospital|doctor|pharmacy</string>
+    <string name="pref_geofences_radius_key" translatable="false">geofences_radius</string>
+    <string name="pref_geofences_radius_def" translatable="false">30</string>
+    <string name="pref_geofences_show_notification_key" translatable="false">notification</string>
+    <string name="pref_geofences_show_notification_def" translatable="false">true</string>
+    <string name="pref_geofences_show_notification_sound_key" translatable="false">sound</string>
+    <string name="pref_geofences_show_notification_sound_def" translatable="false">false</string>
+    <string name="pref_geofences_type_key" translatable="false">geofences_type</string>
+    <string name="pref_geofences_type_def" translatable="false">both</string>
+    <string name="pref_geofences_type_enter" translatable="false">enter</string>
+    <string name="pref_geofences_type_leave" translatable="false">leave</string>
+    <string name="pref_geofences_type_both" translatable="false">both</string>
 
     <string name="dialer_scheme" translatable="false">tel</string>
 

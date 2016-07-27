@@ -16,10 +16,7 @@ public class GeofenceAppHelper {
 
     public void startService()
     {
-        Intent intent = new Intent(GeofenceService.ACTION_GEOFENCE_START_WATCHING,
-                null, mContext, GeofenceService.class);
-
-        mContext.startService(intent);
+        sendRefreshRequest(); // will start service if not started yet
     }
 
     public void stopService()
@@ -29,6 +26,11 @@ public class GeofenceAppHelper {
     }
 
     public void refresh()
+    {
+        sendRefreshRequest();
+    }
+
+    private void sendRefreshRequest()
     {
         Intent intent = new Intent(GeofenceService.ACTION_GEOFENCE_REFRESH_WATCHING,
                 null, mContext, GeofenceService.class);
