@@ -200,8 +200,10 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = getReadableDatabase();
 
+        String sortOrder = tableName.equals(FAVORITES_TABLE_NAME) ? " DESC" : "";
+
         String sqlQuery = "SELECT * FROM " + tableName +
-                " ORDER BY " + SEARCH_COL_ID + ";";
+                " ORDER BY " + SEARCH_COL_ID + sortOrder + ";";
 
         return db.rawQuery(sqlQuery, null);
     }
