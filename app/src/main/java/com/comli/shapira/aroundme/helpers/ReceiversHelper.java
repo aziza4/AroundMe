@@ -33,11 +33,22 @@ public class ReceiversHelper {
 
     public void registerLocalReceivers()
     {
-        // register nearby service local receiver
-        IntentFilter nearby = new IntentFilter(BroadcastHelper.ACTION_NEARBY_NOTIFY);
-        IntentFilter details = new IntentFilter(BroadcastHelper.ACTION_FAVORITES_NOTIFY);
-        mLocalBroadcastManager.registerReceiver(mNearbyServiceReceiver, nearby);
-        mLocalBroadcastManager.registerReceiver(mNearbyServiceReceiver, details);
+
+        // register SEARCH in nearby service local receiver
+        IntentFilter placesSaved = new IntentFilter(BroadcastHelper.ACTION_NEARBY_NOTIFY_PLACES_SAVED);
+        IntentFilter placesError = new IntentFilter(BroadcastHelper.ACTION_NEARBY_NOTIFY_PLACES_ERROR_MESSAGE);
+        IntentFilter placesRemoved = new IntentFilter(BroadcastHelper.ACTION_NEARBY_NOTIFY_PLACES_REMOVED);
+        mLocalBroadcastManager.registerReceiver(mNearbyServiceReceiver, placesSaved);
+        mLocalBroadcastManager.registerReceiver(mNearbyServiceReceiver, placesError);
+        mLocalBroadcastManager.registerReceiver(mNearbyServiceReceiver, placesRemoved);
+
+        // register FAVORITES in nearby service local receiver
+        IntentFilter placeSaved = new IntentFilter(BroadcastHelper.ACTION_FAVORITES_NOTIFY_PLACE_SAVED);
+        IntentFilter placeRemoved = new IntentFilter(BroadcastHelper.ACTION_FAVORITES_NOTIFY_PLACE_REMOVED);
+        IntentFilter allPlacesRemoved = new IntentFilter(BroadcastHelper.ACTION_FAVORITES_NOTIFY_ALL_PLACES_REMOVED);
+        mLocalBroadcastManager.registerReceiver(mNearbyServiceReceiver, placeSaved);
+        mLocalBroadcastManager.registerReceiver(mNearbyServiceReceiver, placeRemoved);
+        mLocalBroadcastManager.registerReceiver(mNearbyServiceReceiver, allPlacesRemoved);
 
         // register location-provider service local receiver
         IntentFilter locationChanged = new IntentFilter(BroadcastHelper.ACTION_LOCATION_CHANGED_NOTIFY);

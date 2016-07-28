@@ -90,7 +90,6 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standa
 
             case REFRESH_FAVORITES_VIEW:
                 mFavoritesFragment.refresh(mActivity);
-                return;
         }
     }
 }

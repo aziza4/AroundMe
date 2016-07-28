@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     public static final int LOCATION_REQUEST_CODE = 1;
 
 
-    private TabsPagerAdapter mTabsPagerAdapter;
     private PlacesAutoComplete mPlacesAutoComplete;
     private MainMenuHelper mMainMenuHelper;
     private UserCurrentLocation mUserCurrentLocation;
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Viewpager - 2 tabs: Search & Favorites
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPagerContainer);
-        mTabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
+        TabsPagerAdapter mTabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(mTabsPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_layout);
         tabLayout.setupWithViewPager(viewPager);

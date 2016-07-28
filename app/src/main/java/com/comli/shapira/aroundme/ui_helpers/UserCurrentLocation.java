@@ -23,7 +23,7 @@ public class UserCurrentLocation { // controls the availability of location via 
 
     private final SharedPrefHelper mSharedPrefHelper;
     private final LocationServiceHelper mLocationServiceHelper;
-    private TabsPagerAdapter mTabsPagerAdapter;
+    private final TabsPagerAdapter mTabsPagerAdapter;
     private String mKeyword;
 
 

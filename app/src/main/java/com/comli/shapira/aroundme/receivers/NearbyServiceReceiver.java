@@ -38,10 +38,11 @@ public class NearbyServiceReceiver extends BroadcastReceiver {
 
         switch (action)
         {
-
-            case BroadcastHelper.ACTION_NEARBY_NOTIFY:
+            case BroadcastHelper.ACTION_NEARBY_NOTIFY_PLACES_SAVED:
+            case BroadcastHelper.ACTION_NEARBY_NOTIFY_PLACES_ERROR_MESSAGE:
 
                 mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.REFRESH_SEARCH_VIEW); // update ui
+                mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.REMOVE_SEARCH_PROGRESS_BAR);
 
                 String status = intent.getStringExtra(BroadcastHelper.EXTRA_NEARBY_ERROR_MESSAGE);
                 if ( status != null && !status.equals(NearbyResponse.STATUS_INVALID_REQUEST)) {
@@ -50,32 +51,28 @@ public class NearbyServiceReceiver extends BroadcastReceiver {
                     break;
                 }
 
-                boolean clearList = intent.getBooleanExtra(BroadcastHelper.EXTRA_NEARBY_CLEAR_LIST, false);
                 int placesSaved = intent.getIntExtra(BroadcastHelper.EXTRA_NEARBY_PLACES_SAVED, -1);
 
-                if (!clearList) {
+                if ( placesSaved < 0)
+                    break; // no extra...
 
-                    mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.REMOVE_SEARCH_PROGRESS_BAR);
-
-                    if ( placesSaved < 0)
-                        break; // no extra...
-
-                    if ( placesSaved == 0) // must update the user on search's zero results
-                        Toast.makeText(mActivity, mActivity.getString(R.string.msg_zero_results), Toast.LENGTH_SHORT).show();
-                }
+                if ( placesSaved == 0) // must update the user on search's zero results
+                    Toast.makeText(mActivity, mActivity.getString(R.string.msg_zero_results), Toast.LENGTH_SHORT).show();
 
                 mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB); // verify user focus on search tab
                 break;
 
 
-            case BroadcastHelper.ACTION_FAVORITES_NOTIFY:
+            case BroadcastHelper.ACTION_NEARBY_NOTIFY_PLACES_REMOVED:
 
-                int detailsSaved = intent.getIntExtra(BroadcastHelper.EXTRA_FAVORITES_PLACE_SAVED, -1);
-                int detailsRemoved = intent.getIntExtra(BroadcastHelper.EXTRA_FAVORITES_PLACE_REMOVED, -1);
-                int detailsRemovedAll = intent.getIntExtra(BroadcastHelper.EXTRA_FAVORITES_PLACE_REMOVED_ALL, -1);
+                mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.REFRESH_SEARCH_VIEW); // update ui
+                mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB); // verify user focus on search tab
+                break;
 
-                if (detailsSaved < 0 && detailsRemoved < 0 && detailsRemovedAll < 0)
-                    break;
+
+            case BroadcastHelper.ACTION_FAVORITES_NOTIFY_PLACE_SAVED:
+            case BroadcastHelper.ACTION_FAVORITES_NOTIFY_PLACE_REMOVED:
+            case BroadcastHelper.ACTION_FAVORITES_NOTIFY_ALL_PLACES_REMOVED:
 
                 mGeofenceAppHelper.refresh();
 
@@ -83,10 +80,10 @@ public class NearbyServiceReceiver extends BroadcastReceiver {
                 mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.REMOVE_SEARCH_PROGRESS_BAR);
                 mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.REMOVE_FAVORITES_PROGRESS_BAR);
 
-                if (detailsSaved > 0) // saved done
-                    mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB); // verify user focus on favorites tab. only for add operation.
+                if (action.equals(BroadcastHelper.ACTION_FAVORITES_NOTIFY_PLACE_SAVED))
+                    mViewPager.setCurrentItem(TabsPagerAdapter.FAVORITES_TAB);
 
-                if (detailsRemovedAll > 0) // remove all done
+                if (action.equals(BroadcastHelper.ACTION_FAVORITES_NOTIFY_ALL_PLACES_REMOVED))
                     mViewPager.setCurrentItem(TabsPagerAdapter.SEARCH_TAB);
 
                 break;

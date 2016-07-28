@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.comli.shapira.aroundme.activities_fragments.SearchFragment;
-import com.comli.shapira.aroundme.adapters.TabsPagerAdapter;
 import com.comli.shapira.aroundme.data.DetailsRequest;
 import com.comli.shapira.aroundme.data.Place;
 import com.comli.shapira.aroundme.helpers.Utility;

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.comli.shapira.aroundme.activities_fragments.SearchFragment;
 import com.comli.shapira.aroundme.adapters.SearchRecyclerAdapter;
 import com.comli.shapira.aroundme.data.Place;
 import com.comli.shapira.aroundme.db.AroundMeDBHelper;
