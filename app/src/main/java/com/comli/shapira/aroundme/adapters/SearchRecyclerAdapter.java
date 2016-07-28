@@ -155,7 +155,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             if (rating > 0f)
                 mRatingRatingBar.setRating((float)place.getRating());
             else
-                mRatingRatingBar.setVisibility(View.INVISIBLE);
+                mRatingRatingBar.setVisibility(View.GONE);
         }
     }
 }

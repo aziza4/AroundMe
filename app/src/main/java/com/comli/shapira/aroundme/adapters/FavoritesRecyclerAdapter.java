@@ -182,7 +182,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             if (rating > 0f)
                 mRatingRatingBar.setRating((float)place.getRating());
             else
-                mRatingRatingBar.setVisibility(View.INVISIBLE);
+                mRatingRatingBar.setVisibility(View.GONE);
 
             String distance = Utility.getDistanceMsg(mContext, place);
             if (distance == null || distance.isEmpty())
