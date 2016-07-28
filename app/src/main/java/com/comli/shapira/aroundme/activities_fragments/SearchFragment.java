@@ -28,7 +28,7 @@ public class SearchFragment extends Fragment {
         return new SearchFragment();
     }
 
-    public void SearchStarted( boolean searchStarted)
+    public void searchStarted(boolean searchStarted)
     {
         mSearchStarted = searchStarted;
     }
@@ -57,10 +57,7 @@ public class SearchFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        mProgressBar.setVisibility(
-                mSearchStarted ?
-                        View.VISIBLE :
-                        View.INVISIBLE);
+        mProgressBar.setVisibility( mSearchStarted ? View.VISIBLE : View.INVISIBLE);
 
         getActivity().getSupportLoaderManager()
                 .initLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)

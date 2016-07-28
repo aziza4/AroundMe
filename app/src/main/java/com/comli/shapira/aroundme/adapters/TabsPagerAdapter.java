@@ -25,6 +25,7 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standa
     private SearchFragment mSearchFragment;
     private FavoritesFragment mFavoritesFragment;
     private boolean mSearchStarted = false;
+    private boolean mFavoritesNeedRefresh = false;
 
     public TabsPagerAdapter(AppCompatActivity activity, FragmentManager fragmentManager) {
 
@@ -38,11 +39,12 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standa
         switch (position) {
             case SEARCH_TAB:
                 mSearchFragment = SearchFragment.newInstance();
-                mSearchFragment.SearchStarted(mSearchStarted);
+                mSearchFragment.searchStarted(mSearchStarted);
                 return mSearchFragment;
 
             case FAVORITES_TAB:
                 mFavoritesFragment = FavoritesFragment.newInstance();
+                mFavoritesFragment.needRefresh(mFavoritesNeedRefresh);
                 return mFavoritesFragment;
             default: return null;
         }
@@ -68,28 +70,37 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standa
         switch (op)
         {
             case ADD_SEARCH_PROGRESS_BAR:
-                if (mSearchFragment == null) mSearchStarted = true;
-                else mSearchFragment.addProgressBar();
+                if (mSearchFragment == null)
+                    mSearchStarted = true;
+                else
+                    mSearchFragment.addProgressBar();
                 return;
 
             case REMOVE_SEARCH_PROGRESS_BAR:
-                mSearchFragment.removeProgressBar();
+                if (mSearchFragment != null)
+                    mSearchFragment.removeProgressBar();
                 return;
 
             case ADD_FAVORITES_PROGRESS_BAR:
-                mFavoritesFragment.addProgressBar();
+                if (mFavoritesFragment != null)
+                    mFavoritesFragment.addProgressBar();
                 return;
 
             case REMOVE_FAVORITES_PROGRESS_BAR:
-                mFavoritesFragment.removeProgressBar();
+                if (mFavoritesFragment != null)
+                    mFavoritesFragment.removeProgressBar();
                 return;
 
             case REFRESH_SEARCH_VIEW:
-                mSearchFragment.refresh(mActivity);
+                if (mSearchFragment != null)
+                    mSearchFragment.refresh(mActivity);
                 return;
 
             case REFRESH_FAVORITES_VIEW:
-                mFavoritesFragment.refresh(mActivity);
+                if (mFavoritesFragment != null)
+                    mFavoritesFragment.refresh(mActivity);
+                else
+                    mFavoritesNeedRefresh = true;
         }
     }
 }

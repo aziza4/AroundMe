@@ -20,6 +20,7 @@ public class FavoritesFragment extends Fragment {
     private static final int FAVORITES_LOADER_ID = 2;
     private FavoritesAsyncLoaderCallbacks mFavoritesLoaderCallbacks;
     private ProgressBar mProgressBar;
+    private boolean mFavoritesNeedRefresh = false;
 
 
     public static FavoritesFragment newInstance()
@@ -27,6 +28,10 @@ public class FavoritesFragment extends Fragment {
         return new FavoritesFragment();
     }
 
+    public void needRefresh( boolean favoritesNeedRefresh)
+    {
+        mFavoritesNeedRefresh = favoritesNeedRefresh;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,9 +58,18 @@ public class FavoritesFragment extends Fragment {
 
         removeProgressBar();
 
+        if (mFavoritesNeedRefresh)
+            refresh((AppCompatActivity)getActivity());
+
         getActivity().getSupportLoaderManager()
                 .initLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks)
                 .forceLoad(); // see: http://stackoverflow.com/questions/10524667/android-asynctaskloader-doesnt-start-loadinbackground
+    }
+
+    @Override
+    public void onPause() {
+        mFavoritesNeedRefresh = false;
+        super.onPause();
     }
 
     public void addProgressBar()
