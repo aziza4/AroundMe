@@ -165,15 +165,15 @@ public class SharedPrefHelper {
         return mPrefs.getBoolean(key, false);
     }
 
-    public void setLangChanged(boolean langChanged) {
+    public void setForceReSearch(boolean forceReSearch) {
 
-        String key = mContext.getString(R.string.shared_pref_lang_changed);
-        mPrefs.edit().putBoolean(key, langChanged).apply();
+        String key = mContext.getString(R.string.shared_pref_force_re_search);
+        mPrefs.edit().putBoolean(key, forceReSearch).apply();
     }
 
-    public boolean isLangChanged() {
+    public boolean isForceReSearch() {
 
-        String key = mContext.getString(R.string.shared_pref_lang_changed);
+        String key = mContext.getString(R.string.shared_pref_force_re_search);
         return mPrefs.getBoolean(key, false);
     }
 
@@ -193,13 +193,13 @@ public class SharedPrefHelper {
     {
         String lat_key = mContext.getString(R.string.shared_pref_last_location_lat);
         String lng_key = mContext.getString(R.string.shared_pref_last_location_lng);
-        String lang_changed_key = mContext.getString(R.string.shared_pref_lang_changed);
+        String lang_force_re_search = mContext.getString(R.string.shared_pref_force_re_search);
         String permission_key = mContext.getString(R.string.shared_pref_loc_permission_denied_by_user);
 
         mPrefs.edit()
                 .remove(lat_key)
                 .remove(lng_key)
-                .remove(lang_changed_key)
+                .remove(lang_force_re_search)
                 .remove(permission_key)
                 .apply();
     }

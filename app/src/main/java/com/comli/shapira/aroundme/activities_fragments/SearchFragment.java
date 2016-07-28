@@ -22,11 +22,16 @@ public class SearchFragment extends Fragment {
 
     private ProgressBar mProgressBar;
     private SearchAsyncLoaderCallbacks mSearchLoaderCallbacks;
+    private boolean mSearchStarted = false;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
     }
 
+    public void SearchStarted( boolean searchStarted)
+    {
+        mSearchStarted = searchStarted;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +57,7 @@ public class SearchFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        removeProgressBar();
+        mProgressBar.setVisibility( mSearchStarted ? View.VISIBLE : View.INVISIBLE);
 
         getActivity().getSupportLoaderManager()
                 .initLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)

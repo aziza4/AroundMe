@@ -24,6 +24,7 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standa
     private final AppCompatActivity mActivity;
     private SearchFragment mSearchFragment;
     private FavoritesFragment mFavoritesFragment;
+    private boolean mSearchStarted = false;
 
     public TabsPagerAdapter(AppCompatActivity activity, FragmentManager fragmentManager) {
 
@@ -37,6 +38,7 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standa
         switch (position) {
             case SEARCH_TAB:
                 mSearchFragment = SearchFragment.newInstance();
+                mSearchFragment.SearchStarted(mSearchStarted);
                 return mSearchFragment;
 
             case FAVORITES_TAB:
@@ -66,28 +68,29 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standa
         switch (op)
         {
             case ADD_SEARCH_PROGRESS_BAR:
-                mSearchFragment.addProgressBar();
-                break;
+                if (mSearchFragment == null) mSearchStarted = true;
+                else mSearchFragment.addProgressBar();
+                return;
 
             case REMOVE_SEARCH_PROGRESS_BAR:
                 mSearchFragment.removeProgressBar();
-                break;
+                return;
 
             case ADD_FAVORITES_PROGRESS_BAR:
                 mFavoritesFragment.addProgressBar();
-                break;
+                return;
 
             case REMOVE_FAVORITES_PROGRESS_BAR:
                 mFavoritesFragment.removeProgressBar();
-                break;
+                return;
 
             case REFRESH_SEARCH_VIEW:
                 mSearchFragment.refresh(mActivity);
-                break;
+                return;
 
             case REFRESH_FAVORITES_VIEW:
                 mFavoritesFragment.refresh(mActivity);
-                break;
+                return;
         }
     }
 }

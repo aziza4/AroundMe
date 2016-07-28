@@ -17,6 +17,7 @@ import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
 public class SettingsFragment extends PreferenceFragment {
 
     private GeofenceAppHelper mGeofenceAppHelper;
+    private SharedPrefHelper mSharedPrefHelper;
 
     public SettingsFragment() {}
 
@@ -36,6 +37,7 @@ public class SettingsFragment extends PreferenceFragment {
         bindCheckBoxPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_show_notification_key)));
         bindCheckBoxPreferenceSummaryToValue(pm.findPreference(getString(R.string.pref_geofences_show_notification_sound_key)));
 
+        mSharedPrefHelper = new SharedPrefHelper(getActivity());
         mGeofenceAppHelper = new GeofenceAppHelper(getActivity());
     }
 
@@ -80,8 +82,7 @@ public class SettingsFragment extends PreferenceFragment {
 
                 if ( langSelected && valueChanged )
                 {
-                    SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
-                    sharedPrefHelper.setLangChanged(true);
+                    mSharedPrefHelper.setForceReSearch(true);
 
                     // restart activity --> lang change to take affect immediately !
                     Intent intent = getActivity().getIntent();
@@ -109,6 +110,10 @@ public class SettingsFragment extends PreferenceFragment {
                 editPreference.setSummary(newValue);
 
                 if (valueChanged) {
+
+                    boolean radiusSelected = editPreference.getKey().equals(getString(R.string.pref_radius_key));
+                    if (radiusSelected)
+                        mSharedPrefHelper.setForceReSearch(true);
 
                     boolean geofenceRadiusSelected = editPreference.getKey().equals(getString(R.string.pref_geofences_radius_key));
                     if (geofenceRadiusSelected)

@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mActionBarDrawerToggle;
 
     private SharedPrefHelper mSharedPrefHelper;
-    private boolean mLangChanged;
+    private boolean mForceReSearch;
     private String mSearchKeyWord;
 
     @Override
@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mSharedPrefHelper = new SharedPrefHelper(this);
-        mLangChanged = mSharedPrefHelper.isLangChanged();
-        mSharedPrefHelper.setLangChanged(false);
+        mForceReSearch = mSharedPrefHelper.isForceReSearch();
+        mSharedPrefHelper.setForceReSearch(false);
 
         // set shared-place transition exit
         TransitionsHelper.setMainActivityExitTransition(this);
@@ -157,12 +157,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (mLangChanged) // renew previous search upon language change
+        if (mForceReSearch) // renew previous search upon language change
         {
             String keyword = mSharedPrefHelper.getSearchKeyword();
             mUserCurrentLocation.searchCurrentLocation(keyword);
             mSharedPrefHelper.setSearchKeyword("");
-            mLangChanged = false;
+            mForceReSearch = false;
         }
 
         if (!mSearchKeyWord.isEmpty())  // search with new search keyword
