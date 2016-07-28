@@ -27,7 +27,6 @@
     <string name="msg_zero_results">Zero results found</string>
 
 
-    <string name="pref_general_category_title">GENERAL</string>
     <string name="pref_search_category_title">SEARCH</string>
     <string name="pref_geofences_category_title">FAVORITES PROXIMITY</string>
 
@@ -82,7 +81,7 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="more_text">More…</string>
+    <string name="more_text">More Actions</string>
 
     <string name="geofence_transition_entered">You arrived to&#032;</string>
     <string name="geofence_transition_exited">You left&#032;</string>

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <PreferenceCategory android:title="@string/pref_general_category_title">
+
+    <PreferenceCategory android:title="@string/pref_search_category_title">
 
         <ListPreference
             android:title="@string/pref_lang_label"
@@ -11,10 +12,12 @@
             android:entryValues="@array/pref_lang_values"
             android:entries="@array/pref_lang_options" />
 
-    </PreferenceCategory>
-
-
-    <PreferenceCategory android:title="@string/pref_search_category_title">
+        <ListPreference
+            android:title="@string/pref_units_label"
+            android:key="@string/pref_units_key"
+            android:defaultValue="@string/pref_units_def"
+            android:entryValues="@array/pref_units_values"
+            android:entries="@array/pref_units_options" />
 
         <EditTextPreference
             android:title="@string/pref_radius_label"
@@ -23,12 +26,6 @@
             android:inputType="number"
             android:singleLine="true" />
 
-        <ListPreference
-            android:title="@string/pref_units_label"
-            android:key="@string/pref_units_key"
-            android:defaultValue="@string/pref_units_def"
-            android:entryValues="@array/pref_units_values"
-            android:entries="@array/pref_units_options" />
 
     </PreferenceCategory>
 

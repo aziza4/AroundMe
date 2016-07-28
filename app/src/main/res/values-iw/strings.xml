@@ -27,7 +27,6 @@
 
     <string name="msg_zero_results">אין תוצאות</string>
 
-    <string name="pref_general_category_title">הגדרות כלליות</string>
     <string name="pref_search_category_title">מאפייני חיפוש</string>
     <string name="pref_geofences_category_title">קרבה למועדפים</string>
 
@@ -70,7 +69,7 @@
 
     <string name="drawer_open">פתח מגירת ניווט</string>
     <string name="drawer_close">סגור מגירת ניווט</string>
-    <string name="more_text">עוד…</string>
+    <string name="more_text">פעולות נוספות</string>
 
     <string name="geofence_transition_entered">הגעת ל</string>
     <string name="geofence_transition_exited">עזבת את&#160;</string>
