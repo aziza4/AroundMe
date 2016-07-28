@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 
 
+import com.comli.shapira.aroundme.adapters.TabsPagerAdapter;
 import com.comli.shapira.aroundme.data.NearbyRequest;
 import com.comli.shapira.aroundme.helpers.LocationServiceHelper;
 import com.comli.shapira.aroundme.helpers.SharedPrefHelper;
@@ -22,13 +23,16 @@ public class UserCurrentLocation { // controls the availability of location via 
 
     private final SharedPrefHelper mSharedPrefHelper;
     private final LocationServiceHelper mLocationServiceHelper;
+    private TabsPagerAdapter mTabsPagerAdapter;
     private String mKeyword;
 
 
-    public UserCurrentLocation(Activity activity, LocationServiceHelper locationServiceHelper)
+    public UserCurrentLocation(Activity activity, LocationServiceHelper locationServiceHelper,
+                               TabsPagerAdapter tabsPagerAdapter)
     {
         mActivity = activity;
         mLocationServiceHelper = locationServiceHelper;
+        mTabsPagerAdapter = tabsPagerAdapter;
         mLastLocation = null;
         mKeyword = "";
         mSharedPrefHelper = new SharedPrefHelper(mActivity);
@@ -47,6 +51,8 @@ public class UserCurrentLocation { // controls the availability of location via 
         Intent intent = new Intent(NearbyService.ACTION_NEARBY_PLACES, null, mActivity, NearbyService.class);
         intent.putExtra(NearbyService.EXTRA_NEARBY_REQUEST, getRequest());
         mActivity.startService(intent);
+
+        mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.ADD_SEARCH_PROGRESS_BAR);
     }
 
 

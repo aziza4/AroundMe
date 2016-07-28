@@ -36,20 +36,22 @@ public class FavoritesFragment extends Fragment {
 
         // user recycler-adapter with async-loader
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.favoritesListView);
-        FavoritesRecyclerAdapter favoritesAdapter = new FavoritesRecyclerAdapter(getActivity());
+        FavoritesRecyclerAdapter favoritesAdapter = new FavoritesRecyclerAdapter(getActivity(), this);
         recyclerView.setAdapter(favoritesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // downloading progressbar
         mProgressBar = (ProgressBar) v.findViewById(R.id.downloadProgressBar);
 
-        mFavoritesLoaderCallbacks = new FavoritesAsyncLoaderCallbacks(getActivity(), this, favoritesAdapter);
+        mFavoritesLoaderCallbacks = new FavoritesAsyncLoaderCallbacks(getActivity(), favoritesAdapter);
         return v;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        removeProgressBar();
 
         getActivity().getSupportLoaderManager()
                 .initLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks)
@@ -60,7 +62,6 @@ public class FavoritesFragment extends Fragment {
     {
         mProgressBar.setVisibility(View.VISIBLE);
     }
-
     public void removeProgressBar()
     {
         mProgressBar.setVisibility(View.INVISIBLE);

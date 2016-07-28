@@ -22,12 +22,17 @@ public class NavigationDrawerHelper implements NavigationView.OnNavigationItemSe
 
     private final AppCompatActivity mActivity;
     private final UserCurrentLocation mUserCurrentLocation;
+    private final TabsPagerAdapter mTabsPagerAdapter;
     private final ViewPager mViewPager;
 
-    public NavigationDrawerHelper(AppCompatActivity activity, UserCurrentLocation userCurrentLocation, ViewPager viewPager)
+    public NavigationDrawerHelper(AppCompatActivity activity,
+                                  UserCurrentLocation userCurrentLocation,
+                                  TabsPagerAdapter tabsPagerAdapter,
+                                  ViewPager viewPager)
     {
         mActivity = activity;
         mUserCurrentLocation = userCurrentLocation;
+        mTabsPagerAdapter = tabsPagerAdapter;
         mViewPager = viewPager;
 
         ActionBar actionBar = mActivity.getSupportActionBar();
@@ -118,6 +123,9 @@ public class NavigationDrawerHelper implements NavigationView.OnNavigationItemSe
                 .setPositiveButton(deleteButton,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
+
+                                mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.ADD_FAVORITES_PROGRESS_BAR);
+
                                 mActivity.startService(
                                         new Intent(NearbyService.ACTION_PLACE_FAVORITES_REMOVE_ALL,
                                                 null, mActivity, NearbyService.class));

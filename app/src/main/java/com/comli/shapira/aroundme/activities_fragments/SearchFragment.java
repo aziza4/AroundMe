@@ -23,7 +23,6 @@ public class SearchFragment extends Fragment {
     private ProgressBar mProgressBar;
     private SearchAsyncLoaderCallbacks mSearchLoaderCallbacks;
 
-
     public static SearchFragment newInstance() {
         return new SearchFragment();
     }
@@ -40,11 +39,11 @@ public class SearchFragment extends Fragment {
 
         // user recycler-adapter with async-loader
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.searchListView);
-        SearchRecyclerAdapter searchAdapter = new SearchRecyclerAdapter(getActivity());
+        SearchRecyclerAdapter searchAdapter = new SearchRecyclerAdapter(getActivity(), this);
         recyclerView.setAdapter(searchAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mSearchLoaderCallbacks = new SearchAsyncLoaderCallbacks(getActivity(), this, searchAdapter);
+        mSearchLoaderCallbacks = new SearchAsyncLoaderCallbacks(getActivity(), searchAdapter);
 
         return v;
     }
@@ -52,6 +51,8 @@ public class SearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        removeProgressBar();
 
         getActivity().getSupportLoaderManager()
                 .initLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)
@@ -63,7 +64,6 @@ public class SearchFragment extends Fragment {
     {
         mProgressBar.setVisibility(View.VISIBLE);
     }
-
     public void removeProgressBar()
     {
         mProgressBar.setVisibility(View.INVISIBLE);

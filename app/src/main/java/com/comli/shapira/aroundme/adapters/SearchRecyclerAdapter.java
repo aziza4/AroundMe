@@ -15,6 +15,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.comli.shapira.aroundme.activities_fragments.MapActivity;
+import com.comli.shapira.aroundme.activities_fragments.SearchFragment;
 import com.comli.shapira.aroundme.data.Place;
 import com.comli.shapira.aroundme.helpers.ImageHelper;
 import com.comli.shapira.aroundme.helpers.Utility;
@@ -29,12 +30,14 @@ import java.util.ArrayList;
 public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAdapter.PlaceViewHolder> {
 
     private final Context mContext;
+    private final SearchFragment mSearchFragment;
     private ArrayList<Place> mPlaces;
 
 
 
-    public SearchRecyclerAdapter(Context context) {
+    public SearchRecyclerAdapter(Context context, SearchFragment searchFragment) {
         mContext = context;
+        mSearchFragment = searchFragment;
         mPlaces = null;
     }
 
@@ -130,7 +133,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 @Override
                 public boolean onLongClick(View view) {
                     AppCompatActivity activity = (AppCompatActivity) mContext;
-                    activity.startSupportActionMode(new SearchActionModeCallbacks(activity, mPlace));
+                    activity.startSupportActionMode(new SearchActionModeCallbacks(activity, mSearchFragment, mPlace));
                     return true;
                 }
             });

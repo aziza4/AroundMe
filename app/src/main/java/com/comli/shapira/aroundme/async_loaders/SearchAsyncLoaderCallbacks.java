@@ -20,13 +20,11 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
     private final Context mContext;
     private final SearchRecyclerAdapter mSearchAdapter;
     private final AroundMeDBHelper mDbHelper;
-    private final SearchFragment mSearchFragment;
 
 
-    public SearchAsyncLoaderCallbacks(Context context, SearchFragment searchFragment, SearchRecyclerAdapter adapter)
+    public SearchAsyncLoaderCallbacks(Context context, SearchRecyclerAdapter adapter)
     {
         mContext = context;
-        mSearchFragment = searchFragment;
         mSearchAdapter = adapter;
         mDbHelper = new AroundMeDBHelper(mContext);
     }
@@ -34,8 +32,6 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
 
     @Override
     public android.support.v4.content.Loader<ArrayList<Place>> onCreateLoader(int id, Bundle args) {
-
-        mSearchFragment.addProgressBar();
 
         return new AsyncTaskLoader<ArrayList<Place>>(mContext) {
             @Override
@@ -48,7 +44,6 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
         mSearchAdapter.setData(data);
-        mSearchFragment.removeProgressBar();
     }
 
     @Override

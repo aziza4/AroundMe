@@ -6,6 +6,8 @@ import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.comli.shapira.aroundme.activities_fragments.FavoritesFragment;
 import com.comli.shapira.aroundme.data.DetailsRequest;
 import com.comli.shapira.aroundme.data.Place;
 import com.comli.shapira.aroundme.helpers.Utility;
@@ -16,11 +18,13 @@ import com.comli.shapira.aroundme.services.NearbyService;
 public class FavoritesActionModeCallbacks implements ActionMode.Callback {
 
     private final AppCompatActivity mActivity;
+    private final FavoritesFragment mFavoritesFragment;
     private final Place mPlace;
 
-    public FavoritesActionModeCallbacks(AppCompatActivity activity, Place place)
+    public FavoritesActionModeCallbacks(AppCompatActivity activity, FavoritesFragment favoritesFragment, Place place)
     {
         mActivity = activity;
+        mFavoritesFragment = favoritesFragment;
         mPlace = place;
     }
 
@@ -50,6 +54,8 @@ public class FavoritesActionModeCallbacks implements ActionMode.Callback {
         switch (item.getItemId())
         {
             case R.id.deleteMenuItem:
+
+                mFavoritesFragment.addProgressBar();
 
                 // delete via service to make db this operation async as well, as others are.
                 Intent intent = new Intent(NearbyService.ACTION_PLACE_FAVORITES_REMOVE, null, mActivity, NearbyService.class);

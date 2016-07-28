@@ -17,16 +17,14 @@ public class FavoritesAsyncLoaderCallbacks implements LoaderManager.LoaderCallba
 {
 
     private final Context mContext;
-    private final FavoritesFragment mFavoritesFragment;
     private final FavoritesRecyclerAdapter mFavoritesAdapter;
     private final AroundMeDBHelper mDbHelper;
 
 
 
-    public FavoritesAsyncLoaderCallbacks(Context context, FavoritesFragment favoritesFragment, FavoritesRecyclerAdapter adapter)
+    public FavoritesAsyncLoaderCallbacks(Context context, FavoritesRecyclerAdapter adapter)
     {
         mContext = context;
-        mFavoritesFragment = favoritesFragment;
         mFavoritesAdapter = adapter;
         mDbHelper = new AroundMeDBHelper(mContext);
     }
@@ -34,8 +32,6 @@ public class FavoritesAsyncLoaderCallbacks implements LoaderManager.LoaderCallba
 
     @Override
     public android.support.v4.content.Loader<ArrayList<Place>> onCreateLoader(int id, Bundle args) {
-
-        mFavoritesFragment.addProgressBar();
 
         return new AsyncTaskLoader<ArrayList<Place>>(mContext) {
             @Override
@@ -49,7 +45,6 @@ public class FavoritesAsyncLoaderCallbacks implements LoaderManager.LoaderCallba
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
         mFavoritesAdapter.setData(data);
-        mFavoritesFragment.removeProgressBar();
     }
 
 

@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.comli.shapira.aroundme.activities_fragments.FavoritesFragment;
 import com.comli.shapira.aroundme.activities_fragments.MapActivity;
 import com.comli.shapira.aroundme.data.Place;
 import com.comli.shapira.aroundme.helpers.ImageHelper;
@@ -31,11 +32,13 @@ import java.util.ArrayList;
 public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecyclerAdapter.PlaceViewHolder> {
 
     private final Context mContext;
+    private final FavoritesFragment mFavoritesFragment;
     private ArrayList<Place> mPlaces;
 
 
-    public FavoritesRecyclerAdapter(Context context) {
+    public FavoritesRecyclerAdapter(Context context, FavoritesFragment favoritesFragment) {
         mContext = context;
+        mFavoritesFragment = favoritesFragment;
         mPlaces = null;
     }
 
@@ -140,7 +143,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
                 @Override
                 public boolean onLongClick(View view) {
                     AppCompatActivity activity = (AppCompatActivity) mContext;
-                    activity.startSupportActionMode(new FavoritesActionModeCallbacks(activity, mPlace));
+                    activity.startSupportActionMode(new FavoritesActionModeCallbacks(activity, mFavoritesFragment, mPlace));
                     return true;
                 }
             });

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.comli.shapira.aroundme.activities_fragments.MainActivity;
+import com.comli.shapira.aroundme.adapters.TabsPagerAdapter;
 import com.comli.shapira.aroundme.data.DetailsRequest;
 import com.comli.shapira.aroundme.services.NearbyService;
 import com.google.android.gms.common.api.Status;
@@ -16,11 +17,14 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 public class PlacesAutoComplete {
 
     private final Activity mActivity;
+    private final TabsPagerAdapter mTabsPagerAdapter;
 
     private static final int REQUEST_SELECT_PLACE = 1000;
 
-    public PlacesAutoComplete(Activity activity) {
+    public PlacesAutoComplete(Activity activity, TabsPagerAdapter tabsPagerAdapter)
+    {
         mActivity = activity;
+        mTabsPagerAdapter = tabsPagerAdapter;
     }
 
     public void start()
@@ -53,6 +57,8 @@ public class PlacesAutoComplete {
             Intent intent = new Intent(NearbyService.ACTION_AUTOCOMPLETE_GET_DETAILS, null, mActivity, NearbyService.class);
             intent.putExtra(NearbyService.EXTRA_PLACE_AUTOCOMPLETE_DATA, new DetailsRequest(myPlace));
             mActivity.startService(intent);
+
+            mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.ADD_SEARCH_PROGRESS_BAR);
 
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
             Status status = PlaceAutocomplete.getStatus(mActivity, data);

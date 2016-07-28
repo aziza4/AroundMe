@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int LOCATION_REQUEST_CODE = 1;
 
 
+    private TabsPagerAdapter mTabsPagerAdapter;
     private PlacesAutoComplete mPlacesAutoComplete;
     private MainMenuHelper mMainMenuHelper;
     private UserCurrentLocation mUserCurrentLocation;
@@ -78,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Viewpager - 2 tabs: Search & Favorites
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPagerContainer);
-        TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
-        viewPager.setAdapter(tabsPagerAdapter);
+        mTabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
+        viewPager.setAdapter(mTabsPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_layout);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         mGeofenceAppHelper = new GeofenceAppHelper(this);
 
         // UserCurrentLocation
-        mUserCurrentLocation = new UserCurrentLocation(this, mLocationServiceHelper);
+        mUserCurrentLocation = new UserCurrentLocation(this, mLocationServiceHelper, mTabsPagerAdapter);
 
         // Drawer
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -112,14 +113,15 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(mActionBarDrawerToggle);
         mActionBarDrawerToggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        NavigationDrawerHelper navigationDrawerHelper = new NavigationDrawerHelper(this, mUserCurrentLocation, viewPager);
+        NavigationDrawerHelper navigationDrawerHelper = new NavigationDrawerHelper(this,
+                mUserCurrentLocation, mTabsPagerAdapter, viewPager);
         navigationView.setNavigationItemSelectedListener(navigationDrawerHelper);
 
         // Google's places' AutoComplete Widget
-        mPlacesAutoComplete = new PlacesAutoComplete(this);
+        mPlacesAutoComplete = new PlacesAutoComplete(this, mTabsPagerAdapter);
 
         // create local notification receiver (register later on onResume)
-        NearbyServiceReceiver nearbyServiceReceiver = new NearbyServiceReceiver(this, tabsPagerAdapter, viewPager, mGeofenceAppHelper);
+        NearbyServiceReceiver nearbyServiceReceiver = new NearbyServiceReceiver(this, mTabsPagerAdapter, viewPager, mGeofenceAppHelper);
         LocationProviderServiceReceiver locationProviderServiceReceiver = new LocationProviderServiceReceiver(mLocationServiceHelper);
 
         // create global receiver (register later on onResume)

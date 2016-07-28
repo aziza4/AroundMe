@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.comli.shapira.aroundme.activities_fragments.SearchFragment;
+import com.comli.shapira.aroundme.adapters.TabsPagerAdapter;
 import com.comli.shapira.aroundme.data.DetailsRequest;
 import com.comli.shapira.aroundme.data.Place;
 import com.comli.shapira.aroundme.helpers.Utility;
@@ -18,11 +20,13 @@ import com.comli.shapira.aroundme.services.NearbyService;
 public class SearchActionModeCallbacks implements ActionMode.Callback {
 
     private final AppCompatActivity mActivity;
+    private final SearchFragment mSearchFragment;
     private final Place mPlace;
 
-    public SearchActionModeCallbacks(AppCompatActivity activity, Place place)
+    public SearchActionModeCallbacks(AppCompatActivity activity, SearchFragment searchFragment, Place place)
     {
         mActivity = activity;
+        mSearchFragment = searchFragment;
         mPlace = place;
     }
 
@@ -56,6 +60,8 @@ public class SearchActionModeCallbacks implements ActionMode.Callback {
                 intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, new DetailsRequest(mPlace));
                 intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_SAVE, true);
                 mActivity.startService(intent);
+
+                mSearchFragment.addProgressBar();
 
                 mode.finish();
                 return true;
