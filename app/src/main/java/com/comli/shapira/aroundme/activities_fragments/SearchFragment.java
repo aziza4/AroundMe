@@ -57,12 +57,21 @@ public class SearchFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        mProgressBar.setVisibility( mSearchStarted ? View.VISIBLE : View.INVISIBLE);
+        mProgressBar.setVisibility(
+                mSearchStarted ?
+                        View.VISIBLE :
+                        View.INVISIBLE);
 
         getActivity().getSupportLoaderManager()
                 .initLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)
                 .forceLoad(); // see: http://stackoverflow.com/questions/10524667/android-asynctaskloader-doesnt-start-loadinbackground
 
+    }
+
+    @Override
+    public void onPause() {
+        mSearchStarted = false;
+        super.onPause();
     }
 
     public void addProgressBar()
