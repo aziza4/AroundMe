@@ -48,8 +48,7 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
         mSearchAdapter.setData(data);
-        if (!data.isEmpty())
-            mSearchFragment.removeProgressBar();
+        mSearchFragment.removeProgressBar();
     }
 
     @Override
