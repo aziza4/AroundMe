@@ -8,6 +8,8 @@ import com.comli.shapira.aroundme.activities_fragments.FavoritesFragment;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.activities_fragments.SearchFragment;
 
+import java.util.ArrayList;
+
 public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standard implementation
 
     public static final int SEARCH_TAB = 0;
@@ -24,28 +26,21 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standa
     private final AppCompatActivity mActivity;
     private SearchFragment mSearchFragment;
     private FavoritesFragment mFavoritesFragment;
-    private boolean mSearchStarted = false;
-    private boolean mFavoritesNeedRefresh = false;
 
     public TabsPagerAdapter(AppCompatActivity activity, FragmentManager fragmentManager) {
-
         super(fragmentManager);
+
         mActivity = activity;
+        mSearchFragment = SearchFragment.newInstance();
+        mFavoritesFragment = FavoritesFragment.newInstance();
     }
 
     @Override
     public Fragment getItem(int position) {
 
         switch (position) {
-            case SEARCH_TAB:
-                mSearchFragment = SearchFragment.newInstance();
-                mSearchFragment.searchStarted(mSearchStarted);
-                return mSearchFragment;
-
-            case FAVORITES_TAB:
-                mFavoritesFragment = FavoritesFragment.newInstance();
-                mFavoritesFragment.needRefresh(mFavoritesNeedRefresh);
-                return mFavoritesFragment;
+            case SEARCH_TAB: return mSearchFragment;
+            case FAVORITES_TAB: return mFavoritesFragment;
             default: return null;
         }
     }
@@ -54,6 +49,7 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standa
     public int getCount() {
         return NUM_ITEMS;
     }
+
 
     @Override
     public CharSequence getPageTitle(int position) {
@@ -70,37 +66,28 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standa
         switch (op)
         {
             case ADD_SEARCH_PROGRESS_BAR:
-                if (mSearchFragment == null)
-                    mSearchStarted = true;
-                else
-                    mSearchFragment.addProgressBar();
-                return;
+                mSearchFragment.addProgressBar();
+                break;
 
             case REMOVE_SEARCH_PROGRESS_BAR:
-                if (mSearchFragment != null)
-                    mSearchFragment.removeProgressBar();
-                return;
+                mSearchFragment.removeProgressBar();
+                break;
 
             case ADD_FAVORITES_PROGRESS_BAR:
-                if (mFavoritesFragment != null)
-                    mFavoritesFragment.addProgressBar();
-                return;
+                mFavoritesFragment.addProgressBar();
+                break;
 
             case REMOVE_FAVORITES_PROGRESS_BAR:
-                if (mFavoritesFragment != null)
-                    mFavoritesFragment.removeProgressBar();
-                return;
+                mFavoritesFragment.removeProgressBar();
+                break;
 
             case REFRESH_SEARCH_VIEW:
-                if (mSearchFragment != null)
-                    mSearchFragment.refresh(mActivity);
-                return;
+                mSearchFragment.refresh(mActivity);
+                break;
 
             case REFRESH_FAVORITES_VIEW:
-                if (mFavoritesFragment != null)
-                    mFavoritesFragment.refresh(mActivity);
-                else
-                    mFavoritesNeedRefresh = true;
+                mFavoritesFragment.refresh(mActivity);
+                break;
         }
     }
 }

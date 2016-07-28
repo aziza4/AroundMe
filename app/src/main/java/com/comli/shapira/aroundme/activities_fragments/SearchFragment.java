@@ -21,16 +21,12 @@ public class SearchFragment extends Fragment {
     private static final int SEARCH_LOADER_ID = 1;
 
     private ProgressBar mProgressBar;
+    private boolean mShowProgressBar = false;
+
     private SearchAsyncLoaderCallbacks mSearchLoaderCallbacks;
-    private boolean mSearchStarted = false;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
-    }
-
-    public void searchStarted(boolean searchStarted)
-    {
-        mSearchStarted = searchStarted;
     }
 
     @Override
@@ -57,7 +53,9 @@ public class SearchFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        mProgressBar.setVisibility( mSearchStarted ? View.VISIBLE : View.INVISIBLE);
+        int visibility = mShowProgressBar ? View.VISIBLE : View.INVISIBLE;
+        mProgressBar.setVisibility(visibility);
+        mShowProgressBar = false;
 
         getActivity().getSupportLoaderManager()
                 .initLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)
@@ -65,25 +63,28 @@ public class SearchFragment extends Fragment {
 
     }
 
-    @Override
-    public void onPause() {
-        mSearchStarted = false;
-        super.onPause();
-    }
 
     public void addProgressBar()
     {
-        mProgressBar.setVisibility(View.VISIBLE);
+        if (mProgressBar != null)
+            mProgressBar.setVisibility(View.VISIBLE);
+        else
+            mShowProgressBar = true;  // wait for onResume to happen
     }
+
     public void removeProgressBar()
     {
-        mProgressBar.setVisibility(View.INVISIBLE);
+        if (mProgressBar != null)
+            mProgressBar.setVisibility(View.INVISIBLE);
+        else
+            mShowProgressBar = false;  // wait for onResume to happen
     }
 
     public void refresh(AppCompatActivity activity) // called when service finished downloading
     {
-        activity.getSupportLoaderManager()
-                .restartLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)
-                .forceLoad();
+        if (mSearchLoaderCallbacks != null)
+            activity.getSupportLoaderManager()
+                    .restartLoader(SEARCH_LOADER_ID, null, mSearchLoaderCallbacks)
+                    .forceLoad();
     }
 }

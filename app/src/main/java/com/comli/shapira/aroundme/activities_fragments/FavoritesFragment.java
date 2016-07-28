@@ -20,17 +20,13 @@ public class FavoritesFragment extends Fragment {
     private static final int FAVORITES_LOADER_ID = 2;
     private FavoritesAsyncLoaderCallbacks mFavoritesLoaderCallbacks;
     private ProgressBar mProgressBar;
-    private boolean mFavoritesNeedRefresh = false;
+    private boolean mShowProgressBar = false;
+
 
 
     public static FavoritesFragment newInstance()
     {
         return new FavoritesFragment();
-    }
-
-    public void needRefresh( boolean favoritesNeedRefresh)
-    {
-        mFavoritesNeedRefresh = favoritesNeedRefresh;
     }
 
     @Override
@@ -56,36 +52,38 @@ public class FavoritesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        removeProgressBar();
-
-        if (mFavoritesNeedRefresh)
-            refresh((AppCompatActivity)getActivity());
+        int visibility = mShowProgressBar ? View.VISIBLE : View.INVISIBLE;
+        mProgressBar.setVisibility(visibility);
+        mShowProgressBar = false;
 
         getActivity().getSupportLoaderManager()
                 .initLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks)
                 .forceLoad(); // see: http://stackoverflow.com/questions/10524667/android-asynctaskloader-doesnt-start-loadinbackground
     }
 
-    @Override
-    public void onPause() {
-        mFavoritesNeedRefresh = false;
-        super.onPause();
-    }
 
     public void addProgressBar()
     {
-        mProgressBar.setVisibility(View.VISIBLE);
+        if (mProgressBar != null)
+            mProgressBar.setVisibility(View.VISIBLE);
+        else
+            mShowProgressBar = true; // wait for onResume to happen
     }
+
     public void removeProgressBar()
     {
-        mProgressBar.setVisibility(View.INVISIBLE);
+        if (mProgressBar != null)
+            mProgressBar.setVisibility(View.INVISIBLE);
+        else
+            mShowProgressBar = false;  // wait for onResume to happen
     }
 
     public void refresh(AppCompatActivity activity) // called when service finished download-and-save/delete/delete-all
     {
-        activity.getSupportLoaderManager()
-                .restartLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks)
-                .forceLoad();
+        if (mFavoritesLoaderCallbacks != null)
+            activity.getSupportLoaderManager()
+                    .restartLoader(FAVORITES_LOADER_ID, null, mFavoritesLoaderCallbacks)
+                    .forceLoad();
     }
 }
 
