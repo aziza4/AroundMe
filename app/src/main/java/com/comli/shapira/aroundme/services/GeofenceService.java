@@ -38,7 +38,7 @@ public class GeofenceService extends Service implements GoogleApiClientHelper.On
 
     @Override
     public IBinder onBind(Intent intent) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return null;
     }
 
     @Override

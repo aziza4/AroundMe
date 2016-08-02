@@ -60,6 +60,7 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities_fragments.SettingsActivity"
             android:label="@string/settings_name"
@@ -85,7 +86,25 @@
 
         <service
             android:name=".services.GeofenceService"
+            android:icon="@mipmap/ic_launcher"
             android:exported="false"/>
+
+        <receiver
+            android:name=".receivers.OnBootCompletedBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

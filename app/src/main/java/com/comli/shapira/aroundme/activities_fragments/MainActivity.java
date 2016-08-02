@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
         mReceiversHelper.registerLocalReceivers();
         mLocationServiceHelper.startService();
-        mGeofenceAppHelper.startService();
     }
 
     @Override
@@ -189,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         mSharedPrefHelper.onUserLeaveApplication();
         mLocationServiceHelper.stopService();
-        mGeofenceAppHelper.stopService();
         super.onBackPressed();
     }
 
