@@ -181,7 +181,6 @@ public class NearbyService extends IntentService {
 
     private void downloadPlacePhoto(Place place)
     {
-
         if (place.getPhotoRef() == null)
             return;
 

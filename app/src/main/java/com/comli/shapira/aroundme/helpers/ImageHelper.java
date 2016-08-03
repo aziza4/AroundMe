@@ -39,6 +39,9 @@ public class ImageHelper {
     {
         GooglePlacesNearbyHelper nearbyHelper = new GooglePlacesNearbyHelper(context);
 
+        // dont let Picasso's previous async op override our new attempt to set image
+        Picasso.with(context).cancelRequest(placeIV);
+
         Bitmap bitmap = place.getPhoto().getBitmap();
 
         if ( bitmap != null) {
@@ -57,7 +60,7 @@ public class ImageHelper {
             }
 
             // go for blank space (on search/favorites view) for cleaner UX.
-            placeIV.setImageBitmap(null);
+            placeIV.setImageResource(android.R.color.transparent);
             return;
         }
 
