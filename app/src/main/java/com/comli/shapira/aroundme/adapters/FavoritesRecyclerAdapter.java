@@ -178,11 +178,13 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             mNameTV.setText(place.getName());
             mVicinityTV.setText(place.getVicinity());
 
-            float rating = (float)place.getRating();
-            if (rating > 0f)
-                mRatingRatingBar.setRating((float)place.getRating());
-            else
+            float rating = (float)mPlace.getRating();
+            if (rating == 0f)
                 mRatingRatingBar.setVisibility(View.GONE);
+            else {
+                mRatingRatingBar.setVisibility(View.VISIBLE);
+                mRatingRatingBar.setRating((float) mPlace.getRating());
+            }
 
             String distance = Utility.getDistanceMsg(mContext, place);
             if (distance == null || distance.isEmpty())
@@ -195,8 +197,10 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             String phone = place.getPhone();
             if (phone == null || phone.isEmpty())
                 mDialLayout.setVisibility(View.GONE);
-            else
+            else {
+                mDialLayout.setVisibility(View.VISIBLE);
                 mPhoneTV.setText(phone);
+            }
 
             String url = place.getIcon();
             if (url != null)

@@ -91,10 +91,12 @@ public class PlaceFragment extends Fragment {
 
         // don't show rating if not relevant (rating = 0.0)
         float rating = (float)mPlace.getRating();
-        if (rating > 0f)
-            mRatingRatingBar.setRating((float)mPlace.getRating());
-        else
-            mRatingRatingBar.setVisibility(View.INVISIBLE);
+        if (rating == 0f)
+            mRatingRatingBar.setVisibility(View.GONE);
+        else {
+            mRatingRatingBar.setVisibility(View.VISIBLE);
+            mRatingRatingBar.setRating((float) mPlace.getRating());
+        }
 
         // show distance layout only if exists
         String distance = Utility.getDistanceMsg(getActivity(), mPlace);
@@ -109,8 +111,10 @@ public class PlaceFragment extends Fragment {
         String phone = mPlace.getPhone();
         if (phone == null || phone.isEmpty())
             mDialLayout.setVisibility(View.GONE);
-        else
+        else {
             mPhoneTV.setText(phone);
+            mDialLayout.setVisibility(View.VISIBLE);
+        }
 
         // download place-type-icon (such as restaurant icon...)
         String url = mPlace.getIcon();

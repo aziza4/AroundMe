@@ -158,11 +158,13 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 mDistanceTV.setText(distance);
             }
 
-            float rating = (float)place.getRating();
-            if (rating > 0f)
-                mRatingRatingBar.setRating((float)place.getRating());
-            else
+            float rating = (float)mPlace.getRating();
+            if (rating == 0f)
                 mRatingRatingBar.setVisibility(View.GONE);
+            else {
+                mRatingRatingBar.setVisibility(View.VISIBLE);
+                mRatingRatingBar.setRating((float) mPlace.getRating());
+            }
         }
     }
 }

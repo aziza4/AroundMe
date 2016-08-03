@@ -30,7 +30,7 @@ public class Place implements Parcelable {
     private String mUrl;
     private PlacePhoto mPhoto;
 
-    private double mDistanceInKM;
+    private final double mDistanceInKM;
 
     public Place(com.google.android.gms.location.places.Place googlePlace)
     {
