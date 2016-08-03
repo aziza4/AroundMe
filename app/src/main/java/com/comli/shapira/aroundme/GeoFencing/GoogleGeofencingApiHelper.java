@@ -26,7 +26,7 @@ public class GoogleGeofencingApiHelper implements ResultCallback<Status> {
     private final Context mContext;
     private final GoogleApiClientHelper mGoogleApiClientHelper;
     private final SharedPrefHelper mSharedPrefHelper;
-    private ArrayList<Geofence> mGeofenceList;
+    private ArrayList<Geofence> mRegisteredGeofences;
 
     private static final long GEOFENCE_EXPIRATION_IN_HOURS = 12;
     private static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS =
@@ -38,6 +38,7 @@ public class GoogleGeofencingApiHelper implements ResultCallback<Status> {
         mContext = context;
         mSharedPrefHelper = new SharedPrefHelper(mContext);
         mGoogleApiClientHelper = googleApiClientHelper;
+        mRegisteredGeofences = new ArrayList<>();
     }
 
     @Override
@@ -64,25 +65,38 @@ public class GoogleGeofencingApiHelper implements ResultCallback<Status> {
             return;
         }
 
+
+        // convert places to geofences
+        ArrayList<Geofence> geofencesCandidates = populateGeofencesList(places);
+
+        // un-register geofences that were removed from favorites
+        unregisterDeletedGeofences(geofencesCandidates);
+
+        // register either new or updated geofences
+        registerNewOrUpdatedGeofences(geofencesCandidates);
+
+        // save it for next time comparison
+        mRegisteredGeofences = geofencesCandidates;
+    }
+
+
+    private void registerNewOrUpdatedGeofences(ArrayList<Geofence> geofencesCandidates)
+    {
+        ArrayList<Geofence> itemsToAddOrUpdate = getItemsToAddOrUpdate(geofencesCandidates);
+
+        if (itemsToAddOrUpdate.isEmpty())
+            return;
+
         try {
 
             PendingIntent intent = getGeofencePendingIntent();
-
-            // Remove existing geofences
-            LocationServices.GeofencingApi.removeGeofences(
-                    mGoogleApiClientHelper.getGoogleApiClient(),
-                    // This is the same pending intent that was used in addGeofences().
-                    intent
-            ).setResultCallback(this); // Result processed in onResult().
-
-            // Convert places to geofences
-            mGeofenceList = populateGeofenceList(places);
+            GeofencingRequest request = getGeofencingRequest(itemsToAddOrUpdate);
 
             // Add new geofences
             LocationServices.GeofencingApi.addGeofences(
                     mGoogleApiClientHelper.getGoogleApiClient(),
                     // The GeofenceRequest object.
-                    getGeofencingRequest(),
+                    request,
                     // A pending intent that that is reused when calling removeGeofences(). This
                     // pending intent is used to generate an intent when a matched geofence
                     // transition is observed.
@@ -96,14 +110,69 @@ public class GoogleGeofencingApiHelper implements ResultCallback<Status> {
     }
 
 
+    private ArrayList<Geofence> getItemsToAddOrUpdate(ArrayList<Geofence> geofencesCandidates)
+    {
+        if (mRegisteredGeofences.isEmpty() || geofencesCandidates.isEmpty())
+            return geofencesCandidates;
 
-    private GeofencingRequest getGeofencingRequest() {
+        ArrayList<Geofence> itemsToAddOrUpdate = new ArrayList<>();
+
+        for (Geofence candidate : geofencesCandidates)
+            if (!mRegisteredGeofences.contains(candidate))
+                itemsToAddOrUpdate.add(candidate);
+
+        return itemsToAddOrUpdate;
+    }
+
+
+    private void unregisterDeletedGeofences(ArrayList<Geofence> geofencesCandidates)
+    {
+        ArrayList<String> removeList = getItemsToRemove(geofencesCandidates);
+
+        if (removeList.isEmpty())
+            return;
+
+        LocationServices.GeofencingApi.removeGeofences(
+                mGoogleApiClientHelper.getGoogleApiClient(), removeList);
+    }
+
+
+    private ArrayList<String> getItemsToRemove(ArrayList<Geofence> geofencesCandidates)
+    {
+        ArrayList<String> removeList = new ArrayList<>();
+        ArrayList<String> candidatesKeys = getGeofencesKeys(geofencesCandidates);
+        ArrayList<String> registeredKeys = getGeofencesKeys(mRegisteredGeofences);
+
+        if (registeredKeys.isEmpty() || candidatesKeys.isEmpty())
+            return removeList;
+
+        for (String key : registeredKeys)
+            if (!candidatesKeys.contains(key))
+                removeList.add(key);
+
+        return removeList;
+    }
+
+
+    private ArrayList<String> getGeofencesKeys(ArrayList<Geofence> geofences)
+    {
+        ArrayList<String> keys = new ArrayList<>();
+
+        for (Geofence geofence: geofences)
+            keys.add(geofence.getRequestId());
+
+        return keys;
+    }
+
+
+
+    private GeofencingRequest getGeofencingRequest(ArrayList<Geofence> geofencesCandidates) {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         // INITIAL_TRIGGER_ENTER flag indicates that geofencing service should  trigger a
         // GEOFENCE_TRANSITION_ENTER notification when the geofence is added and if the
         // device  is already inside that geofence.
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofences(mGeofenceList);
+        builder.addGeofences(geofencesCandidates);
         return builder.build();
     }
 
@@ -115,38 +184,26 @@ public class GoogleGeofencingApiHelper implements ResultCallback<Status> {
     }
 
 
-    private ArrayList<Geofence> populateGeofenceList(ArrayList<Place> places)
+    private ArrayList<Geofence> populateGeofencesList(ArrayList<Place> places)
     {
-        // Empty list for storing geofences.
         ArrayList<Geofence> geofenceList = new ArrayList<>();
         int radius = mSharedPrefHelper.getGeofencesRadius();
         int transitionType = getTransitionType();
 
 
-        for (Place place : places) {
-
-            geofenceList.add(new Geofence.Builder()
-                    // Set the request ID of the geofence. This is a string to identify this
-                    // geofence.
-                    .setRequestId(place.getName())
-
-                    // Set the circular region of this geofence.
-                    .setCircularRegion(
+        for (Place place : places)
+        {
+            Geofence geofence = new Geofence.Builder()
+                    .setRequestId(place.getName()) // This is a string to identify this geofence
+                    .setCircularRegion( // Set the circular region of this geofence.
                             place.getLoc().latitude,
                             place.getLoc().longitude,
-                            radius
-                    )
+                            radius)
+                    .setExpirationDuration(GEOFENCE_EXPIRATION_IN_MILLISECONDS) // expiration
+                    .setTransitionTypes(transitionType) // for example enter/exit
+                    .build();
 
-                    // Set the expiration duration of the geofence. This geofence gets automatically
-                    // removed after this period of time.
-                    .setExpirationDuration(GEOFENCE_EXPIRATION_IN_MILLISECONDS)
-
-                    // Set the transition types of interest. Alerts are only generated for these
-                    // transition. We track entry and exit transitions in this sample.
-                    .setTransitionTypes(transitionType)
-
-                    // Create the geofence.
-                    .build());
+            geofenceList.add(geofence);
         }
 
         return geofenceList;

@@ -5,8 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
+import android.util.Log;
 
+import com.comli.shapira.aroundme.activities_fragments.MainActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -64,19 +65,18 @@ public class GoogleApiClientHelper implements GoogleApiClient.ConnectionCallback
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        //Toast.makeText(mContext, "GoogleApiClient Connected !", Toast.LENGTH_SHORT).show();
         mOnConnectionReadyListener.onConnected();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(mContext, "Connection Suspended. Try reconnect...", Toast.LENGTH_SHORT).show();
+        Log.e(MainActivity.LOG_TAG, "Connection Suspended. Try reconnect...");
         connect();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(mContext, "Connection Failed", Toast.LENGTH_SHORT).show();
+        Log.e(MainActivity.LOG_TAG, "Connection Failed");
     }
 
     public interface OnConnectionReadyListener {
