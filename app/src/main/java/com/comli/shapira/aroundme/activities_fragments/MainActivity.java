@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private MainMenuHelper mMainMenuHelper;
     private UserCurrentLocation mUserCurrentLocation;
     private LocationServiceHelper mLocationServiceHelper;
-    private GeofenceAppHelper mGeofenceAppHelper;
     private ReceiversHelper mReceiversHelper;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
 
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // GeofenceAppHelper
-        mGeofenceAppHelper = new GeofenceAppHelper(this);
+        GeofenceAppHelper geofenceAppHelper = new GeofenceAppHelper(this);
 
         // UserCurrentLocation
         mUserCurrentLocation = new UserCurrentLocation(this, mLocationServiceHelper, mTabsPagerAdapter);
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         mPlacesAutoComplete = new PlacesAutoComplete(this, mTabsPagerAdapter);
 
         // create local notification receiver (register later on onResume)
-        NearbyServiceReceiver nearbyServiceReceiver = new NearbyServiceReceiver(this, mTabsPagerAdapter, viewPager, mGeofenceAppHelper);
+        NearbyServiceReceiver nearbyServiceReceiver = new NearbyServiceReceiver(this, mTabsPagerAdapter, viewPager, geofenceAppHelper);
         LocationProviderServiceReceiver locationProviderServiceReceiver = new LocationProviderServiceReceiver(mLocationServiceHelper);
 
         // create global receiver (register later on onResume)

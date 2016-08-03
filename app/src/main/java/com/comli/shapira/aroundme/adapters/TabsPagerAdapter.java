@@ -8,8 +8,6 @@ import com.comli.shapira.aroundme.activities_fragments.FavoritesFragment;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.activities_fragments.SearchFragment;
 
-import java.util.ArrayList;
-
 public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standard implementation
 
     public static final int SEARCH_TAB = 0;
@@ -24,8 +22,8 @@ public class TabsPagerAdapter extends SmartFragmentStatePagerAdapter { // standa
     public static final int REFRESH_FAVORITES_VIEW = 5;
 
     private final AppCompatActivity mActivity;
-    private SearchFragment mSearchFragment;
-    private FavoritesFragment mFavoritesFragment;
+    private final SearchFragment mSearchFragment;
+    private final FavoritesFragment mFavoritesFragment;
 
     public TabsPagerAdapter(AppCompatActivity activity, FragmentManager fragmentManager) {
         super(fragmentManager);
