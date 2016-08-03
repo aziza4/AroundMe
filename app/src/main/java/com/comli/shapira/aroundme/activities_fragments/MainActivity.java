@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Viewpager - 2 tabs: Search & Favorites
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPagerContainer);
-        TabsPagerAdapter mTabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
+        final TabsPagerAdapter mTabsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(mTabsPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_layout);
         tabLayout.setupWithViewPager(viewPager);
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             @Override public void onLocationReady() {
                 invalidateOptionsMenu();
                 mUserCurrentLocation.searchCurrentLocation(""); // on app startup and location ready -> start search
+                mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.REFRESH_FAVORITES_VIEW);
             }
         });
 

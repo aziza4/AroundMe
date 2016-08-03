@@ -149,7 +149,14 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
 
             mNameTV.setText(place.getName());
             mVicinityTV.setText(place.getVicinity());
-            mDistanceTV.setText(Utility.getDistanceMsg(mContext, place));
+
+            String distance = Utility.getDistanceMsg(mContext, place);
+            if (distance == null || distance.isEmpty())
+                mDistanceTV.setVisibility(View.GONE);
+            else {
+                mDistanceTV.setVisibility(View.VISIBLE);
+                mDistanceTV.setText(distance);
+            }
 
             float rating = (float)place.getRating();
             if (rating > 0f)

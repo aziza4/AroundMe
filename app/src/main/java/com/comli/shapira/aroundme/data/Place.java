@@ -30,6 +30,8 @@ public class Place implements Parcelable {
     private String mUrl;
     private PlacePhoto mPhoto;
 
+    private double mDistanceInKM;
+
     public Place(com.google.android.gms.location.places.Place googlePlace)
     {
         this.mId = NOT_IN_DB;
@@ -47,6 +49,7 @@ public class Place implements Parcelable {
         this.mPhone = googlePlace.getPhoneNumber() != null ? googlePlace.getPhoneNumber().toString() : "";
         this.mIntlPhone = "";
         this.mUrl = googlePlace.getWebsiteUri() != null? googlePlace.getWebsiteUri().toString() : "";
+        this.mDistanceInKM = 0.0;
     }
 
     public Place(LatLng loc, String icon, String name,
@@ -55,14 +58,14 @@ public class Place implements Parcelable {
 
         this(NOT_IN_DB, loc, icon, name, photo, placeId, rating,
                 reference, scope, typesArr, vicinity,
-                null, null, null, null);
+                null, null, null, null, 0.0);
     }
 
 
     private Place(long id, LatLng loc, String icon, String name,
                   PlacePhoto photo, String placeId, double rating,
                   String reference, String scope, String[] typesArr, String vicinity,
-                  String address, String phone, String intlPhone, String url)
+                  String address, String phone, String intlPhone, String url, double distance)
     {
         this.mId = id;
         this.mLoc = loc;
@@ -79,19 +82,20 @@ public class Place implements Parcelable {
         this.mPhone = phone;
         this.mIntlPhone = intlPhone;
         this.mUrl = url;
+        this.mDistanceInKM = distance;
     }
 
     public Place(long id, double lat, double lng, String icon, String name,
                  String photoRef, Bitmap photo, String placeId, double rating,
                  String reference, String scope, String types, String vicinity,
-                 String address, String phone, String intlPhone, String url)
+                 String address, String phone, String intlPhone, String url, double distance)
     {
         this(id, new LatLng(lat,lng),
                 icon, name,
                 new PlacePhoto(photoRef, photo),
                 placeId, rating, reference, scope,
                 types.split("|"), vicinity,
-                address, phone, intlPhone, url);
+                address, phone, intlPhone, url, distance);
     }
 
 
@@ -100,7 +104,6 @@ public class Place implements Parcelable {
         mLoc = in.readParcelable(LatLng.class.getClassLoader());
         mIcon = in.readString();
         mName = in.readString();
-        mPhoto = in.readParcelable(PlacePhoto.class.getClassLoader());
         mPlaceId = in.readString();
         mRating = in.readDouble();
         mReference = in.readString();
@@ -111,6 +114,8 @@ public class Place implements Parcelable {
         mPhone = in.readString();
         mIntlPhone = in.readString();
         mUrl = in.readString();
+        mPhoto = in.readParcelable(PlacePhoto.class.getClassLoader());
+        mDistanceInKM = in.readDouble();
     }
 
     public static final Creator<Place> CREATOR = new Creator<Place>() {
@@ -156,6 +161,7 @@ public class Place implements Parcelable {
         return mPhoto == null ? null : mPhoto.getBitmapAsByteArray();
     }
 
+    public double getDistanceInKM() { return mDistanceInKM; }
 
     public void setPhoto(Bitmap bitmap)
     {
@@ -222,7 +228,6 @@ public class Place implements Parcelable {
             mPhoto = photo;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -234,7 +239,6 @@ public class Place implements Parcelable {
         parcel.writeParcelable(mLoc, i);
         parcel.writeString(mIcon);
         parcel.writeString(mName);
-        parcel.writeParcelable(mPhoto, i);
         parcel.writeString(mPlaceId);
         parcel.writeDouble(mRating);
         parcel.writeString(mReference);
@@ -245,5 +249,7 @@ public class Place implements Parcelable {
         parcel.writeString(mPhone);
         parcel.writeString(mIntlPhone);
         parcel.writeString(mUrl);
+        parcel.writeParcelable(mPhoto, i);
+        parcel.writeDouble(mDistanceInKM);
     }
 }

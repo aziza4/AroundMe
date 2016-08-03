@@ -100,8 +100,10 @@ public class PlaceFragment extends Fragment {
         String distance = Utility.getDistanceMsg(getActivity(), mPlace);
         if (distance == null || distance.isEmpty())
             mDistanceLayout.setVisibility(View.GONE);
-        else
+        else {
+            mDistanceLayout.setVisibility(View.VISIBLE);
             mDistanceTV.setText(distance);
+        }
 
         // show phone layout only if exists (not exist after search, but exists post favorites)
         String phone = mPlace.getPhone();

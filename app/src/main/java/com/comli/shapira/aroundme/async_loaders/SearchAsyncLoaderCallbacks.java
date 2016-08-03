@@ -9,6 +9,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import com.comli.shapira.aroundme.adapters.SearchRecyclerAdapter;
 import com.comli.shapira.aroundme.data.Place;
 import com.comli.shapira.aroundme.db.AroundMeDBHelper;
+import com.comli.shapira.aroundme.helpers.Utility;
 
 import java.util.ArrayList;
 
@@ -34,15 +35,14 @@ public class SearchAsyncLoaderCallbacks implements LoaderManager.LoaderCallbacks
 
         return new AsyncTaskLoader<ArrayList<Place>>(mContext) {
             @Override
-            public ArrayList<Place> loadInBackground() {
-                return mDbHelper.searchGetArrayList();
-            }
+            public ArrayList<Place> loadInBackground() { return mDbHelper.searchGetArrayList(); }
         };
     }
 
     @Override
-    public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> data) {
-        mSearchAdapter.setData(data);
+    public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Place>> loader, ArrayList<Place> places)
+    {
+        mSearchAdapter.setData(Utility.sortByDistance(places));
     }
 
     @Override

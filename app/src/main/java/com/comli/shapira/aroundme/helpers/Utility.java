@@ -18,6 +18,9 @@ import com.comli.shapira.aroundme.data.Place;
 import com.comli.shapira.aroundme.R;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 
 
@@ -106,18 +109,45 @@ public class Utility {
     }
 
 
-    // Although user's input are in meter/feet - better to display result on KM/miles...
-    public static String getDistanceMsg(Context context, Place place)
+    public static double getDistanceInKM(Context context, LatLng latlng)
     {
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
         LatLng userLoc = sharedPrefHelper.getLastUserLatLng();
 
         if (userLoc.longitude == 0 && userLoc.latitude == 0) // first time app running
-            return "";
+            return 0.0;
 
-        LatLng placeLoc = place.getLoc();
+        return Utility.distanceInKM(userLoc, latlng);
+    }
 
-        float distanceInKM = Utility.distanceInKM(userLoc, placeLoc);
+
+    public static ArrayList<Place> sortByDistance(ArrayList<Place> places)
+    {
+        // sort by bistance ascending
+        Collections.sort(places, new Comparator<Place>() {
+            @Override
+            public int compare(Place p1, Place p2) {
+                double p1d= p1.getDistanceInKM();
+                double p2d = p2.getDistanceInKM();
+                if (p1d < p2d) return -1;
+                if (p1d > p2d) return 1;
+                return 0;
+            }
+        });
+
+        return places;
+    }
+
+
+    // Although user's input are in meter/feet - better to display result on KM/miles...
+    public static String getDistanceMsg(Context context, Place place)
+    {
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
+
+        float distanceInKM = (float)place.getDistanceInKM();
+
+        if (distanceInKM == 0 )
+            return null;
 
         //String formatString = context.getString(R.string.formatted_away_from_me_msg);
 

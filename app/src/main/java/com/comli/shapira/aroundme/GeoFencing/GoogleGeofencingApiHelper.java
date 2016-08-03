@@ -65,7 +65,6 @@ public class GoogleGeofencingApiHelper implements ResultCallback<Status> {
             return;
         }
 
-
         // convert places to geofences
         ArrayList<Geofence> geofencesCandidates = populateGeofencesList(places);
 
@@ -163,7 +162,6 @@ public class GoogleGeofencingApiHelper implements ResultCallback<Status> {
 
         return keys;
     }
-
 
 
     private GeofencingRequest getGeofencingRequest(ArrayList<Geofence> geofencesCandidates) {

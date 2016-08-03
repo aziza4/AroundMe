@@ -187,8 +187,10 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             String distance = Utility.getDistanceMsg(mContext, place);
             if (distance == null || distance.isEmpty())
                 mDistanceLayout.setVisibility(View.GONE);
-            else
+            else {
+                mDistanceLayout.setVisibility(View.VISIBLE);
                 mDistanceTV.setText(distance);
+            }
 
             String phone = place.getPhone();
             if (phone == null || phone.isEmpty())
