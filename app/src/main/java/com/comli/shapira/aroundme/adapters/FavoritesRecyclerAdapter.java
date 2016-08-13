@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -117,6 +118,12 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
 
         public PlaceViewHolder(View view) {
             super(view, mMultiSelector);
+
+            // see: http://stackoverflow.com/questions/30906793/android-cant-call-void-android-view-view-settranslationzfloat-on-null-object
+            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                setSelectionModeStateListAnimator(null);
+                setDefaultModeStateListAnimator(null);
+            }
 
             mPlaceIV = (ImageView) view.findViewById(R.id.favoritesPlaceImageView);
             mNameTV = (TextView) view.findViewById(R.id.favoritesNameTextView);
