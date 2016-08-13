@@ -76,6 +76,7 @@ public class NearbyServiceReceiver extends BroadcastReceiver {
 
                 mGeofenceAppHelper.refresh();
 
+
                 mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.REFRESH_FAVORITES_VIEW); // update ui
                 mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.REMOVE_SEARCH_PROGRESS_BAR);
                 mTabsPagerAdapter.manageFragmentsOps(TabsPagerAdapter.REMOVE_FAVORITES_PROGRESS_BAR);

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.bignerdranch.android.multiselector.MultiSelector;
 import com.comli.shapira.aroundme.activities_fragments.SearchFragment;
 import com.comli.shapira.aroundme.data.DetailsRequest;
 import com.comli.shapira.aroundme.data.Place;
@@ -15,17 +16,24 @@ import com.comli.shapira.aroundme.helpers.Utility;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.services.NearbyService;
 
+import java.util.ArrayList;
+
 
 public class SearchActionModeCallbacks implements ActionMode.Callback {
 
     private final AppCompatActivity mActivity;
     private final SearchFragment mSearchFragment;
+    private final MultiSelector mMultiSelector;
+    private final ArrayList<Place> mPlaces;
     private final Place mPlace;
 
-    public SearchActionModeCallbacks(AppCompatActivity activity, SearchFragment searchFragment, Place place)
+    public SearchActionModeCallbacks(AppCompatActivity activity, SearchFragment searchFragment,
+                                     MultiSelector multiSelector, ArrayList<Place> places, Place place)
     {
         mActivity = activity;
         mSearchFragment = searchFragment;
+        mMultiSelector = multiSelector;
+        mPlaces = places;
         mPlace = place;
     }
 
@@ -41,10 +49,19 @@ public class SearchActionModeCallbacks implements ActionMode.Callback {
         return true;
     }
 
+
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        mMultiSelector.setSelectable(true);
         return false;
     }
+
+
+    @Override
+    public void onDestroyActionMode(ActionMode actionMode) {
+        mMultiSelector.setSelectable(false);
+    }
+
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
@@ -53,14 +70,17 @@ public class SearchActionModeCallbacks implements ActionMode.Callback {
         {
             case R.id.favoritesMenuItem:
 
+                ArrayList<DetailsRequest> selectedPlaces =
+                        Utility.getSelectedPlaces(mMultiSelector, mPlaces);
 
                 // add via service to make db this operation async as well, as others are.
                 Intent intent = new Intent(NearbyService.ACTION_PLACE_FAVORITES_SAVE, null, mActivity, NearbyService.class);
-                intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, new DetailsRequest(mPlace));
+                intent.putParcelableArrayListExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, selectedPlaces);
                 intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_SAVE, true);
                 mActivity.startService(intent);
 
                 mSearchFragment.addProgressBar();
+                mMultiSelector.clearSelections();
 
                 mode.finish();
                 return true;
@@ -69,8 +89,5 @@ public class SearchActionModeCallbacks implements ActionMode.Callback {
                 return false;
         }
     }
-
-    @Override
-    public void onDestroyActionMode(ActionMode mode) { }
 }
 

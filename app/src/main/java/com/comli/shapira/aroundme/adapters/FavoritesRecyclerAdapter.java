@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bignerdranch.android.multiselector.SingleSelector;
+import com.bignerdranch.android.multiselector.SwappingHolder;
 import com.comli.shapira.aroundme.activities_fragments.FavoritesFragment;
 import com.comli.shapira.aroundme.activities_fragments.MapActivity;
 import com.comli.shapira.aroundme.data.Place;
@@ -33,12 +35,14 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
 
     private final Context mContext;
     private final FavoritesFragment mFavoritesFragment;
+    private final SingleSelector mMultiSelector;
     private ArrayList<Place> mPlaces;
 
 
     public FavoritesRecyclerAdapter(Context context, FavoritesFragment favoritesFragment) {
         mContext = context;
         mFavoritesFragment = favoritesFragment;
+        mMultiSelector = new SingleSelector(); // see: https://www.bignerdranch.com/blog/recyclerview-part-2-choice-modes/;
         mPlaces = null;
     }
 
@@ -97,7 +101,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
     }
 
 
-    class PlaceViewHolder extends RecyclerView.ViewHolder {
+    class PlaceViewHolder extends SwappingHolder {
 
         public final ImageView mPlaceIV;
         public final TextView mNameTV;
@@ -112,7 +116,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
         private Place mPlace;
 
         public PlaceViewHolder(View view) {
-            super(view);
+            super(view, mMultiSelector);
 
             mPlaceIV = (ImageView) view.findViewById(R.id.favoritesPlaceImageView);
             mNameTV = (TextView) view.findViewById(R.id.favoritesNameTextView);
@@ -128,14 +132,16 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(mContext, MapActivity.class);
-                    intent.putExtra(MapActivity.INTENT_MAP_ID_KEY, mPlace.getId());
-                    intent.putExtra(MapActivity.INTENT_MAP_TYPE_KEY, MapActivity.INTENT_MAP_TYPE_FAVORITES_VAL);
+                    if (!mMultiSelector.tapSelection(PlaceViewHolder.this)) {
+                        Intent intent = new Intent(mContext, MapActivity.class);
+                        intent.putExtra(MapActivity.INTENT_MAP_ID_KEY, mPlace.getId());
+                        intent.putExtra(MapActivity.INTENT_MAP_TYPE_KEY, MapActivity.INTENT_MAP_TYPE_FAVORITES_VAL);
 
-                    Bundle transitionBundle = TransitionsHelper
-                            .getTransitionBundle((AppCompatActivity)mContext, view);
+                        Bundle transitionBundle = TransitionsHelper
+                                .getTransitionBundle((AppCompatActivity) mContext, view);
 
-                    mContext.startActivity(intent, transitionBundle);
+                        mContext.startActivity(intent, transitionBundle);
+                    }
                 }
             });
 
@@ -143,7 +149,9 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
                 @Override
                 public boolean onLongClick(View view) {
                     AppCompatActivity activity = (AppCompatActivity) mContext;
-                    activity.startSupportActionMode(new FavoritesActionModeCallbacks(activity, mFavoritesFragment, mPlace));
+                    activity.startSupportActionMode(new FavoritesActionModeCallbacks(activity,
+                            mFavoritesFragment, mMultiSelector, mPlaces, mPlace));
+                    mMultiSelector.setSelected(PlaceViewHolder.this, true); // manually set this first item
                     return true;
                 }
             });

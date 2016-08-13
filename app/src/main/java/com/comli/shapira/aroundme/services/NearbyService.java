@@ -65,17 +65,15 @@ public class NearbyService extends IntentService {
                 break;
 
             case ACTION_PLACE_FAVORITES_SAVE:
-                DetailsRequest saveDataRequest = intent.getParcelableExtra(EXTRA_PLACE_FAVORITES_DATA);
-
+                ArrayList<DetailsRequest> addRequests = intent.getParcelableArrayListExtra(EXTRA_PLACE_FAVORITES_DATA);
                 if (intent.getBooleanExtra(EXTRA_PLACE_FAVORITES_ACTION_SAVE, false))
-                    downloadPlaceDetailsAndAddToFavorites(saveDataRequest);
+                    downloadPlaceDetailsAndAddToFavorites(addRequests);
                 break;
 
             case ACTION_PLACE_FAVORITES_REMOVE:
-                DetailsRequest removeDataRequest = intent.getParcelableExtra(EXTRA_PLACE_FAVORITES_DATA);
-
+                ArrayList<DetailsRequest> removeRequests = intent.getParcelableArrayListExtra(EXTRA_PLACE_FAVORITES_DATA);
                 if (intent.getBooleanExtra(EXTRA_PLACE_FAVORITES_ACTION_REMOVE, false))
-                    deleteFromFavorites(removeDataRequest);
+                    deleteFromFavorites(removeRequests);
                 break;
 
             case ACTION_PLACE_FAVORITES_REMOVE_ALL:
@@ -95,25 +93,30 @@ public class NearbyService extends IntentService {
         BroadcastHelper.broadcastFavoritesPlacesDeletedAll(this);
     }
 
-    private void deleteFromFavorites(DetailsRequest request)
+    private void deleteFromFavorites(ArrayList<DetailsRequest> requests)
     {
-        Place place = request.getPlace();
-        mDbHelper.favoritesDeletePlace(place.getId());
-        BroadcastHelper.broadcastFavoritesPlaceDeleted(this);
+        for (DetailsRequest request : requests) {
+            Place place = request.getPlace();
+            mDbHelper.favoritesDeletePlace(place.getId());
+            BroadcastHelper.broadcastFavoritesPlaceDeleted(this);
+        }
     }
 
-    private void downloadPlaceDetailsAndAddToFavorites(DetailsRequest request)
+    private void downloadPlaceDetailsAndAddToFavorites(ArrayList<DetailsRequest> requests)
     {
-        URL url = mNearbyHelper.getDetailsUrl(request.getPlace());
-        NetworkHelper networkHelper = new NetworkHelper(url);
-        String jsonString = networkHelper.getJsonString();
-        DetailsResponse res = mNearbyHelper.GetPlaceDetails(request, jsonString);
-        Place place = res.getPlace();
+        for (DetailsRequest request : requests)
+        {
+            URL url = mNearbyHelper.getDetailsUrl(request.getPlace());
+            NetworkHelper networkHelper = new NetworkHelper(url);
+            String jsonString = networkHelper.getJsonString();
+            DetailsResponse res = mNearbyHelper.GetPlaceDetails(request, jsonString);
+            Place place = res.getPlace();
 
-        mDbHelper.searchUpdatePlace(place);
-        mDbHelper.favoritesInsertPlace(place);
-        downloadPlacePhoto(place);
-        mDbHelper.searchUpdatePlace(place);
+            mDbHelper.searchUpdatePlace(place);
+            mDbHelper.favoritesInsertPlace(place);
+            downloadPlacePhoto(place);
+            mDbHelper.searchUpdatePlace(place);
+        }
 
         BroadcastHelper.broadcastFavoritesPlaceSaved(this);
     }

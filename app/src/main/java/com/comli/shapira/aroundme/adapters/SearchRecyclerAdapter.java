@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bignerdranch.android.multiselector.MultiSelector;
+import com.bignerdranch.android.multiselector.SwappingHolder;
 import com.comli.shapira.aroundme.activities_fragments.MapActivity;
 import com.comli.shapira.aroundme.activities_fragments.SearchFragment;
 import com.comli.shapira.aroundme.data.Place;
@@ -31,6 +33,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
 
     private final Context mContext;
     private final SearchFragment mSearchFragment;
+    private final MultiSelector mMultiSelector;
     private ArrayList<Place> mPlaces;
 
 
@@ -38,6 +41,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
     public SearchRecyclerAdapter(Context context, SearchFragment searchFragment) {
         mContext = context;
         mSearchFragment = searchFragment;
+        mMultiSelector = new MultiSelector(); // see: https://www.bignerdranch.com/blog/recyclerview-part-2-choice-modes/;
         mPlaces = null;
     }
 
@@ -95,8 +99,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 0;
     }
 
-
-    class PlaceViewHolder extends RecyclerView.ViewHolder {
+    class PlaceViewHolder extends SwappingHolder {
 
         public final ImageView mPlaceIV;
         public final TextView mNameTV;
@@ -104,10 +107,11 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         public final TextView mDistanceTV;
         public final RatingBar mRatingRatingBar;
 
+
         private Place mPlace;
 
         public PlaceViewHolder(View view) {
-            super(view);
+            super(view, mMultiSelector);
 
             mPlaceIV = (ImageView) view.findViewById(R.id.searchPlaceImageView);
             mNameTV = (TextView)view.findViewById(R.id.searchNameTextView);
@@ -118,22 +122,29 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, MapActivity.class);
-                    intent.putExtra(MapActivity.INTENT_MAP_ID_KEY, mPlace.getId());
-                    intent.putExtra(MapActivity.INTENT_MAP_TYPE_KEY, MapActivity.INTENT_MAP_TYPE_SEARCH_VAL);
+                    if (!mMultiSelector.tapSelection(PlaceViewHolder.this)) {
+                        Intent intent = new Intent(mContext, MapActivity.class);
+                        intent.putExtra(MapActivity.INTENT_MAP_ID_KEY, mPlace.getId());
+                        intent.putExtra(MapActivity.INTENT_MAP_TYPE_KEY, MapActivity.INTENT_MAP_TYPE_SEARCH_VAL);
 
-                    Bundle transitionBundle = TransitionsHelper
-                            .getTransitionBundle((AppCompatActivity)mContext, view);
+                        Bundle transitionBundle = TransitionsHelper
+                                .getTransitionBundle((AppCompatActivity) mContext, view);
 
-                    mContext.startActivity(intent, transitionBundle);
+                        mContext.startActivity(intent, transitionBundle);
+                    }
                 }
             });
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
+
                     AppCompatActivity activity = (AppCompatActivity) mContext;
-                    activity.startSupportActionMode(new SearchActionModeCallbacks(activity, mSearchFragment, mPlace));
+                    activity.startSupportActionMode(new SearchActionModeCallbacks(activity,
+                            mSearchFragment, mMultiSelector, mPlaces, mPlace));
+
+                    mMultiSelector.setSelected(PlaceViewHolder.this, true);
+
                     return true;
                 }
             });

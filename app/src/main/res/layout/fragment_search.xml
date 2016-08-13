@@ -7,7 +7,7 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/activity_vertical_margin"
+        android:padding="@dimen/elements_horizontal_margin"
         android:id="@+id/searchListView" />
 
     <ProgressBar

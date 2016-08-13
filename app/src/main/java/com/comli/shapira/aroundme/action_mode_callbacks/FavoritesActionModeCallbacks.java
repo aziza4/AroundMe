@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.bignerdranch.android.multiselector.MultiSelector;
 import com.comli.shapira.aroundme.activities_fragments.FavoritesFragment;
 import com.comli.shapira.aroundme.data.DetailsRequest;
 import com.comli.shapira.aroundme.data.Place;
@@ -14,17 +15,24 @@ import com.comli.shapira.aroundme.helpers.Utility;
 import com.comli.shapira.aroundme.R;
 import com.comli.shapira.aroundme.services.NearbyService;
 
+import java.util.ArrayList;
+
 
 public class FavoritesActionModeCallbacks implements ActionMode.Callback {
 
     private final AppCompatActivity mActivity;
     private final FavoritesFragment mFavoritesFragment;
+    private final MultiSelector mMultiSelector;
+    private final ArrayList<Place> mPlaces;
     private final Place mPlace;
 
-    public FavoritesActionModeCallbacks(AppCompatActivity activity, FavoritesFragment favoritesFragment, Place place)
+    public FavoritesActionModeCallbacks(AppCompatActivity activity,FavoritesFragment favoritesFragment,
+                                        MultiSelector multiSelector, ArrayList<Place> places, Place place)
     {
         mActivity = activity;
         mFavoritesFragment = favoritesFragment;
+        mMultiSelector = multiSelector;
+        mPlaces = places;
         mPlace = place;
     }
 
@@ -44,7 +52,13 @@ public class FavoritesActionModeCallbacks implements ActionMode.Callback {
 
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        mMultiSelector.setSelectable(true);
         return false;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode actionMode) {
+        mMultiSelector.setSelectable(false);
     }
 
 
@@ -57,11 +71,15 @@ public class FavoritesActionModeCallbacks implements ActionMode.Callback {
 
                 mFavoritesFragment.addProgressBar();
 
+                ArrayList<DetailsRequest> selectedPlaces =
+                        Utility.getSelectedPlaces(mMultiSelector, mPlaces);
+
                 // delete via service to make db this operation async as well, as others are.
                 Intent intent = new Intent(NearbyService.ACTION_PLACE_FAVORITES_REMOVE, null, mActivity, NearbyService.class);
-                intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, new DetailsRequest(mPlace));
+                intent.putParcelableArrayListExtra(NearbyService.EXTRA_PLACE_FAVORITES_DATA, selectedPlaces);
                 intent.putExtra(NearbyService.EXTRA_PLACE_FAVORITES_ACTION_REMOVE, true);
                 mActivity.startService(intent);
+                mMultiSelector.clearSelections();
                 mode.finish();
                 return true;
 
@@ -69,8 +87,4 @@ public class FavoritesActionModeCallbacks implements ActionMode.Callback {
                 return false;
         }
     }
-
-
-    @Override
-    public void onDestroyActionMode(ActionMode mode) { }
 }

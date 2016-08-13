@@ -14,6 +14,8 @@ import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bignerdranch.android.multiselector.MultiSelector;
+import com.comli.shapira.aroundme.data.DetailsRequest;
 import com.comli.shapira.aroundme.data.Place;
 import com.comli.shapira.aroundme.R;
 import com.google.android.gms.maps.model.LatLng;
@@ -208,5 +210,16 @@ public class Utility {
                 .appendQueryParameter(startAddressKey, startAddressVal)
                 .appendQueryParameter(endAddressKey, endAddressVal)
                 .build();
+    }
+
+    public static ArrayList<DetailsRequest> getSelectedPlaces(MultiSelector multiSelector, ArrayList<Place> places)
+    {
+        ArrayList<DetailsRequest> selectedPlaces = new ArrayList<>();
+
+        for (int i = places.size()-1; i >= 0; i--)
+            if (multiSelector.isSelected(i, 0))
+                selectedPlaces.add(new DetailsRequest(places.get(i)));
+
+        return selectedPlaces;
     }
 }

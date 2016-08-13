@@ -29,6 +29,7 @@ public class SearchFragment extends Fragment {
         return new SearchFragment();
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class SearchFragment extends Fragment {
 
         return v;
     }
+
 
     @Override
     public void onResume() {
@@ -72,6 +74,7 @@ public class SearchFragment extends Fragment {
             mShowProgressBar = true;  // wait for onResume to happen
     }
 
+
     public void removeProgressBar()
     {
         if (mProgressBar != null)
@@ -79,6 +82,7 @@ public class SearchFragment extends Fragment {
         else
             mShowProgressBar = false;  // wait for onResume to happen
     }
+
 
     public void refresh(AppCompatActivity activity) // called when service finished downloading
     {
